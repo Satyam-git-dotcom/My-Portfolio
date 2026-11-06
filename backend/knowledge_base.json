@@ -1,0 +1,165 @@
+{
+  "profile": {
+    "full_name": "Satyam",
+    "display_name": "Satyam",
+    "headline": "Software Engineer | AI/ML & Distributed Systems",
+    "bio_summary": "Software Engineer with strong fundamentals in Data Structures, Algorithms, and System Design. Experienced in building high-throughput REST APIs, offline-first vector search engines, and full-stack generative AI applications across Java, Python, and JavaScript. Solved 200+ LeetCode problems; eager to own features end-to-end in production.",
+    "location": "Vellore / Uttar Pradesh, India",
+    "availability": "Open for Software Engineering internships, Full-Time roles (2027 graduate), and high-impact AI/ML projects.",
+    "languages_spoken": ["English", "Hindi"]
+  },
+  "contact": {
+    "email": "satyam12303@gmail.com",
+    "phone": "+91 8218385753",
+    "github": "https://github.com",
+    "linkedin": "https://linkedin.com",
+    "resume_url": "./Satyam_Resume_FS.pdf"
+  },
+  "education": {
+    "institution": "Vellore Institute of Technology (VIT)",
+    "campus": "Vellore, Tamil Nadu, India",
+    "degree": "Bachelor of Technology (B.Tech)",
+    "major": "Computer Science & Engineering with specialization in AI & Machine Learning",
+    "duration": "2023 - 2027",
+    "cgpa": "9.3 / 10.0",
+    "key_coursework": [
+      "Data Structures & Algorithms",
+      "Object-Oriented Programming (OOP)",
+      "Database Management Systems (DBMS)",
+      "Operating Systems",
+      "System Design & Distributed Architectures",
+      "Machine Learning & Deep Learning",
+      "Natural Language Processing (NLP)"
+    ]
+  },
+  "work_experience": [
+    {
+      "company": "Infotact Solutions",
+      "role": "Data Associate L1 (Intern)",
+      "period": "Oct 2026 - Present",
+      "location": "Remote / Hybrid",
+      "responsibilities": [
+        "Collaborate with cross-functional engineering and product teams to translate business requirements into data-driven solutions using statistical modeling and machine learning.",
+        "Clean, preprocess, and normalize structured tabular and unstructured text datasets for model consumption.",
+        "Build, tune, validate, and benchmark predictive ML models using Python, scikit-learn, and TensorFlow.",
+        "Perform Exploratory Data Analysis (EDA) and visualize distribution patterns with Matplotlib and Seaborn, documenting experiments and validation metrics for reproducibility."
+      ],
+      "tools_used": ["Python", "scikit-learn", "TensorFlow", "Matplotlib", "Seaborn", "Pandas", "NumPy"]
+    }
+  ],
+  "projects": [
+    {
+      "id": "synapse",
+      "name": "Synapse",
+      "title": "Custom LLM/RAG Vector Engine",
+      "is_flagship": true,
+      "tagline": "Sub-millisecond Offline Vector Search & Dual Embedding Pipeline",
+      "tech_stack": ["Java", "Spring Boot", "Ollama", "HNSW", "KD-Tree", "nomic-embed-text", "REST APIs"],
+      "problem_statement": "Commercial vector databases introduce external network latency, cloud dependency, and resource overhead for offline or edge AI applications.",
+      "solution_and_architecture": [
+        "Implemented Hierarchical Navigable Small World (HNSW) graphs and KD-Trees from scratch without external vector DB dependencies.",
+        "Engineered a live /benchmark endpoint comparing query latencies across index structures, proving sub-millisecond search times.",
+        "Architected an offline-first RAG pipeline exposing 14 modular REST API endpoints for vector indexing, document ingestion, and local LLM Q&A via Ollama.",
+        "Designed a dual embedding pipeline supporting 16-dimensional demo vectors for rapid visualization and 768-dimensional high-fidelity semantic embeddings using Ollama's nomic-embed-text."
+      ],
+      "metrics_and_highlights": {
+        "search_latency": "< 1ms (sub-millisecond query search)",
+        "api_endpoints": "14 REST endpoints",
+        "embedding_dimensions": "16-dim (demo) and 768-dim (semantic)",
+        "offline_capability": "100% offline-first local execution"
+      }
+    },
+    {
+      "id": "kore-logic",
+      "name": "Kore Logic",
+      "title": "AI Career & Learning Platform",
+      "is_flagship": false,
+      "tagline": "Full-Stack Career Mentorship & Skill Matching Engine with Sub-200ms RAG",
+      "tech_stack": ["Next.js 15", "FastAPI", "PostgreSQL", "SQLAlchemy", "LangChain", "ChromaDB", "GPT-4o"],
+      "problem_statement": "Students lack personalized career roadmaps and real-time gap analysis between their current skill profile and live internship requirements.",
+      "solution_and_architecture": [
+        "Built a complete full-stack platform exposing 19 REST API endpoints connected to a normalized PostgreSQL database schema of 10 core entity tables via SQLAlchemy.",
+        "Constructed a high-speed RAG pipeline using LangChain, ChromaDB, and GPT-4o powering an interactive mentor chatbot with sub-200ms query latency.",
+        "Implemented a real-time cosine-similarity matching engine over skill embeddings to calculate personalized internship 'Match Percentage' scores."
+      ],
+      "metrics_and_highlights": {
+        "rag_latency": "< 200ms latency on semantic searches",
+        "api_endpoints": "19 REST API endpoints",
+        "database_tables": "10 normalized relational entity tables",
+        "matching_engine": "Vector cosine-similarity skill gap scoring"
+      }
+    },
+    {
+      "id": "aura-tender",
+      "name": "Aura Tender",
+      "title": "AI Procurement Compliance Platform",
+      "is_flagship": false,
+      "tagline": "Multimodal Document Analysis & Zero-Shot Compliance Verification",
+      "tech_stack": ["Python", "FastAPI", "React", "Gemini 1.5 Pro", "RAG", "Multimodal Analysis"],
+      "problem_statement": "Manual procurement compliance audits of hundred-page tender documents are tedious, error-prone, and take dozens of hours per proposal.",
+      "solution_and_architecture": [
+        "Built an AI-driven compliance evaluation platform automating multimodal document analysis, cutting manual review effort by over 80% per tender.",
+        "Deployed a zero-shot Gemini 1.5 Pro extraction pipeline that systematically cross-references bidder evidence against compliance checklists, saving multiple hours per document.",
+        "Designed a human-in-the-loop review workflow that automatically flags ambiguous documents or clauses for manual verification, preserving full auditability."
+      ],
+      "metrics_and_highlights": {
+        "effort_reduction": "Cuts manual review effort by over 80% per tender",
+        "pipeline_type": "Zero-shot Gemini 1.5 Pro multimodal extraction",
+        "auditability": "Human-in-the-loop confidence scoring and flagging"
+      }
+    }
+  ],
+  "technical_skills": {
+    "languages": ["Java", "Python", "JavaScript", "SQL", "C++ (foundational)"],
+    "backend_frameworks": ["Spring Boot", "FastAPI", "Node.js", "Express.js", "REST APIs", "JWT Authentication"],
+    "frontend_frameworks": ["React", "Next.js 15", "Tailwind CSS", "HTML5/CSS3"],
+    "databases_and_vector": ["PostgreSQL", "MySQL", "ChromaDB", "Qdrant", "HNSW Indexing", "KD-Tree Indexing"],
+    "ai_and_ml": ["RAG (Retrieval-Augmented Generation)", "Vector Search", "LangChain", "LangGraph", "Scikit-Learn", "TensorFlow", "Ollama", "NLTK", "Prompt Engineering"],
+    "cloud_and_devops": ["AWS (Bedrock, Lambda, S3, CloudFront)", "Docker", "Git", "GitHub", "CI/CD Pipelines", "Postman"]
+  },
+  "certifications_and_achievements": [
+    {
+      "title": "200+ DSA Problems Solved",
+      "issuer": "LeetCode",
+      "details": "Solved 200+ algorithmic problems across Arrays, Two Pointers, Trees, Graphs, Dynamic Programming, and Heaps."
+    },
+    {
+      "title": "Google GenAI Internship",
+      "issuer": "SmartInternz",
+      "year": "2026"
+    },
+    {
+      "title": "AWS Technical Essentials",
+      "issuer": "Amazon Web Services (AWS)",
+      "year": "2025"
+    },
+    {
+      "title": "Applied Machine Learning in Python",
+      "issuer": "University of Michigan",
+      "year": "2025"
+    },
+    {
+      "title": "Intro to Generative AI",
+      "issuer": "IBM",
+      "year": "2025"
+    }
+  ],
+  "frequently_asked_questions": {
+    "why_hire_satyam": "Satyam combines strong computer science fundamentals (9.3 CGPA at VIT, 200+ LeetCode problems) with proven hands-on engineering craft. Instead of just wrapping APIs, he built custom HNSW & KD-Tree vector engines from scratch (Synapse), full-stack RAG platforms (Kore Logic), and enterprise compliance tooling (Aura Tender). He understands memory efficiency, latency optimization, and end-to-end production delivery.",
+    "strongest_skills": "Core backend engineering with Spring Boot & FastAPI, low-latency vector search architectures, and RAG pipelines combining LangChain/Bedrock/Ollama with relational databases like PostgreSQL.",
+    "salary_expectations": "Satyam is focused on high-impact engineering teams, strong mentorship, and production ownership. Compensation can be discussed directly with him at satyam12303@gmail.com.",
+    "relocation_and_remote": "Satyam is available for on-site, hybrid, or remote software engineering roles across India and globally."
+  },
+  "strict_guardrails": {
+    "allowed_topics": [
+      "Satyam's background, education, and CGPA at VIT",
+      "Satyam's projects: Synapse, Kore Logic, Aura Tender",
+      "Satyam's internship experience at Infotact Solutions",
+      "Satyam's technical skills, languages, databases, and frameworks",
+      "Satyam's certifications and LeetCode problem-solving record",
+      "Contact information and resume download guidance"
+    ],
+    "refusal_behavior": "If asked about unrelated topics (general coding help, writing general essays, math homework, politics, celebrity news, other companies' proprietary info, or non-Satyam topics), politely decline and state that you are exclusively trained on Satyam's professional profile."
+  }
+}
+
