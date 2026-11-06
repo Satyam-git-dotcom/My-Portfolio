@@ -1,0 +1,141 @@
+<!--
+  HOW TO USE: paste this whole file just before </body> in your portfolio (after your existing <script>).
+  No other edits needed. It only uses the independent `translate` / `scale` / `rotate` CSS properties,
+  so it never fights Tailwind's hover:translate-* / hover:scale-* utilities.
+-->
+<style id="portfolio-motion">
+  :root { --ease-out: cubic-bezier(.16, 1, .3, 1); --ease-spring: cubic-bezier(.34, 1.56, .64, 1); }
+
+  /* ---------- Keyframes ---------- */
+  @keyframes headerIn  { from { opacity: 0; translate: 0 -100%; } }
+  @keyframes dockIn    { from { opacity: 0; translate: 0 140%; } }
+  @keyframes itemIn    { from { opacity: 0; translate: -14px 0; } }
+  @keyframes itemInR   { from { opacity: 0; translate: 14px 0; } }
+  @keyframes windowIn  { from { opacity: 0; translate: 0 16px; scale: .965; } }
+  @keyframes windowOut { to   { opacity: 0; translate: 0 10px; scale: .97; } }
+  @keyframes fadeUp    { from { opacity: 0; translate: 0 12px; } }
+  @keyframes msgIn     { from { opacity: 0; translate: 0 10px; scale: .98; } }
+  @keyframes barGrow   { from { scale: 1 0; opacity: 0; } }
+  @keyframes toastIn   { from { opacity: 0; translate: 24px 0; scale: .96; } }
+  @keyframes toastPop  { 0% { scale: .965; translate: 0 -6px; } 55% { scale: 1.015; translate: 0 1px; } 100% { scale: 1; translate: 0 0; } }
+  @keyframes floaty    { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+  @keyframes badgeBob  { 0%, 100% { translate: 0 0; } 50% { translate: 0 -3px; } }
+  @keyframes wiggle    { 0%, 100% { rotate: 0deg; } 25% { rotate: -9deg; } 60% { rotate: 7deg; } }
+
+  /* ---------- Page load ---------- */
+  header.fixed { animation: headerIn .6s var(--ease-out) backwards; }
+  footer.fixed > div { animation: dockIn .7s .45s var(--ease-out) backwards; }
+
+  main .absolute.top-4.z-20 > * { animation: itemIn .55s var(--ease-out) backwards; animation-delay: calc(.2s + var(--i, 0) * .07s); }
+  main .absolute.top-4.right-0.z-20 > * { animation-name: itemInR; }
+  main .absolute.top-4.z-20 > :nth-child(1) { --i: 0; } main .absolute.top-4.z-20 > :nth-child(2) { --i: 1; }
+  main .absolute.top-4.z-20 > :nth-child(3) { --i: 2; } main .absolute.top-4.z-20 > :nth-child(4) { --i: 3; }
+  main .absolute.top-4.z-20 > :nth-child(5) { --i: 4; }
+
+  #desktop-toast { animation: toastIn .6s .9s var(--ease-out) backwards; }
+  #desktop-toast.toast-pop { animation: toastPop .45s var(--ease-spring); }
+  #fortune-button > span:first-child { animation: badgeBob 1.8s ease-in-out infinite; }
+  main > div > div.absolute.bottom-6 { animation: floaty 5s ease-in-out infinite; }
+
+  /* ---------- Windows: open / close / drag ---------- */
+  [id$="-window"]:not(.hidden) { animation: windowIn .42s var(--ease-out) backwards; }
+  #chat-window { animation-delay: .1s; }
+  [id$="-window"].win-closing { animation: windowOut .22s cubic-bezier(.4, 0, 1, 1) forwards !important; pointer-events: none; }
+  [id$="-window"].is-dragging { transition: none !important; }
+  [id$="-header"] { cursor: grab; }
+  .is-dragging [id$="-header"] { cursor: grabbing; }
+  #terminal-window:not(.hidden) { display: flex; } /* terminal was display:block (missing "flex") */
+
+  /* ---------- Content inside windows ---------- */
+  [id^="about-tab-"]:not(.hidden) { animation: fadeUp .35s var(--ease-out) backwards; }
+
+  :is(.skill-card, .proj-item, .journey-card):not(.hidden) { animation: fadeUp .5s var(--ease-out) backwards; transition: translate .25s var(--ease-out), box-shadow .25s var(--ease-out); }
+  :is(.skill-card, .proj-item, .journey-card):nth-child(1) { animation-delay: .12s; }
+  :is(.skill-card, .proj-item, .journey-card):nth-child(2) { animation-delay: .20s; }
+  :is(.skill-card, .proj-item, .journey-card):nth-child(3) { animation-delay: .28s; }
+  :is(.skill-card, .proj-item, .journey-card):nth-child(4) { animation-delay: .36s; }
+  :is(.skill-card, .proj-item, .journey-card):hover { translate: -2px -2px; box-shadow: 7px 7px 0 #111111; }
+
+  .skill-card [title^="Proficiency"] > span { transform-origin: bottom; animation: barGrow .55s var(--ease-spring) backwards; }
+  .skill-card [title^="Proficiency"] > span:nth-child(1) { animation-delay: .30s; }
+  .skill-card [title^="Proficiency"] > span:nth-child(2) { animation-delay: .37s; }
+  .skill-card [title^="Proficiency"] > span:nth-child(3) { animation-delay: .44s; }
+  .skill-card [title^="Proficiency"] > span:nth-child(4) { animation-delay: .51s; }
+  .skill-card [title^="Proficiency"] > span:nth-child(5) { animation-delay: .58s; }
+
+  #finder-window .grid > div { animation: fadeUp .45s var(--ease-out) backwards; }
+  #finder-window .grid > div:nth-child(1) { animation-delay: .10s; } #finder-window .grid > div:nth-child(2) { animation-delay: .16s; }
+  #finder-window .grid > div:nth-child(3) { animation-delay: .22s; } #finder-window .grid > div:nth-child(4) { animation-delay: .28s; }
+  #finder-window .grid > div:nth-child(5) { animation-delay: .34s; }
+
+  /* ---------- Chat ---------- */
+  #chat-stream > div:not(.animate-fade-in):not(.hidden) { animation: msgIn .5s var(--ease-out) backwards; }
+  #chat-stream > div:nth-child(1) { animation-delay: .30s; }
+  #chat-stream > div:nth-child(2) { animation-delay: .50s; }
+  #chat-stream > div:nth-child(3) { animation-delay: .70s; }
+  .animate-fade-in { animation: msgIn .4s var(--ease-out) both; }
+
+  /* ---------- Micro-interactions ---------- */
+  header nav a { position: relative; }
+  header nav a::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 1px; height: 2px; background: #dc2626; scale: 0 1; transform-origin: left; transition: scale .28s var(--ease-out); }
+  header nav a:hover::after { scale: 1 1; }
+
+  footer nav > a { transition: transform .28s var(--ease-spring), background-color .2s, border-color .2s; will-change: transform; }
+  footer nav > a:hover { transform: translateY(-8px) scale(1.18); }
+  footer nav > a:hover + a, footer nav > a:has(+ a:hover) { transform: translateY(-3px) scale(1.07); }
+  footer nav > a:active { transform: translateY(-3px) scale(1.04); }
+
+  main button:hover .material-symbols-outlined, main a:hover .material-symbols-outlined { animation: wiggle .5s ease; }
+  button:not(:disabled):active { scale: .96; }
+  button, a { transition-timing-function: var(--ease-out); }
+  .overflow-y-auto { scroll-behavior: smooth; }
+
+  /* ---------- Accessibility ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  }
+</style>
+
+<script>
+  (() => {
+    // 1) Re-trigger a springy "pop" every time a toast message changes
+    const baseToast = window.triggerToast;
+    window.triggerToast = function (msg) {
+      baseToast(msg);
+      const t = document.getElementById('desktop-toast');
+      if (!t) return;
+      t.classList.remove('toast-pop');
+      void t.offsetWidth; // restart animation
+      t.classList.add('toast-pop');
+    };
+
+    // 2) Animate windows closing instead of vanishing
+    const baseMinimize = window.minimizeApp;
+    window.minimizeApp = function (id) {
+      const el = document.getElementById(id + '-window');
+      if (!el || el.classList.contains('hidden') || el.classList.contains('win-closing')) return;
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        baseMinimize(id);               // adds .hidden + shows toast
+        el.classList.remove('win-closing');
+      };
+      el.classList.add('win-closing');
+      el.addEventListener('animationend', finish, { once: true });
+      setTimeout(finish, 400);          // safety net
+    };
+
+    // 3) Kill the 200ms transition while dragging so windows follow the cursor 1:1
+    document.querySelectorAll('[id$="-header"]').forEach(header => {
+      const win = document.getElementById(header.id.replace('-header', '-window'));
+      if (!win) return;
+      header.addEventListener('mousedown', e => {
+        if (['BUTTON', 'A', 'INPUT', 'SELECT'].includes(e.target.tagName)) return;
+        win.classList.add('is-dragging');
+        const stop = () => { win.classList.remove('is-dragging'); document.removeEventListener('mouseup', stop); };
+        document.addEventListener('mouseup', stop);
+      }, true);
+    });
+  })();
+</script>
