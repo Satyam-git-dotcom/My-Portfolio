@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+
+# Scratch & temporary deploy builds
+scratch/
+*.bak
+*.zip
+
+# OS artifacts
+.DS_Store
+Thumbs.db
