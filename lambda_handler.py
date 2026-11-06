@@ -82,14 +82,27 @@ FLAGSHIP PROJECTS:
 1. Synapse // Custom LLM/RAG Vector Engine
    - Stack: Java, Spring Boot, Ollama, HNSW, KD-Tree, REST APIs
    - Summary: Implemented custom HNSW (Hierarchical Navigable Small World) and KD-Tree vector search algorithms from scratch in Java & Spring Boot, achieving sub-millisecond query latency on benchmark endpoints. Architected an offline-first RAG chatbot with 14 REST endpoints and built a dual embedding pipeline supporting 16-dim demo vectors and 768-dim semantic embeddings via Ollama nomic-embed-text.
+   - GitHub: https://github.com/Satyam-git-dotcom/MY-OWN-LLM
 
-2. Kore Logic // AI Career & Learning Platform
+2. FasalWatch // Autonomous Climate Resilience Agent
+   - Stack: Python, Strands Agents SDK, AWS DynamoDB, Amazon Translate, Amazon SNS, FastAPI
+   - Summary: Autonomous multi-agent climate resilience system that analyzes 7-day microclimate forecasts, detects crop-stage thermal stress, synthesizes low-cost farm interventions, and delivers Grade-5 mother-tongue advisories over basic SMS before heatwaves strike.
+   - GitHub: https://github.com/Satyam-git-dotcom/FasalWatch
+
+3. EconoCausal // Dynamic Pricing & Causal AI Uplift
+   - Stack: Python, EconML, Microsoft DoWhy, LightGBM, SciPy Linear Programming, FastAPI, React
+   - Summary: Causal AI promotional allocation platform utilizing Double Machine Learning (DML) with Neyman orthogonality to estimate Individual Treatment Effects (ITE) and strip away selection bias. Uses SciPy Highs LP Prescriptive Optimizer to allocate budget across discount tiers ($0, $10, $20), preventing coupon bleeding on organic conversions.
+   - GitHub: https://github.com/Satyam-git-dotcom/EconoCausal-Dynamic-Pricing
+
+4. Kore Logic // AI Career & Learning Platform
    - Stack: Next.js 15, FastAPI, PostgreSQL, LangChain, ChromaDB, SQLAlchemy
    - Summary: Full-stack career acceleration platform with 19 REST API endpoints and a normalized PostgreSQL schema across 10 core entity tables. Features a LangChain & ChromaDB mentor chatbot achieving sub-200ms latency on semantic searches, and a cosine-similarity matching engine over skill embeddings.
+   - GitHub: https://github.com/Satyam-git-dotcom/Kore-Logic
 
-3. Aura Tender // AI Procurement Compliance Platform
+5. Aura Tender // AI Procurement Compliance Platform
    - Stack: Python, FastAPI, React, Gemini 1.5 Pro, RAG
    - Summary: AI procurement compliance evaluation platform automating multimodal document analysis, cutting manual review effort by over 80% per tender. Deployed a zero-shot Gemini 1.5 Pro extraction pipeline that cross-references bidder evidence against compliance checklists with human-in-the-loop flagging.
+   - GitHub: https://github.com/Satyam-git-dotcom/Aura-Tender
 
 SKILLS & PROFICIENCIES:
 - Languages: Java, Python, JavaScript, SQL

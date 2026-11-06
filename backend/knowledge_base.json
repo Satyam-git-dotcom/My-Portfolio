@@ -6,7 +6,10 @@
     "bio_summary": "Software Engineer with strong fundamentals in Data Structures, Algorithms, and System Design. Experienced in building high-throughput REST APIs, offline-first vector search engines, and full-stack generative AI applications across Java, Python, and JavaScript. Solved 200+ LeetCode problems; eager to own features end-to-end in production.",
     "location": "Vellore / Uttar Pradesh, India",
     "availability": "Open for Software Engineering internships, Full-Time roles (2027 graduate), and high-impact AI/ML projects.",
-    "languages_spoken": ["English", "Hindi"]
+    "languages_spoken": [
+      "English",
+      "Hindi"
+    ]
   },
   "contact": {
     "email": "satyam12303@gmail.com",
@@ -44,7 +47,15 @@
         "Build, tune, validate, and benchmark predictive ML models using Python, scikit-learn, and TensorFlow.",
         "Perform Exploratory Data Analysis (EDA) and visualize distribution patterns with Matplotlib and Seaborn, documenting experiments and validation metrics for reproducibility."
       ],
-      "tools_used": ["Python", "scikit-learn", "TensorFlow", "Matplotlib", "Seaborn", "Pandas", "NumPy"]
+      "tools_used": [
+        "Python",
+        "scikit-learn",
+        "TensorFlow",
+        "Matplotlib",
+        "Seaborn",
+        "Pandas",
+        "NumPy"
+      ]
     }
   ],
   "projects": [
@@ -54,7 +65,15 @@
       "title": "Custom LLM/RAG Vector Engine",
       "is_flagship": true,
       "tagline": "Sub-millisecond Offline Vector Search & Dual Embedding Pipeline",
-      "tech_stack": ["Java", "Spring Boot", "Ollama", "HNSW", "KD-Tree", "nomic-embed-text", "REST APIs"],
+      "tech_stack": [
+        "Java",
+        "Spring Boot",
+        "Ollama",
+        "HNSW",
+        "KD-Tree",
+        "nomic-embed-text",
+        "REST APIs"
+      ],
       "problem_statement": "Commercial vector databases introduce external network latency, cloud dependency, and resource overhead for offline or edge AI applications.",
       "solution_and_architecture": [
         "Implemented Hierarchical Navigable Small World (HNSW) graphs and KD-Trees from scratch without external vector DB dependencies.",
@@ -75,7 +94,15 @@
       "title": "AI Career & Learning Platform",
       "is_flagship": false,
       "tagline": "Full-Stack Career Mentorship & Skill Matching Engine with Sub-200ms RAG",
-      "tech_stack": ["Next.js 15", "FastAPI", "PostgreSQL", "SQLAlchemy", "LangChain", "ChromaDB", "GPT-4o"],
+      "tech_stack": [
+        "Next.js 15",
+        "FastAPI",
+        "PostgreSQL",
+        "SQLAlchemy",
+        "LangChain",
+        "ChromaDB",
+        "GPT-4o"
+      ],
       "problem_statement": "Students lack personalized career roadmaps and real-time gap analysis between their current skill profile and live internship requirements.",
       "solution_and_architecture": [
         "Built a complete full-stack platform exposing 19 REST API endpoints connected to a normalized PostgreSQL database schema of 10 core entity tables via SQLAlchemy.",
@@ -95,7 +122,14 @@
       "title": "AI Procurement Compliance Platform",
       "is_flagship": false,
       "tagline": "Multimodal Document Analysis & Zero-Shot Compliance Verification",
-      "tech_stack": ["Python", "FastAPI", "React", "Gemini 1.5 Pro", "RAG", "Multimodal Analysis"],
+      "tech_stack": [
+        "Python",
+        "FastAPI",
+        "React",
+        "Gemini 1.5 Pro",
+        "RAG",
+        "Multimodal Analysis"
+      ],
       "problem_statement": "Manual procurement compliance audits of hundred-page tender documents are tedious, error-prone, and take dozens of hours per proposal.",
       "solution_and_architecture": [
         "Built an AI-driven compliance evaluation platform automating multimodal document analysis, cutting manual review effort by over 80% per tender.",
@@ -107,15 +141,112 @@
         "pipeline_type": "Zero-shot Gemini 1.5 Pro multimodal extraction",
         "auditability": "Human-in-the-loop confidence scoring and flagging"
       }
+    },
+    {
+      "id": "fasal-watch",
+      "name": "FasalWatch",
+      "title": "Autonomous Multi-Agent Climate Resilience System",
+      "is_flagship": false,
+      "tagline": "Thermal Stress Detection & Mother-Tongue SMS Farming Advisories",
+      "github": "https://github.com/Satyam-git-dotcom/FasalWatch",
+      "tech_stack": [
+        "Python",
+        "Strands Agents SDK",
+        "AWS DynamoDB",
+        "Amazon Translate",
+        "Amazon SNS",
+        "FastAPI"
+      ],
+      "problem_statement": "Extreme heatwaves and microclimate shocks damage smallholder agricultural yields before farmers can adapt.",
+      "solution_and_architecture": [
+        "Constructed an autonomous multi-agent pipeline using the Strands Agents SDK to process 7-day microclimate weather forecasts.",
+        "Detects crop-stage thermal stress anomalies and automatically synthesizes low-cost farm interventions.",
+        "Translates advisories into Grade-5 mother-tongue languages via Amazon Translate and dispatches them over basic SMS via Amazon SNS."
+      ],
+      "metrics_and_highlights": {
+        "pipeline": "Strands Multi-Agent + AWS Serverless",
+        "reach": "Basic SMS delivery for non-smartphone farmers",
+        "accuracy": "Crop-stage specific thermal stress detection"
+      }
+    },
+    {
+      "id": "econo-causal",
+      "name": "EconoCausal",
+      "title": "Dynamic Pricing & Promotional Allocation via Causal AI",
+      "is_flagship": false,
+      "tagline": "Double Machine Learning & Linear Programming for Counterfactual Uplift",
+      "github": "https://github.com/Satyam-git-dotcom/EconoCausal-Dynamic-Pricing",
+      "tech_stack": [
+        "Python",
+        "Microsoft DoWhy",
+        "EconML",
+        "SciPy",
+        "LightGBM",
+        "FastAPI",
+        "React"
+      ],
+      "problem_statement": "Standard correlational ML models misallocate promotional discounts by coupon-bleeding on organic customers who would convert anyway.",
+      "solution_and_architecture": [
+        "Deployed Double/Debiased Machine Learning (LinearDML & CausalForest) with Neyman orthogonality to estimate Individual Treatment Effects (ITE).",
+        "Formulated and solved knapsack promotional budget allocation across pricing tiers ($0, $10, $20) using the SciPy HiGHS Linear Programming solver.",
+        "Constructed interactive DAG inspection and DoWhy refutation tests (placebo treatments, random unobserved confounders) for auditability."
+      ],
+      "metrics_and_highlights": {
+        "causal_framework": "Double Machine Learning (DML) via Microsoft DoWhy & EconML",
+        "optimization": "SciPy HiGHS LP Solver for promotional spend",
+        "validation": "DoWhy Refutation Placebo & Data Subset Tests"
+      }
     }
   ],
   "technical_skills": {
-    "languages": ["Java", "Python", "JavaScript", "SQL", "C++ (foundational)"],
-    "backend_frameworks": ["Spring Boot", "FastAPI", "Node.js", "Express.js", "REST APIs", "JWT Authentication"],
-    "frontend_frameworks": ["React", "Next.js 15", "Tailwind CSS", "HTML5/CSS3"],
-    "databases_and_vector": ["PostgreSQL", "MySQL", "ChromaDB", "Qdrant", "HNSW Indexing", "KD-Tree Indexing"],
-    "ai_and_ml": ["RAG (Retrieval-Augmented Generation)", "Vector Search", "LangChain", "LangGraph", "Scikit-Learn", "TensorFlow", "Ollama", "NLTK", "Prompt Engineering"],
-    "cloud_and_devops": ["AWS (Bedrock, Lambda, S3, CloudFront)", "Docker", "Git", "GitHub", "CI/CD Pipelines", "Postman"]
+    "languages": [
+      "Java",
+      "Python",
+      "JavaScript",
+      "SQL",
+      "C++ (foundational)"
+    ],
+    "backend_frameworks": [
+      "Spring Boot",
+      "FastAPI",
+      "Node.js",
+      "Express.js",
+      "REST APIs",
+      "JWT Authentication"
+    ],
+    "frontend_frameworks": [
+      "React",
+      "Next.js 15",
+      "Tailwind CSS",
+      "HTML5/CSS3"
+    ],
+    "databases_and_vector": [
+      "PostgreSQL",
+      "MySQL",
+      "ChromaDB",
+      "Qdrant",
+      "HNSW Indexing",
+      "KD-Tree Indexing"
+    ],
+    "ai_and_ml": [
+      "RAG (Retrieval-Augmented Generation)",
+      "Vector Search",
+      "LangChain",
+      "LangGraph",
+      "Scikit-Learn",
+      "TensorFlow",
+      "Ollama",
+      "NLTK",
+      "Prompt Engineering"
+    ],
+    "cloud_and_devops": [
+      "AWS (Bedrock, Lambda, S3, CloudFront)",
+      "Docker",
+      "Git",
+      "GitHub",
+      "CI/CD Pipelines",
+      "Postman"
+    ]
   },
   "certifications_and_achievements": [
     {
@@ -162,4 +293,3 @@
     "refusal_behavior": "If asked about unrelated topics (general coding help, writing general essays, math homework, politics, celebrity news, other companies' proprietary info, or non-Satyam topics), politely decline and state that you are exclusively trained on Satyam's professional profile."
   }
 }
-

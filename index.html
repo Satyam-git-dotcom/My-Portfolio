@@ -246,8 +246,8 @@
         <span class="text-charcoal/30">|</span>
         <span class="font-bold text-charcoal uppercase" id="system-clock">--:-- --</span>
       </div>
-      <div class="w-6 h-6 bg-charcoal text-paper flex items-center justify-center font-bold text-[10px]" title="Satyam (S)">
-        SV
+      <div class="w-6 h-6 border border-charcoal overflow-hidden flex items-center justify-center font-bold text-[10px]" title="Satyam (S)">
+        <img src="./satyam_portrait.jpg" alt="Satyam" class="w-full h-full object-cover" />
       </div>
     </div>
   </header>
@@ -373,14 +373,8 @@
                     <span>IMG_REF // S_904.RAW</span>
                     <span>+1.00</span>
                   </div>
-                  <div class="relative my-3 aspect-square border-2 border-charcoal bg-paper-subtle overflow-hidden flex items-center justify-center">
-                    <div class="absolute inset-0 bg-[radial-gradient(#111111_1px,transparent_1px)] [background-size:12px_12px] opacity-40"></div>
-                    <div class="absolute top-2 left-2 font-mono text-[9px] text-charcoal-muted">+ CROSSHAIR</div>
-                    <div class="absolute bottom-2 right-2 font-mono text-[9px] text-charcoal-muted">GRID_LOC: VIT_01</div>
-                    <div class="w-24 h-24 border-2 border-charcoal bg-white flex flex-col items-center justify-center p-2 shadow-[3px_3px_0px_#111111] z-10 text-center">
-                      <span class="font-mono font-bold text-[28px] text-charcoal tracking-tighter">SV</span>
-                      <span class="font-mono text-[8px] uppercase tracking-widest text-bauhaus-red font-bold">SOFTWARE ENG</span>
-                    </div>
+                  <div class="relative my-3 aspect-square border-2 border-charcoal bg-paper-subtle overflow-hidden flex items-center justify-center shadow-[4px_4px_0px_#111111]">
+                    <img src="./satyam_portrait.jpg" alt="Satyam - AI Systems Engineer" class="w-full h-full object-cover select-none" />
                   </div>
                   <div class="font-mono text-[10px] text-charcoal-muted uppercase">NODE // SATYAM-MASTER</div>
                   <h2 class="font-display font-bold text-lg uppercase tracking-tight text-charcoal">SATYAM</h2>
@@ -644,7 +638,7 @@
             </div>
           </div>
           <div class="hidden md:flex items-center gap-2 font-mono text-[10px] text-paper-subtle">
-            <span id="projects-count-label">ALL (3)</span>
+            <span id="projects-count-label">ALL (5)</span>
             <span>//</span>
             <span class="text-bauhaus-yellow font-bold">VERIFIED REPOSITORIES</span>
           </div>
@@ -656,7 +650,7 @@
             <span class="font-bold truncate">root / satyam / production_systems / flagship_catalog</span>
           </div>
           <div class="flex items-center gap-1" role="group" aria-label="Projects filter tags">
-            <button onclick="filterProjects('all')" id="proj-filter-all" class="px-2 py-0.5 bg-charcoal text-paper font-bold uppercase">ALL (3)</button>
+            <button onclick="filterProjects('all')" id="proj-filter-all" class="px-2 py-0.5 bg-charcoal text-paper font-bold uppercase">ALL (5)</button>
             <button onclick="filterProjects('ai')" id="proj-filter-ai" class="px-2 py-0.5 bg-paper hover:bg-white border border-charcoal text-charcoal uppercase">VECTOR & AI</button>
             <button onclick="filterProjects('fullstack')" id="proj-filter-fullstack" class="px-2 py-0.5 bg-paper hover:bg-white border border-charcoal text-charcoal uppercase">FULL STACK</button>
           </div>
@@ -1030,8 +1024,8 @@
             <div class="flex-1 p-4 overflow-y-auto space-y-4" id="chat-stream" role="log" aria-live="polite">
               <!-- Initial Bot Greeting -->
               <div class="flex items-start gap-3 max-w-[88%] animate-fade-in">
-                <div class="w-8 h-8 border-2 border-charcoal bg-charcoal text-paper flex items-center justify-center font-mono font-bold text-[11px] flex-shrink-0">
-                  AI
+                <div class="w-8 h-8 border-2 border-charcoal overflow-hidden bg-charcoal flex items-center justify-center flex-shrink-0 shadow-[1px_1px_0px_#111111]">
+                  <img src="./satyam_portrait.jpg" alt="Satyam AI" class="w-full h-full object-cover" />
                 </div>
                 <div class="flex flex-col gap-1 w-full">
                   <div class="flex items-center gap-2 font-mono text-[10px]">
@@ -1041,15 +1035,15 @@
                   <div class="p-3 border-2 border-charcoal bg-white text-charcoal shadow-[3px_3px_0px_#111111] font-sans text-[13px] leading-relaxed">
                     Hello! I am Satyam's AI Twin, grounded strictly in his verified software engineering background, VIT coursework, and flagship platforms.
                     <br/><br/>
-                    Ask me anything about his custom vector search engine <strong>Synapse</strong> (Java/Spring Boot), his AI platforms (<strong>Kore Logic</strong>, <strong>Aura Tender</strong>), or his <strong>9.3 CGPA</strong> at VIT!
+                    Ask me anything about his custom vector search engine <strong>Synapse</strong> (Java/Spring Boot), his AI platforms (<strong>FasalWatch</strong>, <strong>EconoCausal</strong>, <strong>Kore Logic</strong>, <strong>Aura Tender</strong>), or his <strong>9.3 CGPA</strong> at VIT!
                   </div>
                 </div>
               </div>
 
               <!-- Typing indicator -->
               <div id="typing-indicator" class="hidden items-start gap-3 max-w-[88%] animate-fade-in">
-                <div class="w-8 h-8 border-2 border-charcoal bg-charcoal text-paper flex items-center justify-center font-mono font-bold text-[11px] flex-shrink-0">
-                  AI
+                <div class="w-8 h-8 border-2 border-charcoal overflow-hidden bg-charcoal flex items-center justify-center flex-shrink-0 shadow-[1px_1px_0px_#111111]">
+                  <img src="./satyam_portrait.jpg" alt="Satyam AI" class="w-full h-full object-cover" />
                 </div>
                 <div class="p-3 border-2 border-charcoal bg-white text-charcoal shadow-[3px_3px_0px_#111111] flex items-center gap-1.5 font-mono text-xs">
                   <span class="w-2 h-2 bg-charcoal animate-bounce"></span>
@@ -1192,7 +1186,28 @@
           tag: "FLAGSHIP // VECTOR SEARCH",
           stack: ["Java", "Spring Boot", "Ollama", "HNSW", "KD-Tree", "REST APIs"],
           description: "Implemented HNSW and KD-Tree vector indexing algorithms from scratch in Java & Spring Boot, reaching sub-millisecond search times on benchmark endpoints. Architected an offline-first RAG chatbot exposing 14 REST API endpoints for vector search, document ingestion, and LLM Q&A. Built a dual embedding pipeline supporting 16-dim demo vectors and 768-dim semantic embeddings via Ollama nomic-embed-text.",
-          metrics: "Latency: <1ms // 14 REST Endpoints // Dual Embeddings (16/768-dim)"
+          metrics: "Latency: <1ms // 14 REST Endpoints // Dual Embeddings (16/768-dim)",
+          github: "https://github.com/Satyam-git-dotcom/MY-OWN-LLM"
+        },
+        {
+          id: "fasal-watch",
+          title: "FasalWatch // Autonomous Climate Resilience Agent",
+          category: "ai",
+          tag: "MULTI-AGENT // CLIMATE AI",
+          stack: ["Python", "Strands Agents", "AWS DynamoDB", "Amazon Translate", "Amazon SNS", "FastAPI"],
+          description: "Autonomous multi-agent climate resilience system built with Strands Agents SDK and AWS serverless services. Analyzes 7-day microclimate forecasts, detects crop-stage thermal stress, synthesizes low-cost farm interventions, and delivers Grade-5 mother-tongue advisories over basic SMS before heatwaves strike.",
+          metrics: "Microclimate Analysis // Grade-5 Mother-Tongue SMS // Strands Multi-Agent",
+          github: "https://github.com/Satyam-git-dotcom/FasalWatch"
+        },
+        {
+          id: "econo-causal",
+          title: "EconoCausal // Dynamic Pricing & Causal AI Uplift",
+          category: "ai",
+          tag: "CAUSAL AI // DYNAMIC PRICING",
+          stack: ["Python", "EconML", "Microsoft DoWhy", "LightGBM", "SciPy LP", "FastAPI", "React"],
+          description: "Causal AI pricing and promotional allocation engine utilizing Double Machine Learning (DML) and Neyman orthogonality to estimate Individual Treatment Effects (ITE). Optimizes discount tier allocation via SciPy Linear Programming, eliminating confounding bias and preventing coupon bleeding on organic conversions.",
+          metrics: "Double Machine Learning (DML) // Neyman Orthogonality // SciPy LP Optimization",
+          github: "https://github.com/Satyam-git-dotcom/EconoCausal-Dynamic-Pricing"
         },
         {
           id: "kore-logic",
@@ -1201,7 +1216,8 @@
           tag: "FULL-STACK // AI MENTOR",
           stack: ["Next.js 15", "FastAPI", "PostgreSQL", "LangChain", "ChromaDB", "SQLAlchemy"],
           description: "Full-stack career acceleration platform with 19 REST API endpoints and a normalized PostgreSQL schema across 10 core entity tables via SQLAlchemy. Constructed a RAG pipeline (LangChain, ChromaDB, GPT-4o) powering a mentor chatbot achieving <200ms latency on semantic searches, and implemented a cosine-similarity matching engine over skill embeddings for internship match scores.",
-          metrics: "Latency: <200ms // 19 REST Endpoints // 10 Normalized DB Tables"
+          metrics: "Latency: <200ms // 19 REST Endpoints // 10 Normalized DB Tables",
+          github: "https://github.com/Satyam-git-dotcom/Kore-Logic"
         },
         {
           id: "aura-tender",
@@ -1210,7 +1226,8 @@
           tag: "AI COMPLIANCE // MULTIMODAL",
           stack: ["Python", "FastAPI", "React", "Gemini 1.5 Pro", "RAG"],
           description: "AI procurement compliance evaluation platform automating multimodal document analysis, cutting manual review effort by over 80% per tender. Deployed a zero-shot Gemini 1.5 Pro extraction pipeline that cross-references bidder evidence against checklists, and designed a human-in-the-loop flow flagging ambiguous documents for auditability.",
-          metrics: "Review Reduction: >80% // Multimodal Analysis // Zero-Shot Gemini 1.5 Pro"
+          metrics: "Review Reduction: >80% // Multimodal Analysis // Zero-Shot Gemini 1.5 Pro",
+          github: "https://github.com/Satyam-git-dotcom/Aura-Tender"
         }
       ],
       experience: [
@@ -1526,8 +1543,8 @@
       const botBubble = document.createElement('div');
       botBubble.className = 'flex items-start gap-3 max-w-[88%] animate-fade-in';
       botBubble.innerHTML = `
-        <div class="w-8 h-8 border-2 border-charcoal bg-charcoal text-paper flex items-center justify-center font-mono font-bold text-[11px] flex-shrink-0">
-          AI
+        <div class="w-8 h-8 border-2 border-charcoal overflow-hidden bg-charcoal flex items-center justify-center flex-shrink-0 shadow-[1px_1px_0px_#111111]">
+          <img src="./satyam_portrait.jpg" alt="Satyam AI" class="w-full h-full object-cover" />
         </div>
         <div class="flex flex-col gap-1 w-full">
           <div class="flex items-center gap-2 font-mono text-[10px]">
@@ -1686,26 +1703,44 @@
           • <strong>Endpoints:</strong> 14 REST endpoints for ingestion, vector search, and LLM Q&A.<br/>
           • <strong>Embeddings:</strong> Dual pipeline with 16-dim demo vectors and 768-dim semantic embeddings via Ollama nomic-embed-text.<br/><br/>
           <em>Click on "03. Projects" to inspect the full architecture!</em>`;
+        } else if (q.includes('fasal') || q.includes('climate') || q.includes('strands') || q.includes('farm') || q.includes('crop')) {
+          const fas = DATA.projects.find(p => p.id === 'fasal-watch');
+          replyHtml = `<strong>${fas.title}</strong><br/><br/>
+          Autonomous multi-agent climate resilience system in <strong>Python, Strands Agents SDK, and AWS</strong>:<br/>
+          • <strong>Multi-Agent Architecture:</strong> Ingests 7-day microclimate forecasts, detects crop-stage thermal stress, and synthesizes low-cost farm interventions.<br/>
+          • <strong>Advisory Dispatch:</strong> Translates mitigations into Grade-5 mother-tongue advisories delivered over SMS via Amazon SNS.<br/>
+          • <strong>Repository:</strong> <a href="${fas.github}" target="_blank" class="text-bauhaus-blue underline">github.com/Satyam-git-dotcom/FasalWatch ↗</a>`;
+        } else if (q.includes('econo') || q.includes('causal') || q.includes('pricing') || q.includes('dowhy') || q.includes('econml')) {
+          const eco = DATA.projects.find(p => p.id === 'econo-causal');
+          replyHtml = `<strong>${eco.title}</strong><br/><br/>
+          Causal AI promotional allocation platform in <strong>Python, EconML, Microsoft DoWhy, LightGBM, and SciPy</strong>:<br/>
+          • <strong>Causal Inference:</strong> Deploys Double Machine Learning (DML) with Neyman orthogonality to estimate Individual Treatment Effects (ITE) and strip away selection bias.<br/>
+          • <strong>Prescriptive Optimization:</strong> Solves discount tier allocations ($0, $10, $20) via SciPy Linear Programming, preventing coupon bleeding on organic conversions.<br/>
+          • <strong>Repository:</strong> <a href="${eco.github}" target="_blank" class="text-bauhaus-blue underline">github.com/Satyam-git-dotcom/EconoCausal-Dynamic-Pricing ↗</a>`;
         } else if (q.includes('kore') || q.includes('career') || q.includes('mentor')) {
-          const kor = DATA.projects[1];
+          const kor = DATA.projects.find(p => p.id === 'kore-logic');
           replyHtml = `<strong>${kor.title}</strong><br/><br/>
           Built in <strong>Next.js 15, FastAPI, LangChain, and PostgreSQL</strong>:<br/>
           • Full-stack platform with 19 REST API endpoints and 10 core entity tables via SQLAlchemy.<br/>
           • RAG pipeline with ChromaDB and mentor chatbot with &lt;200ms latency.<br/>
-          • Real-time cosine similarity matching engine over skill embeddings for internship match scores.`;
+          • Real-time cosine similarity matching engine over skill embeddings for internship match scores.<br/>
+          • <strong>Repository:</strong> <a href="${kor.github}" target="_blank" class="text-bauhaus-blue underline">github.com/Satyam-git-dotcom/Kore-Logic ↗</a>`;
         } else if (q.includes('aura') || q.includes('tender') || q.includes('procure')) {
-          const aura = DATA.projects[2];
+          const aura = DATA.projects.find(p => p.id === 'aura-tender');
           replyHtml = `<strong>${aura.title}</strong><br/><br/>
           AI procurement compliance evaluation platform in <strong>Python, FastAPI, React, and Gemini 1.5 Pro</strong>:<br/>
           • Automates multimodal document analysis, cutting manual review effort by over 80% per tender.<br/>
           • Zero-shot Gemini 1.5 Pro extraction pipeline cross-referencing bidder evidence against compliance checklists.<br/>
-          • Human-in-the-loop audit verification workflow.`;
+          • Human-in-the-loop audit verification workflow.<br/>
+          • <strong>Repository:</strong> <a href="${aura.github}" target="_blank" class="text-bauhaus-blue underline">github.com/Satyam-git-dotcom/Aura-Tender ↗</a>`;
         } else if (q.includes('project')) {
-          replyHtml = `Satyam has built 3 flagship systems (all canonical from his resume):<br/><br/>
+          replyHtml = `Satyam has built 5 flagship engineering systems:<br/><br/>
           1. <strong>Synapse</strong>: Custom HNSW/KD-Tree vector engine in Java & Spring Boot (&lt;1ms query latency).<br/>
-          2. <strong>Kore Logic</strong>: Full-stack AI career platform in Next.js 15, FastAPI, and LangChain.<br/>
-          3. <strong>Aura Tender</strong>: AI procurement compliance platform with Gemini 1.5 Pro reducing review effort by &gt;80%.<br/><br/>
-          Ask me about any specific project to inspect its architecture!`;
+          2. <strong>FasalWatch</strong>: Autonomous multi-agent climate resilience system (Strands SDK, AWS DynamoDB/SNS).<br/>
+          3. <strong>EconoCausal</strong>: Causal AI dynamic pricing & promotional optimization (Double ML, DoWhy, SciPy LP).<br/>
+          4. <strong>Kore Logic</strong>: Full-stack AI career platform in Next.js 15, FastAPI, and LangChain.<br/>
+          5. <strong>Aura Tender</strong>: AI procurement compliance platform with Gemini 1.5 Pro reducing review effort by &gt;80%.<br/><br/>
+          Click on "03. Projects" or ask me about any specific repository to inspect its architecture!`;
         } else if (q.includes('skill') || q.includes('stack') || q.includes('tech') || q.includes('language')) {
           replyHtml = `Satyam's canonical technical competencies:<br/><br/>
           • <strong>Languages:</strong> Java, Python, JavaScript, SQL<br/>
@@ -1761,8 +1796,8 @@
       if (stream) {
         stream.innerHTML = `
           <div class="flex items-start gap-3 max-w-[88%] animate-fade-in">
-            <div class="w-8 h-8 border-2 border-charcoal bg-charcoal text-paper flex items-center justify-center font-mono font-bold text-[11px] flex-shrink-0">
-              AI
+            <div class="w-8 h-8 border-2 border-charcoal overflow-hidden bg-charcoal flex items-center justify-center flex-shrink-0 shadow-[1px_1px_0px_#111111]">
+              <img src="./satyam_portrait.jpg" alt="Satyam AI" class="w-full h-full object-cover" />
             </div>
             <div class="flex flex-col gap-1 w-full">
               <div class="flex items-center gap-2 font-mono text-[10px]">
@@ -1772,13 +1807,13 @@
               <div class="p-3 border-2 border-charcoal bg-white text-charcoal shadow-[3px_3px_0px_#111111] font-sans text-[13px] leading-relaxed">
                 Hello! I am Satyam's AI Twin, grounded strictly in his verified software engineering background, VIT coursework, and flagship platforms.
                 <br/><br/>
-                Ask me anything about his custom vector search engine <strong>Synapse</strong> (Java/Spring Boot), his AI platforms (<strong>Kore Logic</strong>, <strong>Aura Tender</strong>), or his <strong>9.3 CGPA</strong> at VIT!
+                Ask me anything about his custom vector search engine <strong>Synapse</strong> (Java/Spring Boot), his AI platforms (<strong>FasalWatch</strong>, <strong>EconoCausal</strong>, <strong>Kore Logic</strong>, <strong>Aura Tender</strong>), or his <strong>9.3 CGPA</strong> at VIT!
               </div>
             </div>
           </div>
           <div id="typing-indicator" class="hidden items-start gap-3 max-w-[88%] animate-fade-in">
-            <div class="w-8 h-8 border-2 border-charcoal bg-charcoal text-paper flex items-center justify-center font-mono font-bold text-[11px] flex-shrink-0">
-              AI
+            <div class="w-8 h-8 border-2 border-charcoal overflow-hidden bg-charcoal flex items-center justify-center flex-shrink-0 shadow-[1px_1px_0px_#111111]">
+              <img src="./satyam_portrait.jpg" alt="Satyam AI" class="w-full h-full object-cover" />
             </div>
             <div class="p-3 border-2 border-charcoal bg-white text-charcoal shadow-[3px_3px_0px_#111111] flex items-center gap-1.5 font-mono text-xs">
               <span class="w-2 h-2 bg-charcoal animate-bounce"></span>
@@ -1947,9 +1982,12 @@
             <div class="flex flex-wrap gap-1.5 font-mono text-[9px]">${stackPills}</div>
             <div class="pt-2 border-t border-charcoal-hairline flex flex-wrap items-center justify-between gap-3 font-mono text-[10px]">
               <span class="text-charcoal"><b>SPECS:</b> ${p.metrics}</span>
-              <button onclick="sendQuickPrompt('Explain the architecture and technical implementation of ${p.id}.')" class="px-3 py-1 bg-charcoal text-paper font-bold uppercase hover:bg-bauhaus-red flex items-center gap-1">
-                <span class="material-symbols-outlined text-[13px]">smart_toy</span> ASK AI COPILOT
-              </button>
+              <div class="flex items-center gap-2">
+                ${p.github ? `<a href="${p.github}" target="_blank" rel="noreferrer" class="px-2.5 py-1 bg-paper hover:bg-white border border-charcoal text-charcoal font-bold uppercase flex items-center gap-1 shadow-[1px_1px_0px_#111111]"><span class="material-symbols-outlined text-[13px]">code</span> GITHUB ↗</a>` : ''}
+                <button onclick="sendQuickPrompt('Explain the architecture and technical implementation of ${p.id}.')" class="px-3 py-1 bg-charcoal text-paper font-bold uppercase hover:bg-bauhaus-red flex items-center gap-1 shadow-[1px_1px_0px_#111111]">
+                  <span class="material-symbols-outlined text-[13px]">smart_toy</span> ASK AI COPILOT
+                </button>
+              </div>
             </div>
           </div>
         `;
