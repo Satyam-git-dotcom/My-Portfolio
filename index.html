@@ -222,6 +222,216 @@
     button, a { transition-timing-function: var(--ease-out); }
     .overflow-y-auto { scroll-behavior: smooth; }
 
+    /* ========================================================================= */
+    /* BOOT / LANDING STAGE & THEATRICAL CURTAIN TRANSITION */
+    /* ========================================================================= */
+    #boot-stage {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f4f1ea;
+      background-image: linear-gradient(to right, rgba(17,17,17,.05) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(17,17,17,.05) 1px, transparent 1px);
+      background-size: 32px 32px;
+      overflow: hidden;
+      transition: opacity 0.5s cubic-bezier(.16, 1, .3, 1), visibility 0.5s;
+    }
+
+    #boot-stage.stage-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Bauhaus Decorative Background Shapes */
+    .boot-shape {
+      position: absolute;
+      border: 4px solid #111;
+      animation: shapeIn 1s cubic-bezier(.16, 1, .3, 1) backwards;
+      pointer-events: none;
+    }
+    .boot-s1 {
+      width: clamp(150px, 24vw, 300px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #eab308;
+      left: max(2vw, calc(50% - 480px));
+      top: 12vh;
+      animation-delay: .25s;
+    }
+    .boot-s2 {
+      width: clamp(110px, 16vw, 200px);
+      aspect-ratio: 1;
+      background: #dc2626;
+      right: max(2vw, calc(50% - 470px));
+      top: 9vh;
+      animation-delay: .4s;
+    }
+    .boot-s3 {
+      width: clamp(120px, 18vw, 220px);
+      aspect-ratio: 1;
+      background: #1d4ed8;
+      border-radius: 100% 0 0 0;
+      right: max(3vw, calc(50% - 430px));
+      bottom: 8vh;
+      animation-delay: .55s;
+    }
+
+    /* Boot Terminal Window */
+    .boot-win {
+      position: relative;
+      width: min(640px, 94vw);
+      background: #fff;
+      border: 2px solid #111;
+      box-shadow: 10px 10px 0 #111;
+      display: flex;
+      flex-direction: column;
+      animation: winIn .7s .15s cubic-bezier(.16, 1, .3, 1) backwards;
+      transition: opacity .35s, transform .35s cubic-bezier(.16, 1, .3, 1);
+      z-index: 10;
+    }
+    .boot-win.leaving {
+      opacity: 0;
+      transform: scale(.95) translateY(12px);
+      pointer-events: none;
+    }
+
+    .boot-chrome {
+      height: 40px;
+      padding: 0 14px;
+      background: #f4f1ea;
+      border-bottom: 2px solid #111;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font: 700 12px "JetBrains Mono", monospace;
+      letter-spacing: .04em;
+    }
+    .boot-dots { display: flex; gap: 8px; }
+    .boot-dots i { width: 14px; height: 14px; border: 1px solid #111; display: block; }
+    .boot-dots i:nth-child(1) { background: #dc2626; }
+    .boot-dots i:nth-child(2) { background: #eab308; }
+    .boot-dots i:nth-child(3) { background: #1d4ed8; }
+
+    .boot-body {
+      padding: 20px;
+      font: 400 13px/1.75 "JetBrains Mono", monospace;
+      min-height: 272px;
+      background: #f4f1ea;
+    }
+    #boot-log { white-space: pre-wrap; min-height: 138px; }
+    #boot-log .ok { color: #1d4ed8; font-weight: 700; }
+    #boot-log .warn { color: #dc2626; font-weight: 700; }
+    #boot-log .head { font-weight: 700; }
+    .boot-cur { display: inline-block; width: 8px; height: 15px; background: #111; vertical-align: -2px; animation: blink 1s steps(2) infinite; }
+
+    .boot-meter { display: flex; gap: 3px; margin-top: 14px; }
+    .boot-meter i { flex: 1; height: 10px; border: 1px solid #111; background: #fff; transition: background .12s; }
+    .boot-meter i.on { background: #111; }
+    .boot-meter i.on:nth-child(3n) { background: #dc2626; }
+
+    .boot-foot {
+      height: 32px;
+      padding: 0 14px;
+      border-top: 1px solid #111;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font: 500 11px "JetBrains Mono", monospace;
+      color: #666;
+      background: #fff;
+    }
+    .boot-foot button {
+      font: 700 11px "JetBrains Mono", monospace;
+      background: none;
+      border: none;
+      color: #111;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Name prompt */
+    #boot-ask { display: none; border-top: 2px dashed #111; margin-top: 16px; padding-top: 16px; }
+    #boot-ask.show { display: block; animation: rise .55s cubic-bezier(.16, 1, .3, 1) backwards; }
+    #boot-ask h1 { font: 700 24px/1.15 "Space Grotesk", sans-serif; letter-spacing: -.01em; margin-bottom: 4px; }
+    #boot-ask p { font: 400 12px/1.5 "JetBrains Mono", monospace; color: #666; margin-bottom: 12px; }
+    .boot-row { display: flex; gap: 8px; }
+    #boot-name {
+      flex: 1; min-width: 0; height: 44px; padding: 0 12px; border: 2px solid #111; background: #fff;
+      font: 600 15px "Plus Jakarta Sans", sans-serif; color: #111; border-radius: 0;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    #boot-name:focus { outline: none; border-color: #dc2626; box-shadow: 4px 4px 0 #111; }
+    .boot-go {
+      height: 44px; padding: 0 16px; background: #111; color: #f4f1ea; border: 2px solid #111;
+      font: 700 12px "JetBrains Mono", monospace; letter-spacing: .05em; text-transform: uppercase;
+      cursor: pointer; box-shadow: 3px 3px 0 #111;
+      transition: background .2s, transform .2s cubic-bezier(.34, 1.56, .64, 1), box-shadow .2s;
+    }
+    .boot-go:hover { background: #dc2626; transform: translate(-1px, -1px); box-shadow: 5px 5px 0 #111; }
+    .boot-go:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #111; }
+    .boot-alt { margin-top: 10px; display: flex; justify-content: space-between; align-items: center; font: 500 11px "JetBrains Mono", monospace; }
+    .boot-alt button { background: none; border: none; font: 700 11px "JetBrains Mono", monospace; color: #111; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+    #boot-err { color: #dc2626; font-weight: 700; min-height: 16px; }
+
+    /* The Bauhaus Curtain Panels */
+    #boot-curtain { position: fixed; inset: 0; display: none; z-index: 200; pointer-events: none; }
+    #boot-curtain.on { display: flex; }
+    #boot-curtain i {
+      flex: 1;
+      transform-origin: bottom;
+      transform: scaleY(0);
+      border-right: 2px solid #111;
+    }
+    #boot-curtain i:nth-child(1) { background: #dc2626; --n: 0; }
+    #boot-curtain i:nth-child(2) { background: #eab308; --n: 1; }
+    #boot-curtain i:nth-child(3) { background: #1d4ed8; --n: 2; }
+    #boot-curtain i:nth-child(4) { background: #111; --n: 3; border-right: none; }
+
+    /* Curtain Sweep In (covers viewport from bottom) */
+    #boot-curtain.sweep-in i {
+      animation: curtainSweepIn 0.7s cubic-bezier(.16, 1, .3, 1) forwards;
+      animation-delay: calc(var(--n) * 90ms);
+    }
+
+    /* Curtain Sweep Out (lifts upward to reveal the desktop) */
+    #boot-curtain.sweep-out i {
+      transform-origin: top !important;
+      animation: curtainSweepOut 0.75s cubic-bezier(.16, 1, .3, 1) forwards;
+      animation-delay: calc(var(--n) * 80ms);
+    }
+
+    @keyframes curtainSweepIn {
+      from { transform: scaleY(0); }
+      to { transform: scaleY(1); }
+    }
+
+    @keyframes curtainSweepOut {
+      from { transform: scaleY(1); }
+      to { transform: scaleY(0); }
+    }
+
+    /* Welcome Overlay */
+    #boot-welcome {
+      position: fixed; inset: 0; z-index: 250; display: none; place-items: center;
+      text-align: center; color: #f4f1ea; padding: 24px; pointer-events: none;
+    }
+    #boot-welcome.on { display: grid; animation: fade .5s .45s backwards; }
+    #boot-welcome.leaving {
+      opacity: 0;
+      transform: translateY(-24px);
+      transition: opacity 0.45s cubic-bezier(.16, 1, .3, 1), transform 0.45s cubic-bezier(.16, 1, .3, 1);
+    }
+    #boot-welcome h2 { font: 700 clamp(32px, 7vw, 72px)/1.05 "Space Grotesk", sans-serif; letter-spacing: -.02em; overflow-wrap: anywhere; }
+    #boot-welcome p { margin-top: 14px; font: 500 13px "JetBrains Mono", monospace; color: rgba(244,241,234,.75); }
+    #boot-welcome .line { width: min(280px, 60vw); height: 6px; margin: 18px auto 0; border: 1px solid #f4f1ea; overflow: hidden; }
+    #boot-welcome .line b { display: block; height: 100%; background: #eab308; transform: scaleX(0); transform-origin: left; animation: load 1.3s .6s linear forwards; }
+
     /* Accessibility */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -238,6 +448,77 @@
 <body class="bg-paper text-charcoal font-sans min-h-screen bg-swiss-grid relative selection:bg-bauhaus-yellow selection:text-charcoal overflow-x-hidden">
 
   <!-- ========================================================================= -->
+  <!-- BOOT / LANDING STAGE (Integrated from index-2.html with Theatrical Reveal) -->
+  <!-- ========================================================================= -->
+  <div id="boot-stage" class="fixed inset-0 z-[100] flex flex-col justify-center items-center bg-paper overflow-hidden select-none" role="dialog" aria-modal="true" aria-label="Portfolio OS Boot Sequence">
+    <header class="fixed top-0 left-0 right-0 h-11 px-5 flex items-center justify-between bg-paper/95 border-b border-charcoal font-mono text-xs z-10">
+      <div class="flex items-center gap-2 font-display text-xs font-bold uppercase tracking-wider">
+        <span class="w-3 h-3 bg-bauhaus-red inline-block border border-charcoal"></span>
+        Portfolio OS // Satyam-01
+      </div>
+      <div class="flex items-center gap-3 text-charcoal/80 font-mono text-[11px]">
+        <span>SYS: <b id="boot-sys-label" class="text-charcoal">BOOTING</b></span>
+        <span class="hidden sm:inline">PWR: <b class="text-charcoal">100%</b></span>
+        <span class="flex items-center gap-1.5 px-2 py-0.5 border border-charcoal bg-white font-bold text-[10px] shadow-[1px_1px_0px_#111111]">
+          <span class="w-1.5 h-1.5 rounded-full bg-bauhaus-red animate-pulse"></span>
+          NEW VISITOR
+        </span>
+      </div>
+    </header>
+
+    <div class="boot-shape boot-s1" aria-hidden="true"></div>
+    <div class="boot-shape boot-s2" aria-hidden="true"></div>
+    <div class="boot-shape boot-s3" aria-hidden="true"></div>
+
+    <section class="boot-win" id="boot-win" aria-label="Boot sequence">
+      <div class="boot-chrome">
+        <div class="boot-dots"><i></i><i></i><i></i></div>
+        <span>BOOT.SYS</span>
+        <span class="ml-auto text-charcoal/60 font-medium">PID: 0x0001</span>
+      </div>
+      <div class="boot-body">
+        <div id="boot-log" aria-hidden="true"></div>
+        <div class="boot-meter" id="boot-meter" aria-hidden="true"></div>
+
+        <form id="boot-ask" autocomplete="on" novalidate onsubmit="handleBootSubmit(event)">
+          <h1 class="text-2xl font-bold font-display text-charcoal tracking-tight mb-1">What should I call you?</h1>
+          <p class="font-mono text-xs text-charcoal/60 mb-3">Your name stays in this browser and is only used to greet you.</p>
+          <div class="boot-row">
+            <input id="boot-name" name="name" type="text" maxlength="24" autocomplete="given-name" placeholder="Type your name" aria-label="Your name" aria-describedby="boot-err" />
+            <button class="boot-go" type="submit">Enter system</button>
+          </div>
+          <div class="boot-alt">
+            <span id="boot-err" role="alert" class="text-bauhaus-red font-bold text-xs min-h-[16px]"></span>
+            <button type="button" id="boot-guest" onclick="enterSystem('Guest')">Continue as guest</button>
+          </div>
+        </form>
+      </div>
+      <div class="boot-foot">
+        <span id="boot-pct">0%</span>
+        <button type="button" id="boot-skip" onclick="finishBoot()">Skip boot</button>
+      </div>
+    </section>
+    <p class="sr-only" role="status" id="boot-live"></p>
+
+    <!-- Theatrical Bauhaus Curtain Panels: 4 color sweeps -->
+    <div id="boot-curtain" aria-hidden="true">
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+    </div>
+
+    <!-- Welcome Display Overlay -->
+    <div id="boot-welcome" aria-live="polite">
+      <div>
+        <h2 id="boot-hello" class="text-4xl sm:text-6xl font-display font-bold text-paper tracking-tight"></h2>
+        <p class="mt-3 font-mono text-sm text-paper/80">Loading your workspace...</p>
+        <div class="line"><b></b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
   <!-- TOP SYSTEM MENU BAR -->
   <!-- ========================================================================= -->
   <header class="fixed top-0 left-0 right-0 z-50 h-8 bg-paper border-b-2 border-charcoal px-3 flex items-center justify-between text-xs select-none">
@@ -249,10 +530,11 @@
 
       <nav class="hidden md:flex items-center gap-1 font-mono text-[11px]" aria-label="System Menu">
         <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors font-bold uppercase" onclick="focusApp('finder')" aria-label="Open File Finder">File</button>
+        <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors font-bold uppercase text-bauhaus-blue" onclick="rebootSystem()" aria-label="Reboot Portfolio OS">Reboot</button>
         <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors uppercase" onclick="triggerToast('Edit: System buffer is immutable (read-only guest mode).')" aria-label="Edit Options">Edit</button>
         <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors uppercase" onclick="triggerToast('View: Active display mode is Swiss Bauhaus Editorial Grid.')" aria-label="View Options">View</button>
         <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors font-bold uppercase" onclick="openTerminal()" aria-label="Open Terminal Shell">Go</button>
-        <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors uppercase" onclick="triggerToast('Window Manager: 8 active apps registered. Click any dock icon to focus.')" aria-label="Window Management">Window</button>
+        <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors uppercase" onclick="triggerToast('Window Manager: 9 active apps registered. Click any dock icon to focus.')" aria-label="Window Management">Window</button>
         <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors font-bold uppercase text-bauhaus-red" onclick="openFortuneCookie()" aria-label="Open Fortune Cookie">Help</button>
       </nav>
     </div>
@@ -260,10 +542,10 @@
     <div class="flex items-center gap-3 text-[11px] font-mono text-charcoal">
       <div class="flex items-center gap-1.5 px-2 py-0.5 border border-charcoal bg-paper-card shadow-[1px_1px_0px_#111111]">
         <span class="w-1.5 h-1.5 rounded-full bg-bauhaus-red animate-pulse"></span>
-        <span class="uppercase tracking-widest font-bold">VISITOR 042</span>
+        <span class="uppercase tracking-widest font-bold" id="visitor-badge">VISITOR 042</span>
       </div>
       <div class="hidden sm:flex items-center gap-3 pr-2 text-charcoal/70">
-        <span class="flex items-center gap-1"><span class="font-bold text-charcoal">SYS:</span> ONLINE</span>
+        <span class="flex items-center gap-1"><span class="font-bold text-charcoal">SYS:</span> <span id="top-sys-label">ONLINE</span></span>
         <span class="text-charcoal/30">|</span>
         <span class="flex items-center gap-1"><span class="font-bold text-charcoal">PWR:</span> 100%</span>
         <span class="text-charcoal/30">|</span>
@@ -2552,7 +2834,14 @@ Backend: Spring Boot, FastAPI, Next.js, React, PostgreSQL
           break;
 
         case 'whoami':
-          resp.innerHTML = `visitor042 (Guest Session) // Permissions: READ_ONLY`;
+          const currentVisitor = (typeof localStorage !== 'undefined' && localStorage.getItem('portfolio_visitor_name')) || 'visitor042';
+          resp.innerHTML = `${escapeHtml(currentVisitor)} // Permissions: READ_WRITE [GUEST_SESSION]`;
+          break;
+
+        case 'reboot':
+        case 'boot':
+          rebootSystem();
+          resp.innerHTML = `<span class="text-bauhaus-yellow font-bold">Initiating cold restart of Portfolio OS kernel...</span>`;
           break;
 
         case 'clear':
@@ -2669,6 +2958,288 @@ Backend: Spring Boot, FastAPI, Next.js, React, PostgreSQL
     }
 
     // =========================================================================
+    // 13. BOOT SEQUENCE & THEATRICAL CURTAIN TRANSITION (Landing -> Portfolio)
+    // =========================================================================
+    const VISITOR_KEY = 'portfolio_visitor_name';
+    let bootSkipped = false;
+    let bootReady = false;
+    let isBootLeaving = false;
+
+    const BOOT_LINES = [
+      ['PORTFOLIO OS // ARCHITECTURAL KERNEL v2.4', '', 'head'],
+      ['Loading 32px baseline grid', 'OK', 'ok'],
+      ['Mounting windows: chat, about, skills, projects', 'OK', 'ok'],
+      ['Waking AI twin copilot', 'OK', 'ok'],
+      ['Attaching dock & sensory event buses', 'OK', 'ok'],
+      ['New visitor detected', 'ID?', 'warn']
+    ];
+
+    function initBootMeter() {
+      const meter = document.getElementById('boot-meter');
+      if (!meter || meter.children.length > 0) return;
+      for (let i = 0; i < 24; i++) {
+        meter.appendChild(document.createElement('i'));
+      }
+    }
+
+    function setBootProgress(p) {
+      const meter = document.getElementById('boot-meter');
+      if (!meter) return;
+      const cells = [...meter.children];
+      const n = Math.round(p * cells.length);
+      cells.forEach((c, i) => c.classList.toggle('on', i < n));
+      const pct = document.getElementById('boot-pct');
+      if (pct) pct.textContent = Math.round(p * 100) + '%';
+    }
+
+    const bootSleep = (ms) => (bootSkipped || window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+      ? Promise.resolve()
+      : new Promise(r => setTimeout(r, ms));
+
+    async function runBootSequence() {
+      const log = document.getElementById('boot-log');
+      if (!log) return;
+      log.innerHTML = '';
+      initBootMeter();
+      setBootProgress(0);
+
+      const cur = document.createElement('span');
+      cur.className = 'boot-cur';
+
+      await bootSleep(400);
+
+      for (let i = 0; i < BOOT_LINES.length; i++) {
+        if (bootSkipped) break;
+        const [text, tag, cls] = BOOT_LINES[i];
+        const row = document.createElement('div');
+        log.appendChild(row);
+        row.appendChild(cur);
+        if (cls === 'head') row.classList.add('head');
+
+        for (const ch of text) {
+          if (bootSkipped) { row.textContent = text; break; }
+          cur.before(document.createTextNode(ch));
+          await bootSleep(12);
+        }
+
+        if (tag) {
+          const t = document.createElement('span');
+          t.className = cls;
+          t.textContent = '  [ ' + tag + ' ]';
+          row.textContent = text;
+          row.appendChild(t);
+        }
+        setBootProgress((i + 1) / BOOT_LINES.length);
+        await bootSleep(i === 0 ? 240 : 150);
+      }
+
+      cur.remove();
+      finishBoot();
+    }
+
+    function finishBoot() {
+      if (bootReady) return;
+      bootReady = true;
+      bootSkipped = true;
+
+      const log = document.getElementById('boot-log');
+      if (log) {
+        log.innerHTML = '';
+        BOOT_LINES.forEach(([text, tag, cls]) => {
+          const row = document.createElement('div');
+          row.textContent = text;
+          if (cls === 'head') row.className = 'head';
+          if (tag) {
+            const t = document.createElement('span');
+            t.className = cls;
+            t.textContent = '  [ ' + tag + ' ]';
+            row.appendChild(t);
+          }
+          log.appendChild(row);
+        });
+      }
+
+      setBootProgress(1);
+      const sys = document.getElementById('boot-sys-label');
+      if (sys) sys.textContent = 'AWAITING ID';
+      const skip = document.getElementById('boot-skip');
+      if (skip) skip.hidden = true;
+      const live = document.getElementById('boot-live');
+      if (live) live.textContent = 'Boot complete. Enter your name to continue.';
+
+      const ask = document.getElementById('boot-ask');
+      if (ask) ask.classList.add('show');
+
+      let savedName = '';
+      try {
+        savedName = localStorage.getItem(VISITOR_KEY) || sessionStorage.getItem(VISITOR_KEY) || '';
+      } catch (_) {}
+      const nameInput = document.getElementById('boot-name');
+      if (nameInput) {
+        if (savedName && savedName !== 'Guest') nameInput.value = savedName;
+        setTimeout(() => nameInput.focus(), 60);
+      }
+    }
+
+    function cleanVisitorName(v) {
+      return (v || '').replace(/[^\p{L}\p{M}\s.'-]/gu, '').replace(/\s+/g, ' ').trim().slice(0, 24);
+    }
+
+    function handleBootSubmit(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('boot-name');
+      const err = document.getElementById('boot-err');
+      const rawName = input ? input.value : '';
+      const name = cleanVisitorName(rawName);
+
+      if (!name) {
+        if (err) err.textContent = 'Type your name, or continue as guest.';
+        if (input) {
+          input.classList.remove('shake');
+          void input.offsetWidth;
+          input.classList.add('shake');
+          input.focus();
+        }
+        return;
+      }
+      enterSystem(name);
+    }
+
+    // Meaningful & Smooth Theatrical Reveal Transition
+    function enterSystem(name) {
+      if (isBootLeaving) return;
+      isBootLeaving = true;
+
+      const safeName = cleanVisitorName(name) || 'Guest';
+      try {
+        localStorage.setItem(VISITOR_KEY, safeName);
+        sessionStorage.setItem(VISITOR_KEY, safeName);
+      } catch (_) {}
+
+      // 1. Update labels and visitor badges across Portfolio OS
+      const visitorBadge = document.getElementById('visitor-badge');
+      if (visitorBadge) visitorBadge.textContent = safeName.toUpperCase() + ' [ONLINE]';
+
+      const bootSys = document.getElementById('boot-sys-label');
+      if (bootSys) bootSys.textContent = 'ONLINE';
+
+      const topSys = document.getElementById('top-sys-label');
+      if (topSys) topSys.textContent = 'ONLINE';
+
+      const hello = document.getElementById('boot-hello');
+      if (hello) hello.textContent = `Welcome, ${safeName}.`;
+
+      // 2. Animate boot window departure
+      const win = document.getElementById('boot-win');
+      if (win) win.classList.add('leaving');
+
+      // 3. Sweep in the 4 Bauhaus color curtains
+      const curtain = document.getElementById('boot-curtain');
+      if (curtain) {
+        curtain.classList.remove('sweep-out');
+        curtain.classList.add('on', 'sweep-in');
+      }
+
+      // 4. Show the welcome badge with loading progress beam
+      const welcome = document.getElementById('boot-welcome');
+      if (welcome) {
+        welcome.classList.remove('leaving');
+        welcome.classList.add('on');
+      }
+
+      // 5. Theatrical Reveal: Curtain lifts up to expose live desktop stage
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealDelay = reduceMotion ? 300 : 1800;
+
+      setTimeout(() => {
+        // Welcome badge gracefully floats up and dissolves
+        if (welcome) welcome.classList.add('leaving');
+
+        // Switch curtain to sweep-out: pulls UP from the bottom
+        if (curtain) {
+          curtain.classList.remove('sweep-in');
+          curtain.classList.add('sweep-out');
+        }
+
+        // Orchestrate desktop elements
+        focusApp('chat');
+
+        // Update greeting in AI Copilot for this visitor
+        personalizeGreeting(safeName);
+
+        // System toast announcement
+        triggerToast(`Session authenticated for ${safeName}. Welcome to Portfolio OS.`);
+
+        // Fully deactivate the boot stage after curtain clears view
+        setTimeout(() => {
+          const stage = document.getElementById('boot-stage');
+          if (stage) {
+            stage.classList.add('stage-hidden');
+            stage.style.display = 'none';
+          }
+        }, reduceMotion ? 100 : 850);
+
+      }, revealDelay);
+    }
+
+    function personalizeGreeting(name) {
+      const stream = document.getElementById('chat-stream');
+      if (!stream) return;
+      const firstGreeting = stream.querySelector('p');
+      if (firstGreeting) {
+        firstGreeting.innerHTML = `System online. Welcome, <b class="text-bauhaus-red">${escapeHtml(name)}</b>! I am Satyam's AI Twin Copilot grounded strictly in his engineering portfolio, architectures, and resume. What would you like to explore?`;
+      }
+    }
+
+    function rebootSystem() {
+      const stage = document.getElementById('boot-stage');
+      if (!stage) return;
+      stage.style.display = 'flex';
+      stage.classList.remove('stage-hidden');
+
+      const curtain = document.getElementById('boot-curtain');
+      if (curtain) {
+        curtain.className = '';
+      }
+
+      const welcome = document.getElementById('boot-welcome');
+      if (welcome) {
+        welcome.className = '';
+      }
+
+      const win = document.getElementById('boot-win');
+      if (win) {
+        win.classList.remove('leaving');
+      }
+
+      const ask = document.getElementById('boot-ask');
+      if (ask) {
+        ask.classList.remove('show');
+      }
+
+      const skip = document.getElementById('boot-skip');
+      if (skip) {
+        skip.hidden = false;
+      }
+
+      bootSkipped = false;
+      bootReady = false;
+      isBootLeaving = false;
+
+      runBootSequence();
+    }
+
+    // Keyboard shortcut for boot screen skip
+    window.addEventListener('keydown', (e) => {
+      const bootStage = document.getElementById('boot-stage');
+      if (bootStage && !bootStage.classList.contains('stage-hidden') && !bootReady) {
+        if (e.key === 'Escape' || e.key === 'Enter') {
+          finishBoot();
+        }
+      }
+    });
+
+    // =========================================================================
     // 12. INITIALIZATION ON DOM LOAD
     // =========================================================================
     document.addEventListener('DOMContentLoaded', () => {
@@ -2694,6 +3265,15 @@ Backend: Spring Boot, FastAPI, Next.js, React, PostgreSQL
       dragPairs.forEach(([winId, hdrId]) => {
         makeDraggable(document.getElementById(winId), document.getElementById(hdrId));
       });
+
+      // Check if visitor was passed via URL parameter (e.g., from landing page redirect)
+      const params = new URLSearchParams(window.location.search);
+      const urlVisitor = params.get('visitor');
+      if (urlVisitor) {
+        enterSystem(urlVisitor);
+      } else {
+        runBootSequence();
+      }
     });
   </script>
 
