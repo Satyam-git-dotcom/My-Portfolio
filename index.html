@@ -68,7 +68,8 @@
       box-shadow: 6px 6px 0px rgba(17, 17, 17, 0.4);
     }
 
-    .hidden {
+    /* Window specific hidden state (do not break global Tailwind responsive classes) */
+    [id$="-window"].hidden {
       display: none !important;
     }
 
@@ -539,20 +540,20 @@
       </nav>
     </div>
 
-    <div class="flex items-center gap-3 text-[11px] font-mono text-charcoal">
+    <div class="flex items-center gap-2 sm:gap-3 text-[11px] font-mono text-charcoal">
       <div class="flex items-center gap-1.5 px-2 py-0.5 border border-charcoal bg-paper-card shadow-[1px_1px_0px_#111111]">
         <span class="w-1.5 h-1.5 rounded-full bg-bauhaus-red animate-pulse"></span>
         <span class="uppercase tracking-widest font-bold" id="visitor-badge">VISITOR 042</span>
       </div>
-      <div class="hidden sm:flex items-center gap-3 pr-2 text-charcoal/70">
+      <div class="flex items-center gap-2 sm:gap-3 pr-2 text-charcoal/70 text-[10px] sm:text-[11px]">
         <span class="flex items-center gap-1"><span class="font-bold text-charcoal">SYS:</span> <span id="top-sys-label">ONLINE</span></span>
         <span class="text-charcoal/30">|</span>
         <span class="flex items-center gap-1"><span class="font-bold text-charcoal">PWR:</span> 100%</span>
         <span class="text-charcoal/30">|</span>
         <span class="font-bold text-charcoal uppercase" id="system-clock">--:-- --</span>
       </div>
-      <div class="w-6 h-6 border border-charcoal overflow-hidden flex items-center justify-center font-bold text-[10px]" title="Satyam (S)">
-        <img src="./satyam_portrait.jpg" alt="Satyam" class="w-full h-full object-cover" />
+      <div class="w-6 h-6 border border-charcoal bg-charcoal text-paper flex items-center justify-center font-bold text-[10px]" title="Satyam (S)">
+        S
       </div>
     </div>
   </header>
@@ -564,7 +565,7 @@
     <div class="relative w-full min-h-[calc(100vh-6rem)]">
 
       <!-- Left Column Desktop Icons -->
-      <div class="absolute top-4 left-0 z-20 flex flex-col gap-3 w-24 sm:w-28">
+      <div class="absolute top-4 left-0 sm:left-2 lg:left-4 z-20 flex flex-col gap-3 w-24 sm:w-28">
         <button class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:translate-x-1 transition-all shadow-[2px_2px_0px_#111111]" onclick="focusApp('about')" aria-label="Open About Me Dossier">
           <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center relative">
             <span class="absolute -top-1 -right-1 w-2 h-2 bg-bauhaus-red"></span>
@@ -606,8 +607,8 @@
         </button>
       </div>
 
-      <!-- Right Column Desktop Icons (Visible on md and lg screens) -->
-      <div class="absolute top-4 right-0 z-20 hidden md:flex flex-col gap-3 w-28 items-end">
+      <!-- Right Column Desktop Icons (Always Visible, matching Stitch design) -->
+      <div class="absolute top-4 right-0 sm:right-2 lg:right-4 z-20 flex flex-col gap-3 w-24 sm:w-28 items-end">
         <!-- 06. Contact -->
         <button class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:-translate-x-1 transition-all shadow-[2px_2px_0px_#111111] w-full text-center" onclick="focusApp('contact')" aria-label="Open Contact Dispatch">
           <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center relative">
@@ -616,44 +617,26 @@
           <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">06. Contact</span>
         </button>
 
-        <!-- 07. Terminal.sh -->
-        <button class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:-translate-x-1 transition-all shadow-[2px_2px_0px_#111111] w-full text-center relative" onclick="openTerminal()" aria-label="Open Terminal Shell">
-          <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center relative">
-            <span class="absolute -top-1 -right-1 w-2 h-2 bg-bauhaus-red"></span>
-            <span class="material-symbols-outlined text-charcoal text-[20px]">terminal</span>
-          </div>
-          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">07. Terminal.sh</span>
-        </button>
-
-        <!-- 08. Fortune Cookie -->
+        <!-- 07. Fortune Cookie -->
         <button class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:-translate-x-1 transition-all shadow-[2px_2px_0px_#111111] w-full relative text-center" id="fortune-button" onclick="openFortuneCookie()" aria-label="Open Fortune Cookie">
           <span class="absolute -top-1.5 -right-1 px-1 bg-bauhaus-yellow text-charcoal border border-charcoal font-mono text-[8px] font-bold">CLICK</span>
           <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center">
             <span class="material-symbols-outlined text-charcoal text-[20px]">auto_fix_high</span>
           </div>
-          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">08. Fortune.sh</span>
+          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">07. Fortune.sh</span>
         </button>
 
-        <!-- 09. GitHub -->
+        <!-- 08. GitHub -->
         <a class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:-translate-x-1 transition-all shadow-[2px_2px_0px_#111111] w-full text-center" href="https://github.com/Satyam-git-dotcom" rel="noreferrer" target="_blank" aria-label="Open Satyam GitHub Profile">
           <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center">
-            <span class="material-symbols-outlined text-charcoal text-[20px]">code</span>
+            <span class="material-symbols-outlined text-charcoal text-[20px]">terminal</span>
           </div>
-          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">09. GitHub</span>
-        </a>
-
-        <!-- 10. LinkedIn -->
-        <a class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:-translate-x-1 transition-all shadow-[2px_2px_0px_#111111] w-full text-center" href="https://www.linkedin.com/in/satyam-vishwakarma/" rel="noreferrer" target="_blank" aria-label="Open Satyam LinkedIn Profile">
-          <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center relative">
-            <span class="absolute -top-1 -right-1 w-2 h-2 bg-bauhaus-blue"></span>
-            <span class="material-symbols-outlined text-charcoal text-[20px]">share</span>
-          </div>
-          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">10. LinkedIn</span>
+          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">08. GitHub</span>
         </a>
       </div>
 
       <!-- Bauhaus Yellow Floating Easter Egg Sticky Card (Bottom Right Desktop) -->
-      <div class="absolute bottom-6 right-0 sm:right-2 lg:right-4 z-20 w-60 sm:w-64 p-3.5 bg-bauhaus-yellow border-2 border-charcoal text-charcoal shadow-[6px_6px_0px_#111111] hover:scale-105 transition-all duration-150 cursor-pointer hidden md:block" onclick="openTerminal()" title="Click to launch Terminal Shell">
+      <div class="absolute bottom-6 right-0 sm:right-2 lg:right-4 z-20 w-60 sm:w-64 p-3.5 bg-bauhaus-yellow border-2 border-charcoal text-charcoal shadow-[6px_6px_0px_#111111] hover:scale-105 transition-all duration-150 cursor-pointer select-none block" onclick="openTerminal()" title="Click to launch Terminal Shell">
         <div class="flex items-center justify-between border-b-2 border-charcoal pb-1 mb-1.5 font-mono">
           <span class="text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1">
             <span class="w-2 h-2 bg-bauhaus-red inline-block"></span>
