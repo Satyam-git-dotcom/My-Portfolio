@@ -67,7 +67,7 @@ PROFILE:
 - Education: Vellore Institute of Technology (VIT), 2023 — 2027 (Pre-final year student)
 - Degree: B.Tech in Computer Science & Engineering (AI/ML)
 - Academic Standing: Cumulative GPA 9.3 / 10.0
-- Contact: Email: satyam12303@gmail.com | Phone: +91 7465922333 | Location: Vellore / Uttar Pradesh, India
+- Contact: Email: satyam12303@gmail.com | Phone: +91 8218385753 | Location: Vellore / Uttar Pradesh, India
 - Profiles: LinkedIn: linkedin.com/in/satyam-dot-com | GitHub: github.com/Satyam-git-dotcom
 - Career Goals: Actively seeking Software Engineering internships and Full-Time roles (2026/2027) in Backend Engineering, AI/ML Infrastructure, or Distributed Systems. Fully open to Remote, Hybrid, and On-Site relocation globally.
 - Behavioral Traits: Rigorous problem solver (200+ LeetCode problems), low-level systems enthusiasm (custom HNSW implementation), telemetry-first debugging, collaborative communicator.
