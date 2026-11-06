@@ -1252,29 +1252,29 @@
         courses: "Data Structures & Algorithms, Operating Systems, Computer Networks, Database Management Systems, System Design, AI & Machine Learning."
       },
       skills: [
-        // AI / Vector
-        { name: "RAG Pipelines & Semantic Search", category: "ai", desc: "LangChain, ChromaDB, Vector Embeddings", level: 5 },
-        { name: "Custom Vector Indexing", category: "ai", desc: "HNSW & KD-Tree from scratch in Java", level: 5 },
-        { name: "Local & Cloud LLMs", category: "ai", desc: "Ollama (nomic-embed), Amazon Bedrock, Gemini 1.5 Pro", level: 5 },
-        { name: "Machine Learning & NLP", category: "ai", desc: "Scikit-Learn, TensorFlow, NLTK, Data Preprocessing", level: 4 },
+        // AI / Vector (Bauhaus Red)
+        { name: "RAG Pipelines & Semantic Search", category: "ai", desc: "LangChain, ChromaDB, Vector Embeddings", level: 5, color: "bg-bauhaus-red" },
+        { name: "Custom Vector Indexing", category: "ai", desc: "HNSW & KD-Tree from scratch in Java", level: 5, color: "bg-bauhaus-red" },
+        { name: "Local & Cloud LLMs", category: "ai", desc: "Ollama (nomic-embed), Amazon Bedrock, Gemini 1.5 Pro", level: 5, color: "bg-bauhaus-red" },
+        { name: "Machine Learning & NLP", category: "ai", desc: "Scikit-Learn, TensorFlow, NLTK, Data Preprocessing", level: 4, color: "bg-bauhaus-red" },
         
-        // Backend
-        { name: "Java & Spring Boot", category: "backend", desc: "Enterprise REST APIs, Spring Data, Microservices", level: 5 },
-        { name: "Python & FastAPI / Flask", category: "backend", desc: "Async/await, Pydantic, OpenAPI schemas", level: 5 },
-        { name: "Node.js & Express", category: "backend", desc: "Next.js 15, Full-stack API routes, SSE streaming", level: 4 },
-        { name: "API Engineering & Contracts", category: "backend", desc: "RESTful architecture (14-19 endpoints), JWT Auth", level: 5 },
+        // Backend (Bauhaus Yellow)
+        { name: "Java & Spring Boot", category: "backend", desc: "Enterprise REST APIs, Spring Data, Microservices", level: 5, color: "bg-bauhaus-yellow" },
+        { name: "Python & FastAPI / Flask", category: "backend", desc: "Async/await, Pydantic, OpenAPI schemas", level: 5, color: "bg-bauhaus-yellow" },
+        { name: "Node.js & Express", category: "backend", desc: "Next.js 15, Full-stack API routes, SSE streaming", level: 4, color: "bg-bauhaus-yellow" },
+        { name: "API Engineering & Contracts", category: "backend", desc: "RESTful architecture (14-19 endpoints), JWT Auth", level: 5, color: "bg-bauhaus-yellow" },
 
-        // Cloud & Tools
-        { name: "AWS Serverless & Bedrock", category: "cloud", desc: "Lambda, API Gateway HTTP API, S3, Bedrock Runtime", level: 4 },
-        { name: "Docker & Containerization", category: "cloud", desc: "Multi-stage Dockerfiles, Container networks", level: 4 },
-        { name: "Git & GitHub CI Automation", category: "cloud", desc: "Branching workflows, Continuous Integration", level: 5 },
-        { name: "Linux CLI & Bash Scripting", category: "cloud", desc: "Shell automation, file streams, POSIX tools", level: 4 },
+        // Cloud & Tools (Bauhaus Blue)
+        { name: "AWS Serverless & Bedrock", category: "cloud", desc: "Lambda, API Gateway HTTP API, S3, Bedrock Runtime", level: 4, color: "bg-bauhaus-blue" },
+        { name: "Docker & Containerization", category: "cloud", desc: "Multi-stage Dockerfiles, Container networks", level: 4, color: "bg-bauhaus-blue" },
+        { name: "Git & GitHub CI Automation", category: "cloud", desc: "Branching workflows, Continuous Integration", level: 5, color: "bg-bauhaus-blue" },
+        { name: "Linux CLI & Bash Scripting", category: "cloud", desc: "Shell automation, file streams, POSIX tools", level: 4, color: "bg-bauhaus-blue" },
 
-        // Databases & Core CS
-        { name: "Data Structures & Algorithms", category: "db", desc: "200+ LeetCode problems (Graphs, DP, Trees)", level: 5 },
-        { name: "PostgreSQL & MySQL", category: "db", desc: "Relational schemas, SQLAlchemy, 10-table models", level: 5 },
-        { name: "ChromaDB & Vector Stores", category: "db", desc: "Vector indexing, Cosine similarity search", level: 4 },
-        { name: "OOP & Clean Architecture", category: "db", desc: "SOLID principles, Design Patterns, Modularity", level: 5 }
+        // Databases & Core CS (Bauhaus Red, Blue, Yellow & Charcoal)
+        { name: "Data Structures & Algorithms", category: "db", desc: "200+ LeetCode problems (Graphs, DP, Trees)", level: 5, color: "bg-bauhaus-red" },
+        { name: "PostgreSQL & MySQL", category: "db", desc: "Relational schemas, SQLAlchemy, 10-table models", level: 5, color: "bg-bauhaus-blue" },
+        { name: "ChromaDB & Vector Stores", category: "db", desc: "Vector indexing, Cosine similarity search", level: 4, color: "bg-bauhaus-yellow" },
+        { name: "OOP & Clean Architecture", category: "db", desc: "SOLID principles, Design Patterns, Modularity", level: 5, color: "bg-charcoal" }
       ],
       randomFacts: [
         "The first computer bug was an actual moth found trapped inside the Harvard Mark II relay by Grace Hopper's team in 1947.",
@@ -1903,10 +1903,12 @@
           `;
 
           filtered.forEach(s => {
+            const blockColor = s.color || g.color || 'bg-charcoal';
+            const borderStyle = blockColor.includes('yellow') ? 'border border-charcoal/40' : '';
             let meterBlocks = '';
             for (let i = 1; i <= 5; i++) {
               if (i <= s.level) {
-                meterBlocks += `<span class="w-2 h-3.5 bg-charcoal inline-block"></span>`;
+                meterBlocks += `<span class="w-2 h-3.5 ${blockColor} ${borderStyle} inline-block"></span>`;
               } else {
                 meterBlocks += `<span class="w-2 h-3.5 border border-charcoal inline-block"></span>`;
               }

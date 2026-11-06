@@ -56,6 +56,61 @@
         "Pandas",
         "NumPy"
       ]
+    },
+    {
+      "id": "fasal-watch",
+      "name": "FasalWatch",
+      "title": "Autonomous Multi-Agent Climate Resilience System",
+      "is_flagship": false,
+      "tagline": "Thermal Stress Detection & Mother-Tongue SMS Farming Advisories",
+      "github": "https://github.com/Satyam-git-dotcom/FasalWatch",
+      "tech_stack": [
+        "Python",
+        "Strands Agents SDK",
+        "AWS DynamoDB",
+        "Amazon Translate",
+        "Amazon SNS",
+        "FastAPI"
+      ],
+      "problem_statement": "Extreme heatwaves and microclimate shocks damage smallholder agricultural yields before farmers can adapt.",
+      "solution_and_architecture": [
+        "Constructed an autonomous multi-agent pipeline using the Strands Agents SDK to process 7-day microclimate weather forecasts.",
+        "Detects crop-stage thermal stress anomalies and automatically synthesizes low-cost farm interventions.",
+        "Translates advisories into Grade-5 mother-tongue languages via Amazon Translate and dispatches them over basic SMS via Amazon SNS."
+      ],
+      "metrics_and_highlights": {
+        "pipeline": "Strands Multi-Agent + AWS Serverless",
+        "reach": "Basic SMS delivery for non-smartphone farmers",
+        "accuracy": "Crop-stage specific thermal stress detection"
+      }
+    },
+    {
+      "id": "econo-causal",
+      "name": "EconoCausal",
+      "title": "Dynamic Pricing & Promotional Allocation via Causal AI",
+      "is_flagship": false,
+      "tagline": "Double Machine Learning & Linear Programming for Counterfactual Uplift",
+      "github": "https://github.com/Satyam-git-dotcom/EconoCausal-Dynamic-Pricing",
+      "tech_stack": [
+        "Python",
+        "Microsoft DoWhy",
+        "EconML",
+        "SciPy",
+        "LightGBM",
+        "FastAPI",
+        "React"
+      ],
+      "problem_statement": "Standard correlational ML models misallocate promotional discounts by coupon-bleeding on organic customers who would convert anyway.",
+      "solution_and_architecture": [
+        "Deployed Double/Debiased Machine Learning (LinearDML & CausalForest) with Neyman orthogonality to estimate Individual Treatment Effects (ITE).",
+        "Formulated and solved knapsack promotional budget allocation across pricing tiers ($0, $10, $20) using the SciPy HiGHS Linear Programming solver.",
+        "Constructed interactive DAG inspection and DoWhy refutation tests (placebo treatments, random unobserved confounders) for auditability."
+      ],
+      "metrics_and_highlights": {
+        "causal_framework": "Double Machine Learning (DML) via Microsoft DoWhy & EconML",
+        "optimization": "SciPy HiGHS LP Solver for promotional spend",
+        "validation": "DoWhy Refutation Placebo & Data Subset Tests"
+      }
     }
   ],
   "projects": [
@@ -273,6 +328,61 @@
       "title": "Intro to Generative AI",
       "issuer": "IBM",
       "year": "2025"
+    },
+    {
+      "id": "fasal-watch",
+      "name": "FasalWatch",
+      "title": "Autonomous Multi-Agent Climate Resilience System",
+      "is_flagship": false,
+      "tagline": "Thermal Stress Detection & Mother-Tongue SMS Farming Advisories",
+      "github": "https://github.com/Satyam-git-dotcom/FasalWatch",
+      "tech_stack": [
+        "Python",
+        "Strands Agents SDK",
+        "AWS DynamoDB",
+        "Amazon Translate",
+        "Amazon SNS",
+        "FastAPI"
+      ],
+      "problem_statement": "Extreme heatwaves and microclimate shocks damage smallholder agricultural yields before farmers can adapt.",
+      "solution_and_architecture": [
+        "Constructed an autonomous multi-agent pipeline using the Strands Agents SDK to process 7-day microclimate weather forecasts.",
+        "Detects crop-stage thermal stress anomalies and automatically synthesizes low-cost farm interventions.",
+        "Translates advisories into Grade-5 mother-tongue languages via Amazon Translate and dispatches them over basic SMS via Amazon SNS."
+      ],
+      "metrics_and_highlights": {
+        "pipeline": "Strands Multi-Agent + AWS Serverless",
+        "reach": "Basic SMS delivery for non-smartphone farmers",
+        "accuracy": "Crop-stage specific thermal stress detection"
+      }
+    },
+    {
+      "id": "econo-causal",
+      "name": "EconoCausal",
+      "title": "Dynamic Pricing & Promotional Allocation via Causal AI",
+      "is_flagship": false,
+      "tagline": "Double Machine Learning & Linear Programming for Counterfactual Uplift",
+      "github": "https://github.com/Satyam-git-dotcom/EconoCausal-Dynamic-Pricing",
+      "tech_stack": [
+        "Python",
+        "Microsoft DoWhy",
+        "EconML",
+        "SciPy",
+        "LightGBM",
+        "FastAPI",
+        "React"
+      ],
+      "problem_statement": "Standard correlational ML models misallocate promotional discounts by coupon-bleeding on organic customers who would convert anyway.",
+      "solution_and_architecture": [
+        "Deployed Double/Debiased Machine Learning (LinearDML & CausalForest) with Neyman orthogonality to estimate Individual Treatment Effects (ITE).",
+        "Formulated and solved knapsack promotional budget allocation across pricing tiers ($0, $10, $20) using the SciPy HiGHS Linear Programming solver.",
+        "Constructed interactive DAG inspection and DoWhy refutation tests (placebo treatments, random unobserved confounders) for auditability."
+      ],
+      "metrics_and_highlights": {
+        "causal_framework": "Double Machine Learning (DML) via Microsoft DoWhy & EconML",
+        "optimization": "SciPy HiGHS LP Solver for promotional spend",
+        "validation": "DoWhy Refutation Placebo & Data Subset Tests"
+      }
     }
   ],
   "frequently_asked_questions": {
