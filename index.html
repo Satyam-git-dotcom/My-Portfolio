@@ -1,0 +1,2576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Satyam // Portfolio OS — Swiss Bauhaus Edition</title>
+  
+  <!-- Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            paper: '#f4f1ea',
+            'paper-card': '#ffffff',
+            'paper-subtle': '#ebe6dc',
+            charcoal: '#111111',
+            'charcoal-light': '#222222',
+            'charcoal-muted': '#666666',
+            'charcoal-hairline': '#d8d2c4',
+            'bauhaus-red': '#dc2626',
+            'bauhaus-blue': '#1d4ed8',
+            'bauhaus-yellow': '#eab308'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #f4f1ea;
+        color: #111111;
+        overscroll-behavior: none;
+      }
+      ::-webkit-scrollbar { width: 4px; height: 4px; }
+      ::-webkit-scrollbar-track { background: #f4f1ea; }
+      ::-webkit-scrollbar-thumb { background: #111111; }
+    }
+
+    .bg-swiss-grid {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(17, 17, 17, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(17, 17, 17, 0.05) 1px, transparent 1px);
+    }
+
+    .window-active {
+      box-shadow: 10px 10px 0px #111111;
+    }
+    .window-inactive {
+      box-shadow: 6px 6px 0px rgba(17, 17, 17, 0.4);
+    }
+
+    /* Terminal Retro CRT mode */
+    .terminal-retro {
+      background-color: #121008 !important;
+      color: #ffb834 !important;
+      text-shadow: 0 0 4px rgba(255, 184, 52, 0.6);
+      border-color: #ffb834 !important;
+      box-shadow: 8px 8px 0px #ffb834 !important;
+    }
+    .terminal-retro::after {
+      content: " ";
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background-size: 100% 3px, 3px 100%;
+      pointer-events: none;
+    }
+
+    /* Print stylesheet for Resume: only print the resume sheet */
+    @media print {
+      body * { visibility: hidden; }
+      #resume-window, #resume-window #resume-sheet, #resume-window #resume-sheet * {
+        visibility: visible;
+      }
+      #resume-window {
+        position: absolute;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+      }
+      #resume-header, #resume-toolbar, #resume-statusbar { display: none !important; }
+      #resume-sheet {
+        box-shadow: none !important;
+        border: 1px solid #111 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+    }
+
+    /* ========================================================================= */
+    /* ANIMATION LAYER (Merged from portfolio-animations.html) */
+    /* ========================================================================= */
+    :root {
+      --ease-out: cubic-bezier(.16, 1, .3, 1);
+      --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    /* Keyframes */
+    @keyframes headerIn  { from { opacity: 0; translate: 0 -100%; } }
+    @keyframes dockIn    { from { opacity: 0; translate: 0 140%; } }
+    @keyframes itemIn    { from { opacity: 0; translate: -14px 0; } }
+    @keyframes itemInR   { from { opacity: 0; translate: 14px 0; } }
+    @keyframes windowIn  { from { opacity: 0; translate: 0 16px; scale: .965; } }
+    @keyframes windowOut { to   { opacity: 0; translate: 0 10px; scale: .97; } }
+    @keyframes fadeUp    { from { opacity: 0; translate: 0 12px; } }
+    @keyframes msgIn     { from { opacity: 0; translate: 0 10px; scale: .98; } }
+    @keyframes barGrow   { from { scale: 1 0; opacity: 0; } }
+    @keyframes toastIn   { from { opacity: 0; translate: 24px 0; scale: .96; } }
+    @keyframes toastPop  { 0% { scale: .965; translate: 0 -6px; } 55% { scale: 1.015; translate: 0 1px; } 100% { scale: 1; translate: 0 0; } }
+    @keyframes floaty    { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+    @keyframes badgeBob  { 0%, 100% { translate: 0 0; } 50% { translate: 0 -3px; } }
+    @keyframes wiggle    { 0%, 100% { rotate: 0deg; } 25% { rotate: -9deg; } 60% { rotate: 7deg; } }
+
+    /* Page load */
+    header.fixed { animation: headerIn .6s var(--ease-out) backwards; }
+    footer.fixed > div { animation: dockIn .7s .45s var(--ease-out) backwards; }
+
+    main .absolute.top-4.z-20 > * { animation: itemIn .55s var(--ease-out) backwards; animation-delay: calc(.2s + var(--i, 0) * .07s); }
+    main .absolute.top-4.right-0.z-20 > * { animation-name: itemInR; }
+    main .absolute.top-4.z-20 > :nth-child(1) { --i: 0; } main .absolute.top-4.z-20 > :nth-child(2) { --i: 1; }
+    main .absolute.top-4.z-20 > :nth-child(3) { --i: 2; } main .absolute.top-4.z-20 > :nth-child(4) { --i: 3; }
+    main .absolute.top-4.z-20 > :nth-child(5) { --i: 4; }
+
+    #desktop-toast { animation: toastIn .6s .9s var(--ease-out) backwards; }
+    #desktop-toast.toast-pop { animation: toastPop .45s var(--ease-spring); }
+    #fortune-button > span:first-child { animation: badgeBob 1.8s ease-in-out infinite; }
+    main > div > div.absolute.bottom-6 { animation: floaty 5s ease-in-out infinite; }
+
+    /* Windows: open / close / drag */
+    [id$="-window"]:not(.hidden) { animation: windowIn .42s var(--ease-out) backwards; }
+    #chat-window { animation-delay: .1s; }
+    [id$="-window"].win-closing { animation: windowOut .22s cubic-bezier(.4, 0, 1, 1) forwards !important; pointer-events: none; }
+    [id$="-window"].is-dragging { transition: none !important; }
+    [id$="-header"] { cursor: grab; }
+    .is-dragging [id$="-header"] { cursor: grabbing; }
+
+    /* Content inside windows */
+    [id^="about-tab-"]:not(.hidden) { animation: fadeUp .35s var(--ease-out) backwards; }
+
+    :is(.skill-card, .proj-item, .journey-card):not(.hidden) { animation: fadeUp .5s var(--ease-out) backwards; transition: translate .25s var(--ease-out), box-shadow .25s var(--ease-out); }
+    :is(.skill-card, .proj-item, .journey-card):nth-child(1) { animation-delay: .12s; }
+    :is(.skill-card, .proj-item, .journey-card):nth-child(2) { animation-delay: .20s; }
+    :is(.skill-card, .proj-item, .journey-card):nth-child(3) { animation-delay: .28s; }
+    :is(.skill-card, .proj-item, .journey-card):nth-child(4) { animation-delay: .36s; }
+    :is(.skill-card, .proj-item, .journey-card):hover { translate: -2px -2px; box-shadow: 7px 7px 0 #111111; }
+
+    .skill-card [title^="Proficiency"] > span { transform-origin: bottom; animation: barGrow .55s var(--ease-spring) backwards; }
+    .skill-card [title^="Proficiency"] > span:nth-child(1) { animation-delay: .30s; }
+    .skill-card [title^="Proficiency"] > span:nth-child(2) { animation-delay: .37s; }
+    .skill-card [title^="Proficiency"] > span:nth-child(3) { animation-delay: .44s; }
+    .skill-card [title^="Proficiency"] > span:nth-child(4) { animation-delay: .51s; }
+    .skill-card [title^="Proficiency"] > span:nth-child(5) { animation-delay: .58s; }
+
+    #finder-window .grid > div { animation: fadeUp .45s var(--ease-out) backwards; }
+    #finder-window .grid > div:nth-child(1) { animation-delay: .10s; } #finder-window .grid > div:nth-child(2) { animation-delay: .16s; }
+    #finder-window .grid > div:nth-child(3) { animation-delay: .22s; } #finder-window .grid > div:nth-child(4) { animation-delay: .28s; }
+    #finder-window .grid > div:nth-child(5) { animation-delay: .34s; }
+
+    /* Chat Messages */
+    #chat-stream > div:not(.animate-fade-in):not(.hidden) { animation: msgIn .5s var(--ease-out) backwards; }
+    .animate-fade-in { animation: msgIn .4s var(--ease-out) both; }
+
+    /* Micro-interactions */
+    header nav a { position: relative; }
+    header nav a::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 1px; height: 2px; background: #dc2626; scale: 0 1; transform-origin: left; transition: scale .28s var(--ease-out); }
+    header nav a:hover::after { scale: 1 1; }
+
+    footer nav > a { transition: transform .28s var(--ease-spring), background-color .2s, border-color .2s; will-change: transform; }
+    footer nav > a:hover { transform: translateY(-8px) scale(1.18); }
+    footer nav > a:hover + a, footer nav > a:has(+ a:hover) { transform: translateY(-3px) scale(1.07); }
+    footer nav > a:active { transform: translateY(-3px) scale(1.04); }
+
+    main button:hover .material-symbols-outlined, main a:hover .material-symbols-outlined { animation: wiggle .5s ease; }
+    button:not(:disabled):active { scale: .96; }
+    button, a { transition-timing-function: var(--ease-out); }
+    .overflow-y-auto { scroll-behavior: smooth; }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-delay: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-paper text-charcoal font-sans min-h-screen bg-swiss-grid relative selection:bg-bauhaus-yellow selection:text-charcoal overflow-x-hidden">
+
+  <!-- ========================================================================= -->
+  <!-- TOP SYSTEM MENU BAR -->
+  <!-- ========================================================================= -->
+  <header class="fixed top-0 left-0 right-0 z-50 h-8 bg-paper border-b-2 border-charcoal px-3 flex items-center justify-between text-xs select-none">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1.5 font-bold tracking-tight">
+        <span class="w-2.5 h-2.5 bg-bauhaus-red inline-block border border-charcoal"></span>
+        <span class="font-display uppercase tracking-wider text-[11px]">PORTFOLIO OS // ARCH-01</span>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-1 font-mono text-[11px]" aria-label="System Menu">
+        <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors font-bold uppercase" onclick="focusApp('finder')" aria-label="Open File Finder">File</button>
+        <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors uppercase" onclick="triggerToast('Edit: System buffer is immutable (read-only guest mode).')" aria-label="Edit Options">Edit</button>
+        <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors uppercase" onclick="triggerToast('View: Active display mode is Swiss Bauhaus Editorial Grid.')" aria-label="View Options">View</button>
+        <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors font-bold uppercase" onclick="openTerminal()" aria-label="Open Terminal Shell">Go</button>
+        <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors uppercase" onclick="triggerToast('Window Manager: 8 active apps registered. Click any dock icon to focus.')" aria-label="Window Management">Window</button>
+        <button class="px-2 py-0.5 text-charcoal hover:bg-charcoal/10 transition-colors font-bold uppercase text-bauhaus-red" onclick="openFortuneCookie()" aria-label="Open Fortune Cookie">Help</button>
+      </nav>
+    </div>
+
+    <div class="flex items-center gap-3 text-[11px] font-mono text-charcoal">
+      <div class="flex items-center gap-1.5 px-2 py-0.5 border border-charcoal bg-paper-card shadow-[1px_1px_0px_#111111]">
+        <span class="w-1.5 h-1.5 rounded-full bg-bauhaus-red animate-pulse"></span>
+        <span class="uppercase tracking-widest font-bold">VISITOR 042</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-3 pr-2 text-charcoal/70">
+        <span class="flex items-center gap-1"><span class="font-bold text-charcoal">SYS:</span> ONLINE</span>
+        <span class="text-charcoal/30">|</span>
+        <span class="flex items-center gap-1"><span class="font-bold text-charcoal">PWR:</span> 100%</span>
+        <span class="text-charcoal/30">|</span>
+        <span class="font-bold text-charcoal uppercase" id="system-clock">--:-- --</span>
+      </div>
+      <div class="w-6 h-6 bg-charcoal text-paper flex items-center justify-center font-bold text-[10px]" title="Satyam (S)">
+        SV
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN WORKSPACE SURFACE -->
+  <!-- ========================================================================= -->
+  <main class="relative z-10 w-full pt-14 pb-28 min-h-screen px-3 sm:px-6 select-none" id="desktop-area">
+    <div class="relative w-full min-h-[calc(100vh-6rem)]">
+
+      <!-- Left Column Desktop Icons -->
+      <div class="absolute top-4 left-0 z-20 flex flex-col gap-3 w-24 sm:w-28">
+        <button class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:translate-x-1 transition-all shadow-[2px_2px_0px_#111111]" onclick="focusApp('about')" aria-label="Open About Me Dossier">
+          <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center relative">
+            <span class="absolute -top-1 -right-1 w-2 h-2 bg-bauhaus-red"></span>
+            <span class="material-symbols-outlined text-charcoal text-[20px]">badge</span>
+          </div>
+          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">01. About Me</span>
+        </button>
+
+        <button class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:translate-x-1 transition-all shadow-[2px_2px_0px_#111111]" onclick="focusApp('skills')" aria-label="Open Skills Matrix">
+          <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center relative">
+            <span class="absolute -top-1 -right-1 w-2 h-2 bg-bauhaus-yellow"></span>
+            <span class="material-symbols-outlined text-charcoal text-[20px]">build_circle</span>
+          </div>
+          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">02. Skills.app</span>
+        </button>
+
+        <button class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:translate-x-1 transition-all shadow-[2px_2px_0px_#111111]" onclick="focusApp('projects')" aria-label="Open Projects Explorer">
+          <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center relative">
+            <span class="absolute -top-1 -right-1 w-2 h-2 bg-bauhaus-blue"></span>
+            <span class="material-symbols-outlined text-charcoal text-[20px]">folder_special</span>
+          </div>
+          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">03. Projects</span>
+        </button>
+
+        <button class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:translate-x-1 transition-all shadow-[2px_2px_0px_#111111]" onclick="focusApp('journey')" aria-label="Open Career Journey">
+          <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center relative">
+            <span class="absolute -top-1 -right-1 w-2 h-2 border border-charcoal bg-white"></span>
+            <span class="material-symbols-outlined text-charcoal text-[20px]">explore</span>
+          </div>
+          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">04. Journey</span>
+        </button>
+
+        <button class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:translate-x-1 transition-all shadow-[2px_2px_0px_#111111]" onclick="focusApp('resume')" aria-label="Open Resume Document Viewer">
+          <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center relative">
+            <span class="absolute -top-1 -right-1 w-2 h-2 bg-bauhaus-red"></span>
+            <span class="material-symbols-outlined text-bauhaus-red text-[20px]">picture_as_pdf</span>
+          </div>
+          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">05. Resume.pdf</span>
+        </button>
+      </div>
+
+      <!-- Right Column Desktop Icons (Hidden under lg per Task 4) -->
+      <div class="absolute top-4 right-0 z-20 hidden lg:flex flex-col gap-3 w-28 items-end">
+        <button class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:-translate-x-1 transition-all shadow-[2px_2px_0px_#111111] w-full text-center" onclick="focusApp('contact')" aria-label="Open Contact Dispatch">
+          <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center relative">
+            <span class="material-symbols-outlined text-charcoal text-[20px]">alternate_email</span>
+          </div>
+          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">06. Contact</span>
+        </button>
+
+        <button class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:-translate-x-1 transition-all shadow-[2px_2px_0px_#111111] w-full relative" id="fortune-button" onclick="openFortuneCookie()" aria-label="Open Fortune Cookie">
+          <span class="absolute -top-1.5 -right-1 px-1 bg-bauhaus-yellow text-charcoal border border-charcoal font-mono text-[8px] font-bold">CLICK</span>
+          <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center">
+            <span class="material-symbols-outlined text-charcoal text-[20px]">auto_fix_high</span>
+          </div>
+          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal text-center">07. Fortune.sh</span>
+        </button>
+
+        <a class="group flex flex-col items-center gap-1 p-2 bg-paper-card border border-charcoal hover:bg-white hover:-translate-x-1 transition-all shadow-[2px_2px_0px_#111111] w-full text-center" href="https://github.com/Satyam-git-dotcom" rel="noreferrer" target="_blank" aria-label="Open Satyam GitHub Profile">
+          <div class="w-10 h-10 border border-charcoal bg-paper flex items-center justify-center">
+            <span class="material-symbols-outlined text-charcoal text-[20px]">terminal</span>
+          </div>
+          <span class="font-mono text-[9px] uppercase tracking-wider font-bold text-charcoal">08. GitHub</span>
+        </a>
+      </div>
+
+      <!-- ======================================================================= -->
+      <!-- WINDOW 01: ABOUT ME DOSSIER -->
+      <!-- ======================================================================= -->
+      <div id="about-window" role="dialog" aria-label="Personnel Dossier: Satyam" class="hidden absolute top-6 left-2 sm:left-12 lg:left-24 w-[96%] max-w-[920px] max-h-[85vh] bg-paper-card border-2 border-charcoal shadow-[10px_10px_0px_#111111] z-30 flex flex-col overflow-hidden window-inactive" onclick="bringToFront('about')">
+        <div id="about-header" class="bg-paper px-3 py-2 border-b-2 border-charcoal flex items-center justify-between select-none">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5">
+              <button onclick="closeApp('about')" class="w-3.5 h-3.5 bg-bauhaus-red border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Close About Window"></button>
+              <button onclick="minimizeApp('about')" class="w-3.5 h-3.5 bg-bauhaus-yellow border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Minimize About Window"></button>
+              <button onclick="toggleMaximize('about')" class="w-3.5 h-3.5 bg-bauhaus-blue border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Maximize About Window"></button>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono text-[10px] uppercase text-charcoal-muted tracking-wider">PID: 0x904F</span>
+              <span class="font-mono text-[11px] sm:text-[12px] uppercase font-bold text-charcoal tracking-wide truncate">
+                PERSONNEL DOSSIER // SATYAM
+              </span>
+            </div>
+          </div>
+          <div class="hidden sm:flex items-center gap-2 font-mono text-[10px]">
+            <span class="px-2 py-0.5 bg-paper-subtle border border-charcoal text-charcoal font-bold">VIT 9.3 CGPA</span>
+            <span class="px-2 py-0.5 bg-bauhaus-yellow border border-charcoal text-charcoal font-bold">PRE-FINAL YEAR</span>
+          </div>
+        </div>
+
+        <div class="bg-paper-subtle border-b-2 border-charcoal flex flex-wrap items-center justify-between px-3 py-1.5 text-[11px] font-mono">
+          <div class="flex items-center gap-1">
+            <button id="about-tab-btn-1" onclick="switchAboutTab(1)" class="px-2.5 py-1 bg-charcoal text-paper font-bold uppercase transition-none" aria-label="Tab 1: Overview Manifesto">01. MANIFESTO</button>
+            <button id="about-tab-btn-2" onclick="switchAboutTab(2)" class="px-2.5 py-1 bg-paper hover:bg-paper-subtle text-charcoal border border-charcoal uppercase transition-none" aria-label="Tab 2: Telemetry & Metrics">02. TELEMETRY & METRICS</button>
+            <button id="about-tab-btn-3" onclick="switchAboutTab(3)" class="px-2.5 py-1 bg-paper hover:bg-paper-subtle text-charcoal border border-charcoal uppercase transition-none" aria-label="Tab 3: Engineering Canon">03. ENGINEERING CANON</button>
+          </div>
+          <div class="hidden md:flex items-center gap-2 text-[10px]">
+            <button onclick="focusApp('resume')" class="hover:underline flex items-center gap-1 font-bold" aria-label="View Resume PDF"><span class="material-symbols-outlined text-[13px]">file_open</span> RESUME.PDF</button>
+            <span>//</span>
+            <button onclick="focusApp('chat')" class="hover:underline flex items-center gap-1 font-bold text-bauhaus-red" aria-label="Ask AI Copilot"><span class="material-symbols-outlined text-[13px]">smart_toy</span> AI COPILOT</button>
+          </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 sm:p-5 bg-paper/40">
+          <div id="about-tab-1" class="block space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+              <div class="md:col-span-5 bg-paper-card border-2 border-charcoal p-3 flex flex-col justify-between shadow-[4px_4px_0px_#111111]">
+                <div>
+                  <div class="flex items-center justify-between border-b border-charcoal pb-1 font-mono text-[9px] text-charcoal-muted uppercase">
+                    <span>+0.00 AX_7</span>
+                    <span>IMG_REF // S_904.RAW</span>
+                    <span>+1.00</span>
+                  </div>
+                  <div class="relative my-3 aspect-square border-2 border-charcoal bg-paper-subtle overflow-hidden flex items-center justify-center">
+                    <div class="absolute inset-0 bg-[radial-gradient(#111111_1px,transparent_1px)] [background-size:12px_12px] opacity-40"></div>
+                    <div class="absolute top-2 left-2 font-mono text-[9px] text-charcoal-muted">+ CROSSHAIR</div>
+                    <div class="absolute bottom-2 right-2 font-mono text-[9px] text-charcoal-muted">GRID_LOC: VIT_01</div>
+                    <div class="w-24 h-24 border-2 border-charcoal bg-white flex flex-col items-center justify-center p-2 shadow-[3px_3px_0px_#111111] z-10 text-center">
+                      <span class="font-mono font-bold text-[28px] text-charcoal tracking-tighter">SV</span>
+                      <span class="font-mono text-[8px] uppercase tracking-widest text-bauhaus-red font-bold">SOFTWARE ENG</span>
+                    </div>
+                  </div>
+                  <div class="font-mono text-[10px] text-charcoal-muted uppercase">NODE // SATYAM-MASTER</div>
+                  <h2 class="font-display font-bold text-lg uppercase tracking-tight text-charcoal">SATYAM</h2>
+                  <p class="font-mono text-[11px] text-bauhaus-red font-bold uppercase mt-0.5">Software Engineer | AI/ML & Distributed Systems</p>
+                </div>
+
+                <div class="mt-4 pt-3 border-t-2 border-charcoal space-y-2 font-mono text-[10px]">
+                  <div class="p-1.5 bg-paper border border-charcoal flex justify-between items-center">
+                    <span class="text-charcoal-muted uppercase">STATUS:</span>
+                    <span class="font-bold text-bauhaus-red uppercase">ACTIVE // OPEN FOR ROLES</span>
+                  </div>
+                  <div class="grid grid-cols-2 gap-1.5">
+                    <div class="p-1 bg-paper border border-charcoal">
+                      <span class="text-charcoal-muted text-[8px] uppercase block">LOCATION</span>
+                      <span class="font-bold text-charcoal uppercase">VELLORE / U.P.</span>
+                    </div>
+                    <div class="p-1 bg-paper border border-charcoal">
+                      <span class="text-charcoal-muted text-[8px] uppercase block">TIMELINE</span>
+                      <span class="font-bold text-charcoal uppercase">2023 — 2027</span>
+                    </div>
+                  </div>
+                  <div class="p-1.5 bg-paper border border-charcoal">
+                    <span class="text-charcoal-muted text-[8px] uppercase block">PRIMARY STACK</span>
+                    <span class="font-bold text-charcoal uppercase">JAVA / PYTHON / SPRING BOOT / FASTAPI</span>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-2 flex items-center gap-2">
+                  <button onclick="focusApp('contact')" class="flex-1 py-1.5 bg-charcoal text-paper font-mono text-[10px] font-bold uppercase hover:bg-bauhaus-red transition-colors flex items-center justify-center gap-1" aria-label="Dispatch message to Satyam">
+                    <span class="material-symbols-outlined text-[13px]">terminal</span> DISPATCH CONTACT
+                  </button>
+                  <button onclick="focusApp('chat')" class="px-2 py-1.5 bg-bauhaus-yellow text-charcoal border border-charcoal font-mono text-[10px] font-bold uppercase hover:bg-white" title="AI Copilot" aria-label="Open AI Copilot Chat">
+                    <span class="material-symbols-outlined text-[13px]">smart_toy</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="md:col-span-7 space-y-4">
+                <div class="bg-paper-card border-2 border-charcoal p-4 shadow-[4px_4px_0px_#111111]">
+                  <div class="flex items-center justify-between border-b border-charcoal pb-1.5 mb-3">
+                    <span class="font-mono text-[10px] text-charcoal-muted uppercase font-bold">ARCHITECTURAL SPECIFICATION // PROFILE</span>
+                    <span class="px-1.5 py-0.5 bg-bauhaus-yellow text-charcoal font-mono text-[9px] font-bold uppercase">2023 — 2027</span>
+                  </div>
+                  <h3 class="font-display font-bold text-base uppercase text-charcoal tracking-tight">
+                    Software Engineer with Strong Algorithmic Fundamentals & Full-Stack AI Experience.
+                  </h3>
+                  <p class="mt-2 font-mono text-[11px] leading-relaxed text-charcoal-muted">
+                    Pre-final year B.Tech Computer Science (AI/ML) student at Vellore Institute of Technology (9.3 CGPA) and Data Associate Intern at Infotact Solutions. I engineer offline-first vector search engines (Synapse), full-stack AI career mentorship systems (Kore Logic), and procurement compliance automation platforms (Aura Tender).
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                  <div class="bg-paper-card border-2 border-charcoal p-2.5 text-center shadow-[2px_2px_0px_#111111]">
+                    <span class="font-mono text-[8px] uppercase text-charcoal-muted block">ACADEMIC STANDING</span>
+                    <span class="font-mono font-bold text-base text-bauhaus-red block mt-0.5">9.3 CGPA</span>
+                    <span class="font-mono text-[8px] text-charcoal-muted uppercase">VIT VELLORE</span>
+                  </div>
+                  <div class="bg-paper-card border-2 border-charcoal p-2.5 text-center shadow-[2px_2px_0px_#111111]">
+                    <span class="font-mono text-[8px] uppercase text-charcoal-muted block">ALGORITHMIC BENCHMARK</span>
+                    <span class="font-mono font-bold text-base text-charcoal block mt-0.5">200+ DSA</span>
+                    <span class="font-mono text-[8px] text-charcoal-muted uppercase">LEETCODE PROBLEMS</span>
+                  </div>
+                  <div class="bg-paper-card border-2 border-charcoal p-2.5 text-center shadow-[2px_2px_0px_#111111]">
+                    <span class="font-mono text-[8px] uppercase text-charcoal-muted block">FLAGSHIP APPS</span>
+                    <span class="font-mono font-bold text-base text-bauhaus-blue block mt-0.5">3 FLAGSHIPS</span>
+                    <span class="font-mono text-[8px] text-charcoal-muted uppercase">SYNAPSE / KORE / AURA</span>
+                  </div>
+                </div>
+
+                <div class="bg-paper-card border-2 border-charcoal p-4 shadow-[4px_4px_0px_#111111]">
+                  <div class="flex items-center justify-between border-b border-charcoal pb-1 mb-3">
+                    <span class="font-mono text-[10px] uppercase font-bold text-charcoal">// FOUNDATIONAL ENGINEERING PRINCIPLES</span>
+                    <span class="font-mono text-[9px] text-charcoal-muted uppercase">TRUTH TABLE 3/3</span>
+                  </div>
+                  <div class="space-y-2.5 font-mono text-[10px]">
+                    <div class="p-2 bg-paper border border-charcoal flex gap-2">
+                      <span class="font-bold text-bauhaus-red text-[11px]">01</span>
+                      <div>
+                        <span class="font-bold text-charcoal uppercase block">Hardware Empathy & Sub-Millisecond Search</span>
+                        <p class="text-charcoal-muted text-[10px] leading-snug mt-0.5">Implement algorithms like HNSW and KD-Tree from scratch to understand algorithmic tradeoffs at the memory layer.</p>
+                      </div>
+                    </div>
+                    <div class="p-2 bg-paper border border-charcoal flex gap-2">
+                      <span class="font-bold text-bauhaus-yellow text-[11px]">02</span>
+                      <div>
+                        <span class="font-bold text-charcoal uppercase block">Grounded RAG with Cited Sources</span>
+                        <p class="text-charcoal-muted text-[10px] leading-snug mt-0.5">Eliminate speculative answers by anchoring LLM context behind verified semantic vector retrievals.</p>
+                      </div>
+                    </div>
+                    <div class="p-2 bg-paper border border-charcoal flex gap-2">
+                      <span class="font-bold text-bauhaus-blue text-[11px]">03</span>
+                      <div>
+                        <span class="font-bold text-charcoal uppercase block">Form Follows Function</span>
+                        <p class="text-charcoal-muted text-[10px] leading-snug mt-0.5">Zero speculative abstractions. Build minimal, resilient microservices in Java, Python, and modern web frameworks.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="about-tab-2" class="hidden space-y-4">
+            <div class="bg-paper-card border-2 border-charcoal p-4 shadow-[4px_4px_0px_#111111]">
+              <span class="font-mono text-[10px] text-charcoal-muted uppercase font-bold block mb-2">TELEMETRY & HARDWARE PROFILES // 2023 — 2027</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-[11px]">
+                <div class="p-3 bg-paper border border-charcoal">
+                  <span class="text-[9px] text-charcoal-muted uppercase block">ACADEMIC TELEMETRY</span>
+                  <span class="font-bold text-charcoal text-sm block mt-1">Vellore Institute of Technology (VIT)</span>
+                  <span class="text-bauhaus-red font-bold text-xs block">B.Tech in Computer Science & Engineering (AI/ML)</span>
+                  <span class="text-charcoal-muted text-[10px] block mt-0.5">Cumulative GPA: 9.3 / 10.0 (Graduation: 2027)</span>
+                </div>
+                <div class="p-3 bg-paper border border-charcoal">
+                  <span class="text-[9px] text-charcoal-muted uppercase block">INDUSTRY INTERNSHIP</span>
+                  <span class="font-bold text-charcoal text-sm block mt-1">Infotact Solutions</span>
+                  <span class="text-bauhaus-blue font-bold text-xs block">Data Associate L1 (Intern) (Oct 2026 — Present)</span>
+                  <span class="text-charcoal-muted text-[10px] block mt-0.5">Data preprocessing, statistical & ML models with Python, scikit-learn, TensorFlow</span>
+                </div>
+                <div class="p-3 bg-paper border border-charcoal">
+                  <span class="text-[9px] text-charcoal-muted uppercase block">ALGORITHMIC BENCHMARK</span>
+                  <span class="font-bold text-charcoal text-sm block mt-1">200+ Solved Challenges</span>
+                  <span class="text-charcoal font-bold text-xs block">LeetCode Problem Solving</span>
+                  <span class="text-charcoal-muted text-[10px] block mt-0.5">Graphs, Dynamic Programming, Trees, Binary Search, Two Pointers</span>
+                </div>
+                <div class="p-3 bg-paper border border-charcoal">
+                  <span class="text-[9px] text-charcoal-muted uppercase block">VECTOR RUNTIME</span>
+                  <span class="font-bold text-charcoal text-sm block mt-1">Custom Vector Search Engine</span>
+                  <span class="text-bauhaus-red font-bold text-xs block">Synapse (Java & Spring Boot)</span>
+                  <span class="text-charcoal-muted text-[10px] block mt-0.5">HNSW & KD-Tree indexing from scratch, sub-millisecond query search</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="about-tab-3" class="hidden space-y-4">
+            <div class="bg-paper-card border-2 border-charcoal p-4 shadow-[4px_4px_0px_#111111]">
+              <span class="font-mono text-[10px] text-charcoal-muted uppercase font-bold block mb-2">CANONICAL ENGINEERING RULES // GROUNDED CONSTRAINTS</span>
+              <div class="space-y-3 font-mono text-[11px]">
+                <div class="border-l-4 border-bauhaus-red pl-3 py-1">
+                  <div class="font-bold text-charcoal uppercase">1. Grounded Inference Gate</div>
+                  <p class="text-charcoal-muted text-[10px] mt-0.5">Never invent facts or hallucinate external information. Base all reasoning strictly on verified knowledge.</p>
+                </div>
+                <div class="border-l-4 border-bauhaus-yellow pl-3 py-1">
+                  <div class="font-bold text-charcoal uppercase">2. Algorithm First Design</div>
+                  <p class="text-charcoal-muted text-[10px] mt-0.5">Select data structures based on empirical access patterns. In Synapse, custom HNSW and KD-Tree indexes yield sub-millisecond lookups.</p>
+                </div>
+                <div class="border-l-4 border-bauhaus-blue pl-3 py-1">
+                  <div class="font-bold text-charcoal uppercase">3. Clean Structural Separation</div>
+                  <p class="text-charcoal-muted text-[10px] mt-0.5">Isolate core business logic from transport controllers and presentation adapters across Java, Python, and React.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-paper px-3 py-1.5 border-t border-charcoal flex items-center justify-between text-[10px] font-mono text-charcoal-muted select-none">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 bg-bauhaus-red inline-block"></span>
+            <span>VERIFIED ACADEMIC DOSSIER</span>
+            <span>//</span>
+            <span>HOST: PORTFOLIO-OS</span>
+          </div>
+          <span class="text-charcoal font-bold">AUTHENTIC SPECIFICATION</span>
+        </div>
+      </div>
+
+      <!-- ======================================================================= -->
+      <!-- WINDOW 02: SKILLS MATRIX -->
+      <!-- ======================================================================= -->
+      <div id="skills-window" role="dialog" aria-label="Skills Matrix: Satyam" class="hidden absolute top-8 left-2 sm:left-14 lg:left-28 w-[96%] max-w-[940px] max-h-[85vh] bg-paper-card border-2 border-charcoal shadow-[10px_10px_0px_#111111] z-30 flex flex-col overflow-hidden window-inactive" onclick="bringToFront('skills')">
+        <div id="skills-header" class="w-full h-10 bg-paper border-b-2 border-charcoal px-3 flex items-center justify-between select-none">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5">
+              <button onclick="closeApp('skills')" class="w-3.5 h-3.5 bg-bauhaus-red border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Close Skills Window"></button>
+              <button onclick="minimizeApp('skills')" class="w-3.5 h-3.5 bg-bauhaus-yellow border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Minimize Skills Window"></button>
+              <button onclick="toggleMaximize('skills')" class="w-3.5 h-3.5 bg-bauhaus-blue border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Maximize Skills Window"></button>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-charcoal font-bold">terminal</span>
+              <span class="font-mono text-[11px] sm:text-[12px] uppercase font-bold text-charcoal tracking-wider truncate">
+                SKILLS.APP // CAPABILITIES MATRIX & TECH STACK
+              </span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 font-mono text-[10px]">
+            <span class="px-1.5 py-0.5 bg-paper-subtle border border-charcoal font-bold text-charcoal">PID: 0x884F</span>
+          </div>
+        </div>
+
+        <div class="bg-paper-subtle border-b-2 border-charcoal p-3 flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono">
+          <div class="max-w-xl">
+            <div class="font-bold uppercase text-charcoal flex items-center gap-1.5">
+              <span class="w-2 h-2 bg-bauhaus-red inline-block"></span>
+              CORE: FULL-STACK DEVELOPMENT, VECTOR SEARCH, DISTRIBUTED BACKENDS
+            </div>
+            <div class="text-charcoal-muted text-[10px] mt-0.5">
+              Verified skills across Java (Spring Boot), Python (FastAPI), React, Next.js, and Machine Learning. 200+ LeetCode problems solved.
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 bg-paper-card border border-charcoal text-center min-w-[70px]">
+              <span class="text-[8px] text-charcoal-muted block uppercase">ALGORITHMS</span>
+              <span class="font-bold text-charcoal text-xs">200+ DSA</span>
+            </div>
+            <div class="p-1.5 bg-paper-card border border-charcoal text-center min-w-[70px]">
+              <span class="text-[8px] text-charcoal-muted block uppercase">INTERN</span>
+              <span class="font-bold text-bauhaus-red text-xs">INFOTACT</span>
+            </div>
+            <div class="p-1.5 bg-paper-card border border-charcoal text-center min-w-[70px]">
+              <span class="text-[8px] text-charcoal-muted block uppercase">ACADEMIC</span>
+              <span class="font-bold text-bauhaus-blue text-xs">9.3 CGPA</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Filter & Combined Real-Time Search Bar -->
+        <div class="bg-paper px-3 py-2 border-b-2 border-charcoal flex flex-wrap items-center justify-between gap-2 font-mono text-[10px]">
+          <div class="flex flex-wrap items-center gap-1" role="group" aria-label="Skills Category Filter">
+            <button onclick="setSkillCategory('all')" id="skill-btn-all" class="px-2 py-0.5 bg-charcoal text-paper font-bold uppercase" aria-label="All skills">[ ALL_UNITS ]</button>
+            <button onclick="setSkillCategory('ai')" id="skill-btn-ai" class="px-2 py-0.5 bg-paper hover:bg-paper-subtle border border-charcoal text-charcoal uppercase" aria-label="AI and Vector Search">01. AI / VECTOR</button>
+            <button onclick="setSkillCategory('backend')" id="skill-btn-backend" class="px-2 py-0.5 bg-paper hover:bg-paper-subtle border border-charcoal text-charcoal uppercase" aria-label="Backend and Frameworks">02. BACKEND</button>
+            <button onclick="setSkillCategory('cloud')" id="skill-btn-cloud" class="px-2 py-0.5 bg-paper hover:bg-paper-subtle border border-charcoal text-charcoal uppercase" aria-label="Cloud and Tools">03. CLOUD / TOOLS</button>
+            <button onclick="setSkillCategory('db')" id="skill-btn-db" class="px-2 py-0.5 bg-paper hover:bg-paper-subtle border border-charcoal text-charcoal uppercase" aria-label="Databases and Core CS">04. DATA / CORE CS</button>
+          </div>
+          <div class="flex items-center gap-1 border border-charcoal bg-white px-2 py-0.5">
+            <span class="material-symbols-outlined text-[14px] text-charcoal-muted">search</span>
+            <input id="skill-search-input" onkeyup="handleSkillSearch(this.value)" type="text" placeholder="FILTER STACK..." class="font-mono text-[10px] uppercase bg-transparent outline-none w-28 sm:w-36 text-charcoal" aria-label="Search skills" />
+          </div>
+        </div>
+
+        <!-- Scrollable Skills Matrix List (Filtered at row-level per Task 3) -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-paper/40" id="skills-container">
+          <!-- Dynamic rendering from DATA.skills -->
+        </div>
+
+        <div class="bg-paper px-3 py-1.5 border-t border-charcoal flex items-center justify-between text-[10px] font-mono text-charcoal-muted select-none">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 bg-bauhaus-blue inline-block"></span>
+            <span id="skills-count-badge">SHOWING 16 / 16 UNITS</span>
+          </div>
+          <span class="text-charcoal font-bold">100% CANONICAL STACK</span>
+        </div>
+      </div>
+
+      <!-- ======================================================================= -->
+      <!-- WINDOW 03: PROJECTS EXPLORER -->
+      <!-- ======================================================================= -->
+      <div id="projects-window" role="dialog" aria-label="Projects Explorer Archive: Satyam" class="hidden absolute top-8 left-2 sm:left-14 lg:left-28 w-[96%] max-w-[960px] max-h-[85vh] bg-paper-card border-2 border-charcoal shadow-[10px_10px_0px_#111111] z-30 flex flex-col overflow-hidden window-inactive" onclick="bringToFront('projects')">
+        <div id="projects-header" class="bg-charcoal text-paper px-3 py-2 flex items-center justify-between select-none">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5">
+              <button onclick="closeApp('projects')" class="w-3.5 h-3.5 bg-bauhaus-red border border-paper/40 shadow-[1px_1px_0px_#ffffff]" aria-label="Close Projects Window"></button>
+              <button onclick="minimizeApp('projects')" class="w-3.5 h-3.5 bg-bauhaus-yellow border border-paper/40 shadow-[1px_1px_0px_#ffffff]" aria-label="Minimize Projects Window"></button>
+              <button onclick="toggleMaximize('projects')" class="w-3.5 h-3.5 bg-bauhaus-blue border border-paper/40 shadow-[1px_1px_0px_#ffffff]" aria-label="Maximize Projects Window"></button>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono text-[11px] sm:text-[12px] uppercase font-bold text-paper tracking-wider truncate">
+                PROJECTS EXPLORER // REPOSITORY ARCHIVE [v2.4]
+              </span>
+              <span class="hidden sm:inline-block px-1.5 py-0.2 bg-paper text-charcoal font-mono text-[9px] uppercase font-bold">SYS:MOUNTED</span>
+            </div>
+          </div>
+          <div class="hidden md:flex items-center gap-2 font-mono text-[10px] text-paper-subtle">
+            <span id="projects-count-label">ALL (3)</span>
+            <span>//</span>
+            <span class="text-bauhaus-yellow font-bold">VERIFIED REPOSITORIES</span>
+          </div>
+        </div>
+
+        <div class="bg-paper-subtle border-b-2 border-charcoal px-3 py-1.5 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px]">
+          <div class="flex items-center gap-1.5 text-charcoal truncate">
+            <span class="text-charcoal-muted uppercase">PATH:</span>
+            <span class="font-bold truncate">root / satyam / production_systems / flagship_catalog</span>
+          </div>
+          <div class="flex items-center gap-1" role="group" aria-label="Projects filter tags">
+            <button onclick="filterProjects('all')" id="proj-filter-all" class="px-2 py-0.5 bg-charcoal text-paper font-bold uppercase">ALL (3)</button>
+            <button onclick="filterProjects('ai')" id="proj-filter-ai" class="px-2 py-0.5 bg-paper hover:bg-white border border-charcoal text-charcoal uppercase">VECTOR & AI</button>
+            <button onclick="filterProjects('fullstack')" id="proj-filter-fullstack" class="px-2 py-0.5 bg-paper hover:bg-white border border-charcoal text-charcoal uppercase">FULL STACK</button>
+          </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-paper/30" id="projects-container">
+          <!-- Dynamically populated from DATA.projects -->
+        </div>
+
+        <div class="bg-charcoal text-paper px-3 py-1.5 flex items-center justify-between text-[10px] font-mono select-none">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 bg-bauhaus-blue inline-block"></span>
+            <span>REPOSITORY CATALOG // RESUME SPECIFICATION</span>
+          </div>
+          <span class="text-bauhaus-yellow font-bold">3 FLAGSHIP SYSTEMS ACTIVE</span>
+        </div>
+      </div>
+
+      <!-- ======================================================================= -->
+      <!-- WINDOW 04: CAREER JOURNEY -->
+      <!-- ======================================================================= -->
+      <div id="journey-window" role="dialog" aria-label="Career Journey & Milestones" class="hidden absolute top-8 left-2 sm:left-12 lg:left-24 w-[96%] max-w-[940px] max-h-[85vh] bg-paper-card border-2 border-charcoal shadow-[8px_8px_0px_#111111] z-30 flex flex-col overflow-hidden window-inactive" onclick="bringToFront('journey')">
+        <div id="journey-header" class="h-10 bg-paper border-b-2 border-charcoal flex items-center justify-between px-3 select-none">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5">
+              <button onclick="closeApp('journey')" class="w-3.5 h-3.5 bg-bauhaus-red border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Close Journey Window"></button>
+              <button onclick="minimizeApp('journey')" class="w-3.5 h-3.5 bg-bauhaus-yellow border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Minimize Journey Window"></button>
+              <button onclick="toggleMaximize('journey')" class="w-3.5 h-3.5 bg-bauhaus-blue border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Maximize Journey Window"></button>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-charcoal text-[18px]">timeline</span>
+              <span class="font-mono text-[11px] sm:text-[12px] uppercase tracking-tight text-charcoal font-bold truncate">
+                WINDOW 04: CHRONOLOGICAL ARCHIVE // CAREER JOURNEY & MILESTONES
+              </span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 font-mono text-[10px]">
+            <span class="font-bold uppercase bg-paper-subtle px-1.5 py-0.5 border border-charcoal text-charcoal">
+              MEM_BLK: 0x88F0
+            </span>
+          </div>
+        </div>
+
+        <div class="bg-paper-subtle border-b-2 border-charcoal px-3 py-1.5 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px]">
+          <div class="flex flex-wrap items-center gap-1" role="group" aria-label="Journey period filters">
+            <button onclick="filterJourney('all')" id="journey-btn-all" class="px-2 py-0.5 bg-charcoal text-paper font-bold uppercase">[00] ALL</button>
+            <button onclick="filterJourney('internship')" id="journey-btn-internship" class="px-2 py-0.5 bg-paper hover:bg-white border border-charcoal text-charcoal uppercase">[01] INTERNSHIP</button>
+            <button onclick="filterJourney('projects')" id="journey-btn-projects" class="px-2 py-0.5 bg-paper hover:bg-white border border-charcoal text-charcoal uppercase">[02] AI PROJECTS</button>
+            <button onclick="filterJourney('academic')" id="journey-btn-academic" class="px-2 py-0.5 bg-paper hover:bg-white border border-charcoal text-charcoal uppercase">[03] VIT ACADEMIC</button>
+          </div>
+          <span class="font-bold uppercase text-charcoal" id="journey-count-badge">4 MILESTONES LOADED</span>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-paper/40 font-mono" id="journey-container">
+          <!-- Dynamically populated from DATA.journey -->
+        </div>
+
+        <div class="bg-paper px-3 py-1.5 border-t border-charcoal flex items-center justify-between text-[10px] font-mono text-charcoal-muted select-none">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 bg-bauhaus-red inline-block"></span>
+            <span>CHRONOLOGY: 2023 — 2027</span>
+          </div>
+          <span class="text-charcoal font-bold">AUTHENTIC SEQUENCE</span>
+        </div>
+      </div>
+
+      <!-- ======================================================================= -->
+      <!-- WINDOW 05: RESUME DOCUMENT VIEWER (PREVIEW.APP) -->
+      <!-- ======================================================================= -->
+      <div id="resume-window" role="dialog" aria-label="Resume Document Viewer" class="hidden absolute top-6 left-2 sm:left-10 lg:left-20 w-[96%] max-w-[940px] max-h-[85vh] bg-paper-card border-2 border-charcoal shadow-[10px_10px_0px_#111111] z-30 flex flex-col overflow-hidden window-inactive" onclick="bringToFront('resume')">
+        <div id="resume-header" class="bg-paper px-3 py-2 border-b-2 border-charcoal flex flex-wrap items-center justify-between gap-2 select-none">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5">
+              <button onclick="closeApp('resume')" class="w-3.5 h-3.5 bg-bauhaus-red border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Close Resume Window"></button>
+              <button onclick="minimizeApp('resume')" class="w-3.5 h-3.5 bg-bauhaus-yellow border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Minimize Resume Window"></button>
+              <button onclick="toggleMaximize('resume')" class="w-3.5 h-3.5 bg-bauhaus-blue border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Maximize Resume Window"></button>
+            </div>
+            <div class="flex items-center gap-2 font-mono text-[11px] sm:text-[12px] font-bold text-charcoal truncate">
+              <span class="material-symbols-outlined text-[17px] text-bauhaus-red">picture_as_pdf</span>
+              <span class="truncate">PREVIEW.APP // SATYAM_RESUME.PDF</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 font-mono text-[10px]">
+            <span class="px-2 py-0.5 bg-paper-subtle border border-charcoal text-charcoal font-bold">PAGE: 1 OF 1</span>
+            <span class="px-2 py-0.5 bg-paper-subtle border border-charcoal text-charcoal font-bold">ZOOM: 100%</span>
+          </div>
+        </div>
+
+        <div id="resume-toolbar" class="bg-paper-subtle border-b-2 border-charcoal px-3 py-1.5 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px]">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 bg-bauhaus-yellow text-charcoal border border-charcoal font-bold uppercase">
+              FORMAT: ATS-COMPLIANT SPECIFICATION
+            </span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="copyResumeMarkdown()" class="px-2.5 py-1 bg-paper hover:bg-white border border-charcoal text-charcoal font-bold uppercase flex items-center gap-1" aria-label="Copy resume as markdown">
+              <span class="material-symbols-outlined text-[13px]">content_copy</span> COPY MARKDOWN
+            </button>
+            <button onclick="printResumeSpec()" class="px-2.5 py-1 bg-paper hover:bg-white border border-charcoal text-charcoal font-bold uppercase flex items-center gap-1" aria-label="Print resume sheet">
+              <span class="material-symbols-outlined text-[13px]">print</span> PRINT SPEC
+            </button>
+            <button onclick="downloadResumePdf()" class="px-2.5 py-1 bg-charcoal hover:bg-bauhaus-red text-paper font-bold uppercase flex items-center gap-1" aria-label="Download raw PDF resume">
+              <span class="material-symbols-outlined text-[13px]">download</span> DOWNLOAD RAW PDF
+            </button>
+          </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 sm:p-6 bg-paper-subtle flex justify-center items-start">
+          <div id="resume-sheet" class="w-full max-w-3xl bg-white border-2 border-charcoal p-6 sm:p-8 shadow-[6px_6px_0px_#111111] font-mono text-charcoal space-y-5 h-auto">
+            <!-- Dynamically populated from DATA in script -->
+          </div>
+        </div>
+
+        <div id="resume-statusbar" class="bg-paper px-3 py-1.5 border-t border-charcoal flex items-center justify-between text-[10px] font-mono text-charcoal-muted select-none">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 bg-bauhaus-red inline-block"></span>
+            <span>CANONICAL RESUME SOURCE</span>
+          </div>
+          <span class="text-charcoal font-bold">OFFICIAL SPECIFICATION</span>
+        </div>
+      </div>
+
+      <!-- ======================================================================= -->
+      <!-- WINDOW 06: CONTACT DISPATCH -->
+      <!-- ======================================================================= -->
+      <div id="contact-window" role="dialog" aria-label="Secure Contact Dispatch Protocol" class="hidden absolute top-8 left-2 sm:left-14 lg:left-32 w-[96%] max-w-[880px] max-h-[85vh] bg-paper-card border-2 border-charcoal shadow-[8px_8px_0px_#111111] md:shadow-[10px_10px_0px_#111111] z-30 flex flex-col overflow-hidden window-inactive" onclick="bringToFront('contact')">
+        <header id="contact-header" class="h-10 bg-paper border-b-2 border-charcoal flex items-center justify-between px-3 select-none">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5">
+              <button onclick="closeApp('contact')" class="w-3.5 h-3.5 bg-bauhaus-red border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Close Contact Window"></button>
+              <button onclick="minimizeApp('contact')" class="w-3.5 h-3.5 bg-bauhaus-yellow border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Minimize Contact Window"></button>
+              <button onclick="toggleMaximize('contact')" class="w-3.5 h-3.5 bg-bauhaus-blue border border-charcoal shadow-[1px_1px_0px_#111111]" aria-label="Maximize Contact Window"></button>
+            </div>
+            <div class="flex items-center gap-2 truncate">
+              <span class="material-symbols-outlined text-[17px] text-charcoal">outgoing_mail</span>
+              <span class="font-mono text-[11px] sm:text-[12px] text-charcoal tracking-wider uppercase font-bold truncate">
+                WINDOW 06: CONTACT DISPATCH PROTOCOL // TRANSMIT INQUIRY
+              </span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 font-mono text-[10px]">
+            <span class="bg-paper-subtle border border-charcoal px-1.5 py-0.5 text-charcoal font-bold hidden sm:inline-block">
+              PID: 0x902C
+            </span>
+          </div>
+        </header>
+
+        <div class="bg-paper-subtle border-b-2 border-charcoal px-3 py-1.5 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px]">
+          <div class="flex items-center gap-2 text-charcoal">
+            <span class="w-2 h-2 bg-bauhaus-red inline-block"></span>
+            <span class="font-bold uppercase">DIRECT COMMUNICATION DISPATCH</span>
+          </div>
+          <div class="flex items-center gap-2 text-charcoal-muted">
+            <span class="material-symbols-outlined text-[13px]">location_on</span>
+            <span>VELLORE / UTTAR PRADESH, INDIA</span>
+          </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 sm:p-5 bg-paper/40 font-mono">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+            <div class="md:col-span-7 bg-paper-card border-2 border-charcoal p-4 shadow-[4px_4px_0px_#111111] space-y-3">
+              <div class="border-b border-charcoal pb-1.5 flex justify-between items-center text-[10px]">
+                <span class="font-bold uppercase text-charcoal">PAYLOAD COMPOSER // STDIN</span>
+                <span class="text-charcoal-muted uppercase">STATUS: READY</span>
+              </div>
+
+              <form id="dispatch-form" onsubmit="handleDispatchSubmit(event)" class="space-y-3 text-[11px]">
+                <div>
+                  <label for="dispatch-name" class="block text-[9px] uppercase font-bold text-charcoal mb-0.5">SENDER_IDENTITY // NAME</label>
+                  <input id="dispatch-name" required type="text" placeholder="e.g. Jane Doe / Engineering Lead" class="w-full p-2 bg-paper border border-charcoal font-mono text-[11px] text-charcoal outline-none focus:border-bauhaus-red" />
+                </div>
+
+                <div>
+                  <label for="dispatch-email" class="block text-[9px] uppercase font-bold text-charcoal mb-0.5">COMMUNICATION_ENDPOINT // EMAIL</label>
+                  <input id="dispatch-email" required type="email" placeholder="e.g. jane@company.com" class="w-full p-2 bg-paper border border-charcoal font-mono text-[11px] text-charcoal outline-none focus:border-bauhaus-red" />
+                </div>
+
+                <div>
+                  <label for="dispatch-topic" class="block text-[9px] uppercase font-bold text-charcoal mb-0.5">SUBJECT_TOPIC // CATEGORY ROUTE</label>
+                  <select id="dispatch-topic" class="w-full p-2 bg-paper border border-charcoal font-mono text-[11px] text-charcoal outline-none focus:border-bauhaus-red">
+                    <option value="Software Engineering Internship / Full-Time Role">[01] Software Engineering Internship / Full-Time Role</option>
+                    <option value="AI / Vector Search Project Collaboration">[02] AI / Vector Search Project Collaboration</option>
+                    <option value="Full-Stack System Architecture Discussion">[03] Full-Stack System Architecture Discussion</option>
+                    <option value="General Technical Inquiry">[04] General Technical Inquiry</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="dispatch-body" class="block text-[9px] uppercase font-bold text-charcoal mb-0.5">MESSAGE_PAYLOAD // BODY</label>
+                  <textarea id="dispatch-body" required rows="4" placeholder="Compose transmission packet for Satyam..." class="w-full p-2 bg-paper border border-charcoal font-mono text-[11px] text-charcoal outline-none focus:border-bauhaus-red resize-none"></textarea>
+                </div>
+
+                <div class="pt-1 flex items-center justify-between gap-2">
+                  <button type="submit" class="flex-1 py-2 bg-charcoal text-paper font-bold uppercase text-[11px] hover:bg-bauhaus-red transition-colors flex items-center justify-center gap-1.5 shadow-[2px_2px_0px_#111111]" aria-label="Transmit message dispatch">
+                    <span>[ TRANSMIT DISPATCH ]</span>
+                    <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+                  </button>
+                  <button type="reset" onclick="handleDispatchReset()" class="px-3 py-2 bg-paper border border-charcoal text-charcoal text-[11px] font-bold uppercase hover:bg-white" aria-label="Reset dispatch form">
+                    RESET
+                  </button>
+                </div>
+              </form>
+
+              <div id="dispatch-sent-alert" class="hidden p-3 bg-bauhaus-yellow/20 border-2 border-bauhaus-yellow text-charcoal font-mono text-[10px] space-y-1">
+                <div class="font-bold flex items-center gap-1.5 text-charcoal">
+                  <span class="material-symbols-outlined text-[14px] text-bauhaus-red">verified</span>
+                  <span>DISPATCH PREPARED</span>
+                </div>
+                <div class="text-charcoal-muted">Handing off to your mail client addressed to <b id="dispatch-target-email">satyam12303@gmail.com</b>.</div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-4">
+              <div class="bg-paper-card border-2 border-charcoal p-4 shadow-[4px_4px_0px_#111111] space-y-2.5 text-[11px]">
+                <div class="border-b border-charcoal pb-1 font-bold uppercase text-charcoal text-[10px]">
+                  VERIFIED DIRECT CHANNELS
+                </div>
+                
+                <div class="p-2 bg-paper border border-charcoal flex items-center justify-between">
+                  <div class="truncate mr-2">
+                    <span class="text-[8px] text-charcoal-muted uppercase block">EMAIL ENDPOINT</span>
+                    <span class="font-bold text-charcoal text-[11px] truncate block" id="contact-disp-email">satyam12303@gmail.com</span>
+                  </div>
+                  <button onclick="copyEmail()" class="px-2 py-1 bg-charcoal text-paper text-[9px] uppercase font-bold hover:bg-bauhaus-red shrink-0" aria-label="Copy email address">COPY</button>
+                </div>
+
+                <div class="p-2 bg-paper border border-charcoal flex items-center justify-between">
+                  <div>
+                    <span class="text-[8px] text-charcoal-muted uppercase block">TELEPHONE (CALL / WHATSAPP)</span>
+                    <span class="font-bold text-charcoal text-[11px]" id="contact-disp-phone">+91 7465922333</span>
+                  </div>
+                  <button onclick="copyPhone()" class="px-2 py-1 bg-charcoal text-paper text-[9px] uppercase font-bold hover:bg-bauhaus-red shrink-0" aria-label="Copy phone number">COPY</button>
+                </div>
+
+                <div class="p-2 bg-paper border border-charcoal flex items-center justify-between">
+                  <div>
+                    <span class="text-[8px] text-charcoal-muted uppercase block">ACADEMIC BASE</span>
+                    <span class="font-bold text-charcoal">VIT Vellore // 9.3 CGPA</span>
+                  </div>
+                  <span class="px-1.5 py-0.5 bg-bauhaus-yellow text-charcoal font-bold text-[8px]">IST (UTC+5:30)</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                  <a id="contact-disp-linkedin" href="https://www.linkedin.com/in/satyam-dot-com/" target="_blank" rel="noreferrer" class="p-2 bg-paper border border-charcoal hover:bg-white text-center font-bold text-charcoal text-[10px] uppercase block" aria-label="Visit LinkedIn profile">
+                    LINKEDIN ↗
+                  </a>
+                  <a id="contact-disp-github" href="https://github.com/Satyam-git-dotcom" target="_blank" rel="noreferrer" class="p-2 bg-paper border border-charcoal hover:bg-white text-center font-bold text-charcoal text-[10px] uppercase block" aria-label="Visit GitHub profile">
+                    GITHUB ↗
+                  </a>
+                </div>
+              </div>
+
+              <div class="bg-paper-card border-2 border-charcoal p-4 shadow-[4px_4px_0px_#111111] space-y-2">
+                <div class="border-b border-charcoal pb-1 flex justify-between items-center text-[10px]">
+                  <span class="font-bold uppercase text-charcoal">COMMUNICATION PROTOCOL</span>
+                  <span class="text-charcoal-muted uppercase">OFFICIAL</span>
+                </div>
+                <p class="text-[10px] text-charcoal-muted leading-relaxed">
+                  Inquiries regarding software engineering roles, full-stack systems, custom vector indexing, and AI/ML project architecture receive responses within 24 business hours.
+                </p>
+                <div class="p-2 bg-paper border border-charcoal text-[9px] text-charcoal font-mono">
+                  TARGET: Satyam &lt;satyam12303@gmail.com&gt;
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="bg-paper px-3 py-1.5 border-t border-charcoal flex items-center justify-between text-[10px] font-mono text-charcoal-muted select-none">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 bg-bauhaus-red inline-block"></span>
+            <span>DISPATCH STATUS: IDLE</span>
+          </div>
+          <span class="text-charcoal font-bold">READY TO TRANSMIT</span>
+        </footer>
+      </div>
+
+      <!-- ======================================================================= -->
+      <!-- WINDOW 07: SIMPLIFIED FINDER WINDOW (File System Mount) -->
+      <!-- ======================================================================= -->
+      <div id="finder-window" role="dialog" aria-label="Projects File System Finder" class="hidden absolute top-8 left-2 sm:left-8 lg:left-28 w-[94%] lg:w-[680px] h-[480px] bg-paper-card border-2 border-charcoal shadow-[8px_8px_0px_#111111] z-20 flex flex-col overflow-hidden window-inactive" onclick="bringToFront('finder')">
+        <div id="finder-header" class="h-9 px-3 bg-paper border-b border-charcoal flex items-center justify-between select-none">
+          <div class="flex items-center gap-2">
+            <button onclick="closeApp('finder')" class="w-3 h-3 border border-charcoal bg-bauhaus-red inline-block" aria-label="Close Finder Window"></button>
+            <button onclick="minimizeApp('finder')" class="w-3 h-3 border border-charcoal bg-bauhaus-yellow inline-block" aria-label="Minimize Finder Window"></button>
+            <button onclick="toggleMaximize('finder')" class="w-3 h-3 border border-charcoal bg-bauhaus-blue inline-block" aria-label="Maximize Finder Window"></button>
+          </div>
+          <div class="font-mono text-[11px] uppercase tracking-wider font-bold text-charcoal flex items-center gap-1.5">
+            <span class="text-charcoal-muted">[DIR]</span>
+            <span>Projects & Repositories</span>
+            <span class="text-charcoal-muted">/</span>
+            <span class="text-charcoal-muted text-[10px]">Satyam HD</span>
+          </div>
+          <span class="font-mono text-[10px] text-charcoal-muted">3 ITEMS</span>
+        </div>
+
+        <div class="flex-1 p-4 bg-paper/30 overflow-y-auto">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="finder-grid">
+            <!-- Dynamically populated from DATA.projects -->
+          </div>
+        </div>
+
+        <div class="h-7 px-3 bg-paper border-t border-charcoal flex items-center justify-between font-mono text-[10px] text-charcoal-muted select-none">
+          <span>3 VOLUMES MOUNTED</span>
+          <button onclick="focusApp('projects')" class="text-bauhaus-blue font-bold hover:underline" aria-label="Open Full Projects Explorer">OPEN ADVANCED EXPLORER ↗</button>
+        </div>
+      </div>
+
+      <!-- ======================================================================= -->
+      <!-- WINDOW 08: SATYAM AI COPILOT WINDOW (Live Streaming + Bedrock Ready) -->
+      <!-- ======================================================================= -->
+      <div id="chat-window" role="dialog" aria-label="Satyam AI Twin Copilot Chat" class="relative mx-auto mt-2 sm:mt-6 w-[98%] max-w-[940px] h-[610px] bg-white border-2 border-charcoal shadow-[10px_10px_0px_#111111] z-30 flex flex-col overflow-hidden window-active" onclick="bringToFront('chat')">
+        <div id="chat-header" class="h-10 px-4 bg-paper border-b-2 border-charcoal flex items-center justify-between select-none font-mono">
+          <div class="flex items-center gap-2">
+            <button onclick="closeApp('chat')" class="w-3.5 h-3.5 bg-bauhaus-red border border-charcoal hover:opacity-80" aria-label="Close Chat Window"></button>
+            <button onclick="minimizeApp('chat')" class="w-3.5 h-3.5 bg-bauhaus-yellow border border-charcoal hover:opacity-80" aria-label="Minimize Chat Window"></button>
+            <button onclick="toggleMaximize('chat')" class="w-3.5 h-3.5 bg-bauhaus-blue border border-charcoal hover:opacity-80" aria-label="Maximize Chat Window"></button>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="font-display font-bold uppercase tracking-wider text-[12px] text-charcoal flex items-center gap-1.5">
+              <span class="w-2 h-2 bg-charcoal"></span>
+              PORTFOLIO AI COPILOT // SATYAM TWIN
+            </span>
+          </div>
+          <div class="flex items-center gap-2 text-[10px]">
+            <span class="px-2 py-0.5 bg-paper border border-charcoal font-bold text-charcoal hidden sm:inline-block">GROUNDED KB</span>
+            <button onclick="clearChat()" class="p-1 hover:bg-paper-subtle border border-transparent hover:border-charcoal" title="Reset Conversation" aria-label="Reset Conversation Stream">
+              <span class="material-symbols-outlined text-[15px]">refresh</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+          <!-- Chat Sidebar: Quick Query Navigation with Real-Time Filter -->
+          <div class="w-full md:w-64 bg-paper-subtle border-b-2 md:border-b-0 md:border-r-2 border-charcoal flex flex-col font-mono text-xs">
+            <div class="p-3 border-b border-charcoal bg-paper">
+              <span class="text-[9px] uppercase tracking-wider text-charcoal-muted block font-bold">INQUIRY SELECTOR</span>
+              <div class="mt-1 flex items-center gap-1 bg-white border border-charcoal px-2 py-1">
+                <span class="material-symbols-outlined text-[13px] text-charcoal-muted">filter_alt</span>
+                <input id="query-filter-input" onkeyup="filterSidebarQueries(this.value)" type="text" placeholder="FILTER QUERIES..." class="bg-transparent text-[10px] uppercase outline-none w-full text-charcoal" aria-label="Filter inquiry chips" />
+              </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-2 space-y-1.5" id="query-chips-list">
+              <button onclick="sendQuickPrompt('Tell me about your custom vector search engine Synapse.')" class="query-chip w-full text-left p-2 bg-paper-card border border-charcoal hover:bg-white transition-all text-[11px] group shadow-[2px_2px_0px_#111111] flex items-center justify-between" aria-label="Ask about Synapse">
+                <span>01. Vector Engine (Synapse)</span>
+                <span class="text-bauhaus-red opacity-0 group-hover:opacity-100 font-bold">→</span>
+              </button>
+              <button onclick="sendQuickPrompt('What is your core technical stack and skills?')" class="query-chip w-full text-left p-2 bg-paper-card border border-charcoal hover:bg-white transition-all text-[11px] group shadow-[2px_2px_0px_#111111] flex items-center justify-between" aria-label="Ask about Skills">
+                <span>02. Tech Stack & Skills</span>
+                <span class="text-bauhaus-yellow opacity-0 group-hover:opacity-100 font-bold">→</span>
+              </button>
+              <button onclick="sendQuickPrompt('What is your internship experience at Infotact Solutions?')" class="query-chip w-full text-left p-2 bg-paper-card border border-charcoal hover:bg-white transition-all text-[11px] group shadow-[2px_2px_0px_#111111] flex items-center justify-between" aria-label="Ask about Infotact internship">
+                <span>03. Infotact Internship</span>
+                <span class="text-bauhaus-blue opacity-0 group-hover:opacity-100 font-bold">→</span>
+              </button>
+              <button onclick="sendQuickPrompt('What is your academic record at VIT and LeetCode benchmark?')" class="query-chip w-full text-left p-2 bg-paper-card border border-charcoal hover:bg-white transition-all text-[11px] group shadow-[2px_2px_0px_#111111] flex items-center justify-between" aria-label="Ask about Academics and LeetCode">
+                <span>04. VIT (9.3 CGPA) & DSA</span>
+                <span class="text-charcoal opacity-0 group-hover:opacity-100 font-bold">→</span>
+              </button>
+            </div>
+
+            <div class="p-2 border-t border-charcoal bg-paper text-[10px] space-y-1 text-charcoal-muted">
+              <div>ENGINE: <b class="text-charcoal">STREAMING AI TWIN</b></div>
+              <div>GROUNDING: <b class="text-bauhaus-red">STRICT RESUME KB</b></div>
+            </div>
+          </div>
+
+          <!-- Main Stream Area -->
+          <div class="flex-1 flex flex-col bg-paper/20">
+            <div class="flex-1 p-4 overflow-y-auto space-y-4" id="chat-stream" role="log" aria-live="polite">
+              <!-- Initial Bot Greeting -->
+              <div class="flex items-start gap-3 max-w-[88%] animate-fade-in">
+                <div class="w-8 h-8 border-2 border-charcoal bg-charcoal text-paper flex items-center justify-center font-mono font-bold text-[11px] flex-shrink-0">
+                  AI
+                </div>
+                <div class="flex flex-col gap-1 w-full">
+                  <div class="flex items-center gap-2 font-mono text-[10px]">
+                    <span class="font-bold text-charcoal uppercase">Satyam (AI Twin)</span>
+                    <span class="text-charcoal-muted">Just now</span>
+                  </div>
+                  <div class="p-3 border-2 border-charcoal bg-white text-charcoal shadow-[3px_3px_0px_#111111] font-sans text-[13px] leading-relaxed">
+                    Hello! I am Satyam's AI Twin, grounded strictly in his verified software engineering background, VIT coursework, and flagship platforms.
+                    <br/><br/>
+                    Ask me anything about his custom vector search engine <strong>Synapse</strong> (Java/Spring Boot), his AI platforms (<strong>Kore Logic</strong>, <strong>Aura Tender</strong>), or his <strong>9.3 CGPA</strong> at VIT!
+                  </div>
+                </div>
+              </div>
+
+              <!-- Typing indicator -->
+              <div id="typing-indicator" class="hidden items-start gap-3 max-w-[88%] animate-fade-in">
+                <div class="w-8 h-8 border-2 border-charcoal bg-charcoal text-paper flex items-center justify-center font-mono font-bold text-[11px] flex-shrink-0">
+                  AI
+                </div>
+                <div class="p-3 border-2 border-charcoal bg-white text-charcoal shadow-[3px_3px_0px_#111111] flex items-center gap-1.5 font-mono text-xs">
+                  <span class="w-2 h-2 bg-charcoal animate-bounce"></span>
+                  <span class="w-2 h-2 bg-charcoal animate-bounce [animation-delay:0.15s]"></span>
+                  <span class="w-2 h-2 bg-charcoal animate-bounce [animation-delay:0.3s]"></span>
+                  <span class="ml-2 text-charcoal-muted font-bold text-[10px]">GENERATING GROUNDED RESPONSE...</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Submission Form -->
+            <form onsubmit="handleChatSubmitForm(event)" class="p-3 bg-paper border-t-2 border-charcoal flex gap-2">
+              <input id="user-input" type="text" placeholder="Ask about Synapse, skills, internship, or academics..." class="flex-1 p-2 bg-white border-2 border-charcoal font-sans text-xs sm:text-sm text-charcoal outline-none focus:border-bauhaus-red shadow-[2px_2px_0px_#111111]" aria-label="Chat input" autocomplete="off" />
+              <button type="submit" class="px-4 py-2 bg-charcoal text-paper font-mono text-xs font-bold uppercase hover:bg-bauhaus-red transition-colors flex items-center gap-1 shadow-[2px_2px_0px_#111111]" aria-label="Send message">
+                <span>SEND</span>
+                <span class="material-symbols-outlined text-[15px]">send</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================================= -->
+      <!-- WINDOW 09: TERMINAL WINDOW (display:flex with green rain & retro CRT) -->
+      <!-- ======================================================================= -->
+      <div id="terminal-window" role="dialog" aria-label="Interactive Bash Terminal" class="hidden absolute top-12 left-2 sm:left-12 lg:left-40 w-[94%] max-w-[660px] h-[420px] bg-charcoal text-paper border-2 border-charcoal shadow-[8px_8px_0px_#dc2626] z-40 flex flex-col overflow-hidden font-mono text-[12px]" onclick="bringToFront('terminal')">
+        <div id="terminal-header" class="h-8 px-3 bg-charcoal-light border-b border-charcoal/50 flex items-center justify-between select-none shrink-0">
+          <div class="flex items-center gap-2">
+            <button onclick="closeApp('terminal')" class="w-3 h-3 bg-bauhaus-red border border-paper/40" aria-label="Close Terminal Window"></button>
+            <button onclick="minimizeApp('terminal')" class="w-3 h-3 bg-bauhaus-yellow border border-paper/40" aria-label="Minimize Terminal Window"></button>
+            <button onclick="toggleMaximize('terminal')" class="w-3 h-3 bg-bauhaus-blue border border-paper/40" aria-label="Maximize Terminal Window"></button>
+          </div>
+          <span class="text-[11px] text-paper/80 font-bold uppercase">bash - visitor@portfolio-os:~</span>
+          <span class="text-[10px] text-paper/40" id="terminal-mode-label">TTY1 [STD]</span>
+        </div>
+
+        <div class="flex-1 p-3 overflow-y-auto text-[12px] flex flex-col gap-1.5 relative" id="terminal-output">
+          <div class="text-bauhaus-yellow font-bold">PORTFOLIO OS // ARCHITECTURAL KERNEL [v2.4]</div>
+          <div class="text-paper/60">Type 'help' for commands, 'matrix' for green-rain animation, or 'retro' for amber CRT mode.</div>
+        </div>
+
+        <!-- Terminal Input Bar: Fixed at bottom of flex container -->
+        <div class="p-2.5 bg-charcoal-light border-t border-charcoal/50 flex items-center gap-2 shrink-0">
+          <span class="text-bauhaus-red font-bold text-[11px]">visitor@portfolio-os:~$</span>
+          <input id="terminal-input" type="text" class="flex-1 bg-transparent text-paper outline-none font-mono text-[12px]" onkeydown="handleTerminalKey(event)" aria-label="Terminal command line" autocomplete="off" spellcheck="false" />
+        </div>
+      </div>
+
+      <!-- ======================================================================= -->
+      <!-- DESKTOP TOAST NOTIFICATION -->
+      <!-- ======================================================================= -->
+      <div id="desktop-toast" class="fixed bottom-16 right-4 sm:right-8 z-50 p-3 bg-paper-card border-2 border-charcoal shadow-[6px_6px_0px_#111111] max-w-sm flex items-start gap-2.5 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none" role="status" aria-live="polite">
+        <span class="w-2.5 h-2.5 bg-bauhaus-red border border-charcoal shrink-0 mt-1"></span>
+        <div class="flex-1 font-mono text-xs text-charcoal">
+          <div class="font-bold text-[10px] text-charcoal-muted uppercase">SYSTEM BROADCAST</div>
+          <p id="toast-message" class="text-[11px] font-semibold mt-0.5 leading-snug">Welcome to Portfolio OS.</p>
+        </div>
+        <button onclick="dismissToast()" class="text-charcoal hover:text-bauhaus-red p-0.5" aria-label="Dismiss Notification">
+          <span class="material-symbols-outlined text-[14px]">close</span>
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- BOTTOM DOCK -->
+  <!-- ========================================================================= -->
+  <footer class="fixed bottom-3 left-0 right-0 z-50 flex justify-center pointer-events-none">
+    <div class="pointer-events-auto px-3 py-1.5 bg-paper-card border-2 border-charcoal shadow-[4px_4px_0px_#111111] flex items-center gap-1">
+      <nav class="flex items-center gap-1" aria-label="Desktop Dock">
+        <button class="group relative flex flex-col items-center p-2 border border-transparent hover:border-charcoal hover:bg-paper" onclick="focusApp('chat')" title="AI Copilot (Satyam Twin)" aria-label="Open AI Copilot Window">
+          <span class="material-symbols-outlined text-charcoal text-[22px]">smart_toy</span>
+          <span class="dock-dot w-1.5 h-1.5 bg-bauhaus-red mt-1" id="dock-dot-chat"></span>
+        </button>
+        <button class="group relative flex flex-col items-center p-2 border border-transparent hover:border-charcoal hover:bg-paper" onclick="focusApp('about')" title="01. About Me Dossier" aria-label="Open About Me Window">
+          <span class="material-symbols-outlined text-charcoal text-[22px]">badge</span>
+          <span class="dock-dot w-1.5 h-1.5 bg-transparent mt-1" id="dock-dot-about"></span>
+        </button>
+        <button class="group relative flex flex-col items-center p-2 border border-transparent hover:border-charcoal hover:bg-paper" onclick="focusApp('skills')" title="02. Skills Matrix" aria-label="Open Skills Matrix Window">
+          <span class="material-symbols-outlined text-charcoal text-[22px]">build_circle</span>
+          <span class="dock-dot w-1.5 h-1.5 bg-transparent mt-1" id="dock-dot-skills"></span>
+        </button>
+        <button class="group relative flex flex-col items-center p-2 border border-transparent hover:border-charcoal hover:bg-paper" onclick="focusApp('projects')" title="03. Projects Explorer" aria-label="Open Projects Explorer Window">
+          <span class="material-symbols-outlined text-charcoal text-[22px]">folder_special</span>
+          <span class="dock-dot w-1.5 h-1.5 bg-transparent mt-1" id="dock-dot-projects"></span>
+        </button>
+        <button class="group relative flex flex-col items-center p-2 border border-transparent hover:border-charcoal hover:bg-paper" onclick="focusApp('journey')" title="04. Career Journey" aria-label="Open Career Journey Window">
+          <span class="material-symbols-outlined text-charcoal text-[22px]">explore</span>
+          <span class="dock-dot w-1.5 h-1.5 bg-transparent mt-1" id="dock-dot-journey"></span>
+        </button>
+        <button class="group relative flex flex-col items-center p-2 border border-transparent hover:border-charcoal hover:bg-paper" onclick="focusApp('resume')" title="05. Resume Document Viewer" aria-label="Open Resume Window">
+          <span class="material-symbols-outlined text-charcoal text-[22px]">picture_as_pdf</span>
+          <span class="dock-dot w-1.5 h-1.5 bg-transparent mt-1" id="dock-dot-resume"></span>
+        </button>
+        <button class="group relative flex flex-col items-center p-2 border border-transparent hover:border-charcoal hover:bg-paper" onclick="focusApp('contact')" title="06. Contact Dispatch" aria-label="Open Contact Dispatch Window">
+          <span class="material-symbols-outlined text-charcoal text-[22px]">alternate_email</span>
+          <span class="dock-dot w-1.5 h-1.5 bg-transparent mt-1" id="dock-dot-contact"></span>
+        </button>
+        <div class="w-px h-6 bg-charcoal mx-1"></div>
+        <button class="group relative flex flex-col items-center p-2 border border-transparent hover:border-charcoal hover:bg-paper" onclick="openTerminal()" title="07. Bash Terminal" aria-label="Open Terminal Shell Window">
+          <span class="material-symbols-outlined text-charcoal text-[22px]">terminal</span>
+          <span class="dock-dot w-1.5 h-1.5 bg-transparent mt-1" id="dock-dot-terminal"></span>
+        </button>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- SCRIPT 1: APPLICATION LOGIC, DATA OBJECT, CONTROLLERS & STREAMING ENGINE -->
+  <!-- ========================================================================= -->
+  <script>
+    // =========================================================================
+    // 1. CONFIG & DATA (Single Source of Truth from Satyam_Resume_FS.pdf)
+    // =========================================================================
+    const CONFIG = {
+      name: "Satyam",
+      displayName: "Satyam",
+      headline: "Software Engineer | AI/ML & Distributed Systems",
+      email: "satyam12303@gmail.com",
+      phone: "+91 7465922333", // Canonical per task instruction
+      location: "Vellore / Uttar Pradesh, India",
+      github: "https://github.com/Satyam-git-dotcom",
+      linkedin: "https://www.linkedin.com/in/satyam-dot-com/",
+      resumePath: "./Satyam_Resume_FS.pdf",
+      cgpa: "9.3/10.0",
+      degree: "B.Tech in Computer Science & Engineering (AI/ML)",
+      institution: "Vellore Institute of Technology (VIT)",
+      educationDates: "2023 — 2027",
+      graduationYear: "2027",
+      status: "Pre-Final Year Student // Open for 2026/2027 Roles"
+    };
+
+    const DATA = {
+      projects: [
+        {
+          id: "synapse",
+          title: "Synapse // Custom LLM/RAG Vector Engine",
+          category: "ai",
+          tag: "FLAGSHIP // VECTOR SEARCH",
+          stack: ["Java", "Spring Boot", "Ollama", "HNSW", "KD-Tree", "REST APIs"],
+          description: "Implemented HNSW and KD-Tree vector indexing algorithms from scratch in Java & Spring Boot, reaching sub-millisecond search times on benchmark endpoints. Architected an offline-first RAG chatbot exposing 14 REST API endpoints for vector search, document ingestion, and LLM Q&A. Built a dual embedding pipeline supporting 16-dim demo vectors and 768-dim semantic embeddings via Ollama nomic-embed-text.",
+          metrics: "Latency: <1ms // 14 REST Endpoints // Dual Embeddings (16/768-dim)"
+        },
+        {
+          id: "kore-logic",
+          title: "Kore Logic // AI Career & Learning Platform",
+          category: "fullstack",
+          tag: "FULL-STACK // AI MENTOR",
+          stack: ["Next.js 15", "FastAPI", "PostgreSQL", "LangChain", "ChromaDB", "SQLAlchemy"],
+          description: "Full-stack career acceleration platform with 19 REST API endpoints and a normalized PostgreSQL schema across 10 core entity tables via SQLAlchemy. Constructed a RAG pipeline (LangChain, ChromaDB, GPT-4o) powering a mentor chatbot achieving <200ms latency on semantic searches, and implemented a cosine-similarity matching engine over skill embeddings for internship match scores.",
+          metrics: "Latency: <200ms // 19 REST Endpoints // 10 Normalized DB Tables"
+        },
+        {
+          id: "aura-tender",
+          title: "Aura Tender // AI Procurement Compliance Platform",
+          category: "ai",
+          tag: "AI COMPLIANCE // MULTIMODAL",
+          stack: ["Python", "FastAPI", "React", "Gemini 1.5 Pro", "RAG"],
+          description: "AI procurement compliance evaluation platform automating multimodal document analysis, cutting manual review effort by over 80% per tender. Deployed a zero-shot Gemini 1.5 Pro extraction pipeline that cross-references bidder evidence against checklists, and designed a human-in-the-loop flow flagging ambiguous documents for auditability.",
+          metrics: "Review Reduction: >80% // Multimodal Analysis // Zero-Shot Gemini 1.5 Pro"
+        }
+      ],
+      experience: [
+        {
+          company: "Infotact Solutions",
+          role: "Data Associate L1 (Intern)",
+          period: "Oct 2026 — Present",
+          location: "Remote / Hybrid",
+          bullets: [
+            "Collaborate with cross-functional teams to turn project goals into data-driven solutions using statistical and machine learning techniques.",
+            "Clean and preprocess structured and unstructured data; build, tune, validate, and deploy ML models with Python, scikit-learn, and TensorFlow.",
+            "Perform Exploratory Data Analysis (EDA) and visualize insights with Matplotlib and Seaborn; document methods and code for reproducibility."
+          ],
+          tags: ["PYTHON", "SCIKIT-LEARN", "TENSORFLOW", "MATPLOTLIB", "PANDAS"]
+        }
+      ],
+      education: {
+        institution: "Vellore Institute of Technology (VIT)",
+        degree: "B.Tech in Computer Science & Engineering (AI/ML)",
+        dates: "2023 — 2027",
+        cgpa: "9.3 / 10.0 CGPA",
+        courses: "Data Structures & Algorithms, Operating Systems, Computer Networks, Database Management Systems, System Design, AI & Machine Learning."
+      },
+      skills: [
+        // AI / Vector
+        { name: "RAG Pipelines & Semantic Search", category: "ai", desc: "LangChain, ChromaDB, Vector Embeddings", level: 5 },
+        { name: "Custom Vector Indexing", category: "ai", desc: "HNSW & KD-Tree from scratch in Java", level: 5 },
+        { name: "Local & Cloud LLMs", category: "ai", desc: "Ollama (nomic-embed), Amazon Bedrock, Gemini 1.5 Pro", level: 5 },
+        { name: "Machine Learning & NLP", category: "ai", desc: "Scikit-Learn, TensorFlow, NLTK, Data Preprocessing", level: 4 },
+        
+        // Backend
+        { name: "Java & Spring Boot", category: "backend", desc: "Enterprise REST APIs, Spring Data, Microservices", level: 5 },
+        { name: "Python & FastAPI / Flask", category: "backend", desc: "Async/await, Pydantic, OpenAPI schemas", level: 5 },
+        { name: "Node.js & Express", category: "backend", desc: "Next.js 15, Full-stack API routes, SSE streaming", level: 4 },
+        { name: "API Engineering & Contracts", category: "backend", desc: "RESTful architecture (14-19 endpoints), JWT Auth", level: 5 },
+
+        // Cloud & Tools
+        { name: "AWS Serverless & Bedrock", category: "cloud", desc: "Lambda, API Gateway HTTP API, S3, Bedrock Runtime", level: 4 },
+        { name: "Docker & Containerization", category: "cloud", desc: "Multi-stage Dockerfiles, Container networks", level: 4 },
+        { name: "Git & GitHub CI Automation", category: "cloud", desc: "Branching workflows, Continuous Integration", level: 5 },
+        { name: "Linux CLI & Bash Scripting", category: "cloud", desc: "Shell automation, file streams, POSIX tools", level: 4 },
+
+        // Databases & Core CS
+        { name: "Data Structures & Algorithms", category: "db", desc: "200+ LeetCode problems (Graphs, DP, Trees)", level: 5 },
+        { name: "PostgreSQL & MySQL", category: "db", desc: "Relational schemas, SQLAlchemy, 10-table models", level: 5 },
+        { name: "ChromaDB & Vector Stores", category: "db", desc: "Vector indexing, Cosine similarity search", level: 4 },
+        { name: "OOP & Clean Architecture", category: "db", desc: "SOLID principles, Design Patterns, Modularity", level: 5 }
+      ],
+      randomFacts: [
+        "The first computer bug was an actual moth found trapped inside the Harvard Mark II relay by Grace Hopper's team in 1947.",
+        "Ada Lovelace published the first machine algorithm in 1843 for Charles Babbage's Analytical Engine, becoming the world's first programmer.",
+        "Margaret Hamilton coined the term 'Software Engineering' while architecting Apollo 11 guidance code, which ran on only 4KB of RAM.",
+        "Vector Space Models for semantic information retrieval were pioneered in the 1960s by Gerard Salton at Cornell University.",
+        "Claude Shannon proved in 1937 that electrical switches could evaluate Boolean algebra, linking mathematics directly to digital computing.",
+        "In 1971, Ray Tomlinson sent the first ARPANET network email and chose '@' to separate user identity from their host computer.",
+        "Edsger W. Dijkstra designed his famous shortest-path algorithm in 1956 in about 20 minutes while having coffee with his fiancée."
+      ]
+    };
+
+    // =========================================================================
+    // 2. XSS SANITIZATION (Task 1.2)
+    // =========================================================================
+    function escapeHtml(str) {
+      if (typeof str !== 'string') return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // =========================================================================
+    // 3. TOAST & CLOCK
+    // =========================================================================
+    function updateClock() {
+      const el = document.getElementById('system-clock');
+      if (!el) return;
+      const now = new Date();
+      const options = { weekday: 'short', hour: 'numeric', minute: '2-digit', hour12: true };
+      el.innerText = now.toLocaleDateString('en-US', options).toUpperCase();
+    }
+    setInterval(updateClock, 10000);
+    updateClock();
+
+    function triggerToast(message) {
+      const toast = document.getElementById('desktop-toast');
+      const text = document.getElementById('toast-message');
+      if (toast && text) {
+        text.innerText = message;
+        toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+        toast.classList.add('opacity-100', 'translate-y-0');
+      }
+    }
+
+    function dismissToast() {
+      const toast = document.getElementById('desktop-toast');
+      if (toast) {
+        toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+      }
+    }
+
+    // =========================================================================
+    // 4. WINDOW MANAGEMENT (Task 1.7, 1.8, 1.9, Task 3)
+    // =========================================================================
+    let topZ = 40;
+    const ALL_APPS = ['chat', 'about', 'skills', 'projects', 'journey', 'resume', 'contact', 'finder', 'terminal'];
+
+    function updateDockIndicators() {
+      ALL_APPS.forEach(id => {
+        const win = document.getElementById(id + '-window');
+        const dot = document.getElementById('dock-dot-' + id);
+        if (dot) {
+          const isOpen = win && !win.classList.contains('hidden');
+          dot.className = isOpen 
+            ? 'dock-dot w-1.5 h-1.5 bg-charcoal mt-1' 
+            : 'dock-dot w-1.5 h-1.5 bg-transparent mt-1';
+        }
+      });
+    }
+
+    function bringToFront(appId) {
+      topZ += 1;
+      ALL_APPS.forEach(name => {
+        const w = document.getElementById(name + '-window');
+        if (!w) return;
+        w.classList.remove('window-active');
+        w.classList.add('window-inactive');
+      });
+
+      const active = document.getElementById(appId + '-window');
+      if (active) {
+        active.style.zIndex = topZ;
+        active.classList.remove('window-inactive');
+        active.classList.add('window-active');
+      }
+      updateDockIndicators();
+    }
+
+    function focusApp(appId) {
+      const active = document.getElementById(appId + '-window');
+      if (active) {
+        active.classList.remove('hidden');
+        // Accessibility: move focus inside window (Task 4)
+        active.setAttribute('tabindex', '-1');
+        active.focus();
+      }
+      bringToFront(appId);
+      if (appId === 'chat') {
+        const chatInput = document.getElementById('user-input');
+        if (chatInput) chatInput.focus();
+      } else if (appId === 'terminal') {
+        const termInput = document.getElementById('terminal-input');
+        if (termInput) termInput.focus();
+      }
+      updateDockIndicators();
+    }
+
+    // Task 1.7: Toast shown ONLY on minimize (yellow button), not close (red button)
+    function minimizeApp(appId) {
+      const el = document.getElementById(appId + '-window');
+      if (el) {
+        el.classList.add('hidden');
+        triggerToast(`Window ${appId.toUpperCase()} minimized to dock.`);
+      }
+      updateDockIndicators();
+    }
+
+    function closeApp(appId) {
+      const el = document.getElementById(appId + '-window');
+      if (el) {
+        el.classList.add('hidden');
+        // Close does NOT emit minimize toast (Task 1.7)
+      }
+      updateDockIndicators();
+    }
+
+    // Task 1.8: Smooth maximize/restore with Web Animations API
+    const windowMaxStates = {};
+    function toggleMaximize(appId) {
+      const el = document.getElementById(appId + '-window');
+      if (!el) return;
+
+      const isMax = windowMaxStates[appId];
+      const startRect = el.getBoundingClientRect();
+
+      if (!isMax) {
+        // Save current coordinates
+        windowMaxStates[appId] = {
+          top: el.style.top,
+          left: el.style.left,
+          width: el.style.width,
+          height: el.style.height,
+          position: el.style.position
+        };
+
+        const targetTop = 38;
+        const targetLeft = 8;
+        const targetWidth = window.innerWidth - 16;
+        const targetHeight = window.innerHeight - 84;
+
+        el.animate([
+          { top: startRect.top + 'px', left: startRect.left + 'px', width: startRect.width + 'px', height: startRect.height + 'px' },
+          { top: targetTop + 'px', left: targetLeft + 'px', width: targetWidth + 'px', height: targetHeight + 'px' }
+        ], { duration: 240, easing: 'cubic-bezier(.16, 1, .3, 1)' }).onfinish = () => {
+          el.style.position = 'fixed';
+          el.style.top = targetTop + 'px';
+          el.style.left = targetLeft + 'px';
+          el.style.width = targetWidth + 'px';
+          el.style.height = targetHeight + 'px';
+          el.style.maxWidth = 'none';
+          el.style.maxHeight = 'none';
+        };
+      } else {
+        const saved = windowMaxStates[appId];
+        delete windowMaxStates[appId];
+
+        el.style.maxWidth = '';
+        el.style.maxHeight = '';
+        el.style.position = saved.position || 'absolute';
+        el.style.top = saved.top;
+        el.style.left = saved.left;
+        el.style.width = saved.width;
+        el.style.height = saved.height;
+      }
+    }
+
+    // Task 1.9: Draggable headers with pointer events (touch/mouse), clamping & <768px check
+    function makeDraggable(windowEl, headerEl) {
+      if (!windowEl || !headerEl) return;
+      let isDragging = false;
+      let startX = 0, startY = 0, origX = 0, origY = 0;
+
+      headerEl.addEventListener('pointerdown', (e) => {
+        // On screens narrower than 768px, disable dragging (Task 1.9)
+        if (window.innerWidth < 768) return;
+        if (['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) return;
+
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        const rect = windowEl.getBoundingClientRect();
+        origX = rect.left;
+        origY = rect.top;
+
+        windowEl.style.position = 'fixed';
+        windowEl.style.left = origX + 'px';
+        windowEl.style.top = origY + 'px';
+        windowEl.style.margin = '0';
+        windowEl.classList.add('is-dragging');
+        headerEl.setPointerCapture(e.pointerId);
+        bringToFront(windowEl.id.replace('-window', ''));
+      });
+
+      headerEl.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        const winWidth = windowEl.offsetWidth;
+
+        // Viewport boundary clamping
+        const clampedX = Math.max(8, Math.min(window.innerWidth - winWidth - 8, origX + dx));
+        const clampedY = Math.max(36, Math.min(window.innerHeight - 80, origY + dy));
+
+        windowEl.style.left = clampedX + 'px';
+        windowEl.style.top = clampedY + 'px';
+      });
+
+      const stopDrag = (e) => {
+        if (isDragging) {
+          isDragging = false;
+          windowEl.classList.remove('is-dragging');
+          try { headerEl.releasePointerCapture(e.pointerId); } catch (_) {}
+        }
+      };
+
+      headerEl.addEventListener('pointerup', stopDrag);
+      headerEl.addEventListener('pointercancel', stopDrag);
+    }
+
+    // Keyboard shortcut: Escape closes frontmost window (Task 4)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        let highest = null;
+        let maxZ = -1;
+        ALL_APPS.forEach(id => {
+          const w = document.getElementById(id + '-window');
+          if (w && !w.classList.contains('hidden')) {
+            const z = parseInt(w.style.zIndex || '0', 10);
+            if (z > maxZ) { maxZ = z; highest = id; }
+          }
+        });
+        if (highest) closeApp(highest);
+      }
+    });
+
+    // =========================================================================
+    // 5. CHATBOT STREAMING & KNOWLEDGE ENGINE (Task 1.1, 1.2, 1.6, Task 3)
+    // =========================================================================
+    // Default to "" per Task 1.1. Set to your AWS API Gateway/Lambda endpoint to connect to live cloud Bedrock:
+    const AWS_LAMBDA_ENDPOINT = ""; 
+    const conversationHistory = [];
+
+    // Token-by-token typewriter streaming engine (User requirement)
+    function streamBotResponse(fullHtml, onDone) {
+      const stream = document.getElementById('chat-stream');
+      const indicator = document.getElementById('typing-indicator');
+      if (indicator) {
+        indicator.classList.add('hidden');
+        indicator.classList.remove('flex');
+      }
+
+      const botBubble = document.createElement('div');
+      botBubble.className = 'flex items-start gap-3 max-w-[88%] animate-fade-in';
+      botBubble.innerHTML = `
+        <div class="w-8 h-8 border-2 border-charcoal bg-charcoal text-paper flex items-center justify-center font-mono font-bold text-[11px] flex-shrink-0">
+          AI
+        </div>
+        <div class="flex flex-col gap-1 w-full">
+          <div class="flex items-center gap-2 font-mono text-[10px]">
+            <span class="font-bold text-charcoal uppercase">Satyam (AI Twin)</span>
+            <span class="text-charcoal-muted">Just now</span>
+          </div>
+          <div class="bot-content p-3 border-2 border-charcoal bg-white text-charcoal shadow-[3px_3px_0px_#111111] font-sans text-[13px] leading-relaxed">
+          </div>
+        </div>
+      `;
+      stream.appendChild(botBubble);
+      const contentEl = botBubble.querySelector('.bot-content');
+      stream.scrollTop = stream.scrollHeight;
+
+      // Tokenize: split into HTML tags and text words without splitting markup
+      const tokens = fullHtml.match(/<[^>]+>|[^<>\s]+|\s+/g) || [fullHtml];
+      let tokenIdx = 0;
+      let accumulated = '';
+
+      const interval = setInterval(() => {
+        for (let i = 0; i < 2 && tokenIdx < tokens.length; i++) {
+          accumulated += tokens[tokenIdx++];
+        }
+        contentEl.innerHTML = accumulated;
+        stream.scrollTop = stream.scrollHeight;
+
+        if (tokenIdx >= tokens.length) {
+          clearInterval(interval);
+          conversationHistory.push({ sender: 'AI', text: fullHtml.replace(/<[^>]*>?/gm, '') });
+          if (onDone) onDone();
+        }
+      }, 20);
+    }
+
+    // Task 1.6: Refactored sendMessage(text) called by form AND quick prompts
+    async function sendMessage(rawText) {
+      const userText = (rawText || '').trim();
+      if (!userText) return;
+
+      const input = document.getElementById('user-input');
+      if (input) input.value = '';
+
+      const stream = document.getElementById('chat-stream');
+      const indicator = document.getElementById('typing-indicator');
+
+      // Task 1.2: Sanitize user input before innerHTML insertion
+      const escapedText = escapeHtml(userText);
+
+      const userBubble = document.createElement('div');
+      userBubble.className = 'flex items-start gap-3 max-w-[85%] self-end flex-row-reverse animate-fade-in';
+      userBubble.innerHTML = `
+        <div class="w-8 h-8 border-2 border-charcoal bg-bauhaus-red text-white flex items-center justify-center font-mono font-bold text-[11px] flex-shrink-0">
+          YOU
+        </div>
+        <div class="flex flex-col items-end gap-1">
+          <div class="flex items-center gap-2 font-mono text-[10px]">
+            <span class="text-charcoal-muted">Just now</span>
+            <span class="font-bold text-charcoal uppercase">You</span>
+          </div>
+          <div class="p-3 border-2 border-charcoal bg-bauhaus-red text-white shadow-[3px_3px_0px_#111111] font-sans text-[13px] font-semibold leading-relaxed">
+            ${escapedText}
+          </div>
+        </div>
+      `;
+      stream.appendChild(userBubble);
+      stream.scrollTop = stream.scrollHeight;
+      conversationHistory.push({ sender: 'YOU', text: userText });
+
+      // Show typing indicator
+      if (indicator) {
+        indicator.classList.remove('hidden');
+        indicator.classList.add('flex');
+        stream.appendChild(indicator);
+        stream.scrollTop = stream.scrollHeight;
+      }
+
+      // Task 1.1: AWS Bedrock invocation with 15s AbortController and graceful fallback
+      if (AWS_LAMBDA_ENDPOINT) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        try {
+          const res = await fetch(AWS_LAMBDA_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userText, history: conversationHistory }),
+            signal: controller.signal
+          });
+          clearTimeout(timeoutId);
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.response) {
+              const formatted = data.response.replace(/\n/g, '<br/>');
+              streamBotResponse(formatted);
+              return;
+            }
+          }
+        } catch (err) {
+          console.warn("Bedrock endpoint unreachable or timed out, activating local engine:", err);
+        }
+      }
+
+      // Local Grounded Knowledge Engine (Task 3)
+      setTimeout(() => {
+        const q = userText.toLowerCase().trim();
+        let replyHtml = '';
+
+        // 1. Greetings & Pleasantries
+        if (q.match(/^(hi|hii|hiii|hello|hey|heyy|greetings|howdy|good\s+(morning|afternoon|evening|day))(\s|!|\?|$)/i) || q.includes('how are you') || q.includes('how do you do') || q.includes("what's up") || q.includes('whats up')) {
+          replyHtml = `Hello! I am doing great, thank you for asking. I am Satyam's official digital twin and portfolio copilot.<br/><br/>
+          I can walk you through Satyam's custom vector engine (<strong>Synapse</strong>), full-stack AI platforms (<strong>Kore Logic</strong>, <strong>Aura Tender</strong>), his <strong>9.3 CGPA at VIT</strong>, ML work at <strong>Infotact Solutions</strong>, or answer behavioral and technical questions.<br/><br/>
+          What would you like to explore?`;
+        }
+        // 2. Self-Introduction / Overview
+        else if (q.includes('who are you') || q.includes('what can you do') || q.includes('introduce') || q.includes('about yourself') || q.includes('tell me about you') || q.includes('walk me through') || q.includes('overview')) {
+          replyHtml = `I represent <strong>Satyam</strong>, a pre-final year Computer Science & Engineering student at <strong>VIT</strong> (9.3 CGPA) specializing in AI/ML and distributed backend architectures.<br/><br/>
+          • <strong>Flagship Systems:</strong> Built <em>Synapse</em>, a custom HNSW/KD-Tree vector search engine in Java & Spring Boot (&lt;1ms query search time).<br/>
+          • <strong>Industry Experience:</strong> Data Associate intern at <em>Infotact Solutions</em> training and benchmarking predictive ML models.<br/>
+          • <strong>Full-Stack & Cloud:</strong> Production proficiency with Java, Python, FastAPI, Next.js 15, PostgreSQL, and AWS Bedrock.<br/>
+          • <strong>Algorithmic Rigor:</strong> 200+ LeetCode problems solved with deep focus on algorithmic efficiency.`;
+        }
+        // 3. Behavioral: Why Hire / Strengths
+        else if (q.includes('why hire') || q.includes('why should we hire') || q.includes('strength') || q.includes('why choose') || q.includes('why satyam')) {
+          replyHtml = `Key reasons to bring Satyam onto your engineering team:<br/><br/>
+          1. <strong>Strong Theoretical CS Core:</strong> 9.3 CGPA at VIT, 200+ solved algorithmic challenges, and hands-on mastery of data structures (implemented HNSW graphs and KD-Trees from scratch).<br/>
+          2. <strong>End-to-End Delivery:</strong> Builds scalable systems from database schema design and API endpoints up to responsive frontends and RAG pipelines.<br/>
+          3. <strong>High Adaptability:</strong> Demonstrated rapid impact during his internship at Infotact Solutions and through independent production architectures.<br/>
+          4. <strong>Engineering Craftsmanship:</strong> Passionate about clean code, low-latency SLAs, robust telemetry, and measurable performance.`;
+        }
+        // 4. Behavioral: Challenges / Pressure / Tight Deadlines
+        else if (q.includes('challenge') || q.includes('pressure') || q.includes('deadline') || q.includes('difficult') || q.includes('conflict') || q.includes('handle stress')) {
+          replyHtml = `How Satyam approaches engineering challenges and high-pressure situations:<br/><br/>
+          • <strong>Systematic Decomposition:</strong> Deconstructs complex, ambiguous problems into testable modular units, diagnosing bottlenecks with telemetry and profiling rather than guessing.<br/>
+          • <strong>Concrete Example:</strong> When building Synapse's graph indexing, query latency fluctuated under scale. Satyam systematically benchmarked memory hopping parameters and cosine distance optimizations to lock in sub-millisecond search times.<br/>
+          • <strong>Proactive Communication:</strong> Under tight deadlines, he aligns on core deliverable milestones early and maintains continuous visibility with team members.`;
+        }
+        // 5. Behavioral: Engineering Philosophy / Working Style
+        else if (q.includes('philosophy') || q.includes('working style') || q.includes('work style') || q.includes('culture') || q.includes('values')) {
+          replyHtml = `Satyam's engineering philosophy is anchored in the Bauhaus tenet: <strong>"Form follows function"</strong>.<br/><br/>
+          • <strong>Simplicity over Over-Engineering:</strong> Eliminates bloated abstractions and dependencies in favor of clean, maintainable, and type-safe architecture.<br/>
+          • <strong>Observability & Performance:</strong> Designs systems with measurable latency targets, automated validation, and clear error boundaries.<br/>
+          • <strong>Collaborative Culture:</strong> Thrives in high-trust, feedback-driven teams with thorough code reviews and shared ownership.`;
+        }
+        // 6. Behavioral: Goals / Relocation / Availability
+        else if (q.includes('goal') || q.includes('looking for') || q.includes('relocation') || q.includes('remote') || q.includes('relocate') || q.includes('available') || q.includes('availability')) {
+          replyHtml = `Satyam's Career Goals & Availability:<br/><br/>
+          • <strong>Target Roles:</strong> Software Engineering Internships and Full-Time roles (2026/2027) in Backend Engineering, AI/ML Systems, or Distributed Infrastructure.<br/>
+          • <strong>Location & Flexibility:</strong> Based in India (Vellore / Uttar Pradesh), and <strong>fully open to Remote, Hybrid, or On-Site relocation</strong> globally.<br/>
+          • <strong>Immediate Value:</strong> Ready to contribute from day one on high-throughput backend services and data-intensive pipelines.`;
+        }
+        // 7. Projects & Deep-Dives
+        else if (q.includes('synapse') || q.includes('vector') || (q.includes('project') && (q.includes('best') || q.includes('flagship')))) {
+          const syn = DATA.projects[0];
+          replyHtml = `<strong>${syn.title}</strong><br/><br/>
+          Satyam built this custom vector indexing engine from scratch in <strong>Java & Spring Boot</strong>:<br/>
+          • <strong>Algorithms:</strong> Custom HNSW & KD-Tree data structures with &lt;1ms query search time.<br/>
+          • <strong>Endpoints:</strong> 14 REST endpoints for ingestion, vector search, and LLM Q&A.<br/>
+          • <strong>Embeddings:</strong> Dual pipeline with 16-dim demo vectors and 768-dim semantic embeddings via Ollama nomic-embed-text.<br/><br/>
+          <em>Click on "03. Projects" to inspect the full architecture!</em>`;
+        } else if (q.includes('kore') || q.includes('career') || q.includes('mentor')) {
+          const kor = DATA.projects[1];
+          replyHtml = `<strong>${kor.title}</strong><br/><br/>
+          Built in <strong>Next.js 15, FastAPI, LangChain, and PostgreSQL</strong>:<br/>
+          • Full-stack platform with 19 REST API endpoints and 10 core entity tables via SQLAlchemy.<br/>
+          • RAG pipeline with ChromaDB and mentor chatbot with &lt;200ms latency.<br/>
+          • Real-time cosine similarity matching engine over skill embeddings for internship match scores.`;
+        } else if (q.includes('aura') || q.includes('tender') || q.includes('procure')) {
+          const aura = DATA.projects[2];
+          replyHtml = `<strong>${aura.title}</strong><br/><br/>
+          AI procurement compliance evaluation platform in <strong>Python, FastAPI, React, and Gemini 1.5 Pro</strong>:<br/>
+          • Automates multimodal document analysis, cutting manual review effort by over 80% per tender.<br/>
+          • Zero-shot Gemini 1.5 Pro extraction pipeline cross-referencing bidder evidence against compliance checklists.<br/>
+          • Human-in-the-loop audit verification workflow.`;
+        } else if (q.includes('project')) {
+          replyHtml = `Satyam has built 3 flagship systems (all canonical from his resume):<br/><br/>
+          1. <strong>Synapse</strong>: Custom HNSW/KD-Tree vector engine in Java & Spring Boot (&lt;1ms query latency).<br/>
+          2. <strong>Kore Logic</strong>: Full-stack AI career platform in Next.js 15, FastAPI, and LangChain.<br/>
+          3. <strong>Aura Tender</strong>: AI procurement compliance platform with Gemini 1.5 Pro reducing review effort by &gt;80%.<br/><br/>
+          Ask me about any specific project to inspect its architecture!`;
+        } else if (q.includes('skill') || q.includes('stack') || q.includes('tech') || q.includes('language')) {
+          replyHtml = `Satyam's canonical technical competencies:<br/><br/>
+          • <strong>Languages:</strong> Java, Python, JavaScript, SQL<br/>
+          • <strong>Core CS:</strong> Data Structures & Algorithms (200+ LeetCode solved), System Design, OOP, DBMS<br/>
+          • <strong>Backend & Frameworks:</strong> Spring Boot, FastAPI, Node.js/Express, Next.js 15, React, REST APIs<br/>
+          • <strong>AI & Vector Search:</strong> RAG, Vector Search, HNSW, KD-Tree, LangChain, ChromaDB, Scikit-Learn, TensorFlow, NLTK<br/>
+          • <strong>Cloud & Tools:</strong> AWS Bedrock, Docker, Git, CI/CD, Postman`;
+        } else if (q.includes('intern') || q.includes('infotact') || q.includes('experience') || q.includes('work')) {
+          const exp = DATA.experience[0];
+          replyHtml = `Satyam is currently a <strong>${exp.role}</strong> at <strong>${exp.company}</strong> (${exp.period}):<br/><br/>
+          • Collaborates with cross-functional teams to build data-driven solutions using statistical & machine learning models.<br/>
+          • Preprocesses structured and unstructured datasets; builds, tunes, and validates ML models using Python, scikit-learn, and TensorFlow.<br/>
+          • Conducts Exploratory Data Analysis (EDA) and visualizes insights with Matplotlib and Seaborn.`;
+        } else if (q.includes('cgpa') || q.includes('vit') || q.includes('college') || q.includes('education') || q.includes('academic') || q.includes('gpa')) {
+          replyHtml = `Satyam's Academic Profile at <strong>${CONFIG.institution}</strong>:<br/><br/>
+          • <strong>Degree:</strong> ${CONFIG.degree}<br/>
+          • <strong>Cumulative GPA:</strong> <span class="text-bauhaus-red font-bold">${CONFIG.cgpa}</span><br/>
+          • <strong>Timeline:</strong> ${CONFIG.educationDates} (${CONFIG.status})<br/>
+          • <strong>Algorithmic Benchmark:</strong> Solved 200+ LeetCode & GFG algorithmic problems.`;
+        } else if (q.includes('contact') || q.includes('email') || q.includes('phone') || q.includes('reach') || q.includes('hire')) {
+          replyHtml = `You can connect with Satyam directly via:<br/><br/>
+          • <strong>Email:</strong> <a href="mailto:${CONFIG.email}" class="text-bauhaus-blue underline">${CONFIG.email}</a><br/>
+          • <strong>Phone:</strong> ${CONFIG.phone}<br/>
+          • <strong>Location:</strong> ${CONFIG.location}<br/>
+          • <strong>LinkedIn:</strong> <a href="${CONFIG.linkedin}" target="_blank" class="text-bauhaus-blue underline">linkedin.com/in/satyam-dot-com</a><br/>
+          • <strong>GitHub:</strong> <a href="${CONFIG.github}" target="_blank" class="text-bauhaus-blue underline">github.com/Satyam-git-dotcom</a>`;
+        } else {
+          // User requirement: When answer is not present, share an interesting random computer science fact!
+          const fact = DATA.randomFacts[Math.floor(Math.random() * DATA.randomFacts.length)];
+          replyHtml = `I couldn't find that in Satyam's verified engineering portfolio, but here is an interesting computer science fact for you:<br/><br/>
+          💡 <em>"${fact}"</em><br/><br/>
+          Feel free to ask about Satyam's custom vector engine <strong>Synapse</strong>, his full-stack platforms, his <strong>9.3 CGPA at VIT</strong>, or his experience at <strong>Infotact Solutions</strong>!`;
+        }
+
+        streamBotResponse(replyHtml);
+      }, 650);
+    }
+
+    function handleChatSubmitForm(e) {
+      e.preventDefault();
+      const input = document.getElementById('user-input');
+      if (input) sendMessage(input.value);
+    }
+
+    function sendQuickPrompt(promptText) {
+      sendMessage(promptText);
+      focusApp('chat');
+    }
+
+    // Task 1.5: clearChat() resets stream to greeting, clears conversationHistory, shows toast
+    function clearChat() {
+      const stream = document.getElementById('chat-stream');
+      if (stream) {
+        stream.innerHTML = `
+          <div class="flex items-start gap-3 max-w-[88%] animate-fade-in">
+            <div class="w-8 h-8 border-2 border-charcoal bg-charcoal text-paper flex items-center justify-center font-mono font-bold text-[11px] flex-shrink-0">
+              AI
+            </div>
+            <div class="flex flex-col gap-1 w-full">
+              <div class="flex items-center gap-2 font-mono text-[10px]">
+                <span class="font-bold text-charcoal uppercase">Satyam (AI Twin)</span>
+                <span class="text-charcoal-muted">Just now</span>
+              </div>
+              <div class="p-3 border-2 border-charcoal bg-white text-charcoal shadow-[3px_3px_0px_#111111] font-sans text-[13px] leading-relaxed">
+                Hello! I am Satyam's AI Twin, grounded strictly in his verified software engineering background, VIT coursework, and flagship platforms.
+                <br/><br/>
+                Ask me anything about his custom vector search engine <strong>Synapse</strong> (Java/Spring Boot), his AI platforms (<strong>Kore Logic</strong>, <strong>Aura Tender</strong>), or his <strong>9.3 CGPA</strong> at VIT!
+              </div>
+            </div>
+          </div>
+          <div id="typing-indicator" class="hidden items-start gap-3 max-w-[88%] animate-fade-in">
+            <div class="w-8 h-8 border-2 border-charcoal bg-charcoal text-paper flex items-center justify-center font-mono font-bold text-[11px] flex-shrink-0">
+              AI
+            </div>
+            <div class="p-3 border-2 border-charcoal bg-white text-charcoal shadow-[3px_3px_0px_#111111] flex items-center gap-1.5 font-mono text-xs">
+              <span class="w-2 h-2 bg-charcoal animate-bounce"></span>
+              <span class="w-2 h-2 bg-charcoal animate-bounce [animation-delay:0.15s]"></span>
+              <span class="w-2 h-2 bg-charcoal animate-bounce [animation-delay:0.3s]"></span>
+              <span class="ml-2 text-charcoal-muted font-bold text-[10px]">GENERATING GROUNDED RESPONSE...</span>
+            </div>
+          </div>
+        `;
+      }
+      conversationHistory.length = 0;
+      triggerToast("Chat stream refreshed to system greeting.");
+    }
+
+    // Task 3: Sidebar inquiry filter input
+    function filterSidebarQueries(val) {
+      const q = (val || '').toLowerCase().trim();
+      document.querySelectorAll('#query-chips-list .query-chip').forEach(btn => {
+        const text = btn.innerText.toLowerCase();
+        if (!q || text.includes(q)) {
+          btn.classList.remove('hidden');
+        } else {
+          btn.classList.add('hidden');
+        }
+      });
+    }
+
+    // =========================================================================
+    // 6. ABOUT ME TAB SWITCHING (Task 3)
+    // =========================================================================
+    function switchAboutTab(num) {
+      [1, 2, 3].forEach(n => {
+        const tab = document.getElementById('about-tab-' + n);
+        const btn = document.getElementById('about-tab-btn-' + n);
+        if (tab && btn) {
+          if (n === num) {
+            tab.classList.remove('hidden');
+            btn.className = 'px-2.5 py-1 bg-charcoal text-paper font-bold uppercase transition-none';
+          } else {
+            tab.classList.add('hidden');
+            btn.className = 'px-2.5 py-1 bg-paper hover:bg-paper-subtle text-charcoal border border-charcoal uppercase transition-none';
+          }
+        }
+      });
+    }
+
+    // =========================================================================
+    // 7. SKILLS MATRIX (Category + Row-Level Real-Time Filtering, Task 3)
+    // =========================================================================
+    let activeSkillCategory = 'all';
+    let currentSkillSearch = '';
+
+    function renderSkills() {
+      const container = document.getElementById('skills-container');
+      if (!container) return;
+
+      const groups = [
+        { id: 'ai', title: 'GRID_01 // AI & VECTOR SEARCH', color: 'bg-bauhaus-red', tag: 'VECTOR_RUNTIME' },
+        { id: 'backend', title: 'GRID_02 // BACKEND & SYSTEMS', color: 'bg-bauhaus-yellow', tag: 'MICROSERVICES' },
+        { id: 'cloud', title: 'GRID_03 // CLOUD & TOOLS', color: 'bg-bauhaus-blue', tag: 'INFRASTRUCTURE' },
+        { id: 'db', title: 'GRID_04 // DATA & CORE CS FOUNDATIONS', color: 'bg-charcoal', tag: '200+ SOLVED' }
+      ];
+
+      let visibleCount = 0;
+      let html = '';
+
+      groups.forEach(g => {
+        const groupSkills = DATA.skills.filter(s => s.category === g.id);
+        const filtered = groupSkills.filter(s => {
+          const matchesCat = (activeSkillCategory === 'all' || activeSkillCategory === g.id);
+          const matchesQuery = (!currentSkillSearch || s.name.toLowerCase().includes(currentSkillSearch) || s.desc.toLowerCase().includes(currentSkillSearch));
+          return matchesCat && matchesQuery;
+        });
+
+        if (filtered.length > 0) {
+          visibleCount += filtered.length;
+          html += `
+            <div class="skill-card border-2 border-charcoal bg-paper-card shadow-[4px_4px_0px_#111111]">
+              <div class="bg-paper px-3 py-1.5 border-b-2 border-charcoal flex items-center justify-between font-mono text-[10px]">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 ${g.color} border border-charcoal inline-block"></span>
+                  <span class="font-bold uppercase text-charcoal">${g.title}</span>
+                </div>
+                <span class="text-charcoal-muted font-bold">${g.tag}</span>
+              </div>
+              <div class="p-3 grid grid-cols-1 md:grid-cols-2 gap-3 font-mono text-[11px]">
+          `;
+
+          filtered.forEach(s => {
+            let meterBlocks = '';
+            for (let i = 1; i <= 5; i++) {
+              if (i <= s.level) {
+                meterBlocks += `<span class="w-2 h-3.5 bg-charcoal inline-block"></span>`;
+              } else {
+                meterBlocks += `<span class="w-2 h-3.5 border border-charcoal inline-block"></span>`;
+              }
+            }
+
+            html += `
+              <div class="flex items-center justify-between border-b border-charcoal-hairline pb-1.5">
+                <div>
+                  <div class="font-bold text-charcoal text-[11px]">${s.name}</div>
+                  <div class="text-[9px] text-charcoal-muted">${s.desc}</div>
+                </div>
+                <div class="flex items-center gap-0.5" title="Proficiency: ${s.level}/5">
+                  ${meterBlocks}
+                </div>
+              </div>
+            `;
+          });
+
+          html += `</div></div>`;
+        }
+      });
+
+      container.innerHTML = html || `<div class="p-6 text-center font-mono text-xs text-charcoal-muted">NO SKILL MATCHES FOUND FOR "${escapeHtml(currentSkillSearch)}".</div>`;
+      
+      const badge = document.getElementById('skills-count-badge');
+      if (badge) badge.innerText = `SHOWING ${visibleCount} / ${DATA.skills.length} UNITS`;
+    }
+
+    function setSkillCategory(cat) {
+      activeSkillCategory = cat;
+      ['all', 'ai', 'backend', 'cloud', 'db'].forEach(c => {
+        const btn = document.getElementById('skill-btn-' + c);
+        if (btn) {
+          btn.className = (c === cat)
+            ? 'px-2 py-0.5 bg-charcoal text-paper font-bold uppercase'
+            : 'px-2 py-0.5 bg-paper hover:bg-paper-subtle border border-charcoal text-charcoal uppercase';
+        }
+      });
+      renderSkills();
+    }
+
+    function handleSkillSearch(val) {
+      currentSkillSearch = (val || '').toLowerCase().trim();
+      renderSkills();
+    }
+
+    // =========================================================================
+    // 8. PROJECTS & JOURNEY RENDERING (Task 2, Task 3)
+    // =========================================================================
+    let activeProjectFilter = 'all';
+    function renderProjects() {
+      const container = document.getElementById('projects-container');
+      const finderGrid = document.getElementById('finder-grid');
+      if (!container) return;
+
+      const filtered = DATA.projects.filter(p => {
+        if (activeProjectFilter === 'all') return true;
+        return p.category === activeProjectFilter;
+      });
+
+      container.innerHTML = filtered.map(p => {
+        const stackPills = p.stack.map(st => `<span class="px-2 py-0.5 bg-paper border border-charcoal font-bold text-charcoal">${st}</span>`).join(' ');
+        return `
+          <div class="proj-item bg-paper-card border-2 border-charcoal p-4 shadow-[4px_4px_0px_#111111] space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-charcoal pb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 bg-bauhaus-red inline-block border border-charcoal"></span>
+                <h3 class="font-display font-bold text-base uppercase text-charcoal tracking-tight">${p.title}</h3>
+              </div>
+              <span class="px-2 py-0.5 bg-paper border border-charcoal font-bold text-charcoal text-[9px] uppercase">${p.tag}</span>
+            </div>
+            <p class="font-mono text-[11px] text-charcoal-muted leading-relaxed">${p.description}</p>
+            <div class="flex flex-wrap gap-1.5 font-mono text-[9px]">${stackPills}</div>
+            <div class="pt-2 border-t border-charcoal-hairline flex flex-wrap items-center justify-between gap-3 font-mono text-[10px]">
+              <span class="text-charcoal"><b>SPECS:</b> ${p.metrics}</span>
+              <button onclick="sendQuickPrompt('Explain the architecture and technical implementation of ${p.id}.')" class="px-3 py-1 bg-charcoal text-paper font-bold uppercase hover:bg-bauhaus-red flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px]">smart_toy</span> ASK AI COPILOT
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (finderGrid) {
+        finderGrid.innerHTML = DATA.projects.map(p => `
+          <div class="p-3 bg-paper-card border border-charcoal shadow-[2px_2px_0px_#111111] flex flex-col justify-between">
+            <div>
+              <div class="font-mono font-bold text-[11px] uppercase">${p.title.split('//')[0]}</div>
+              <div class="font-mono text-[9px] text-charcoal-muted mt-1 line-clamp-3">${p.description}</div>
+            </div>
+            <button onclick="focusApp('projects')" class="mt-3 text-left font-mono text-[9px] font-bold text-bauhaus-blue uppercase hover:underline">INSPECT MODULE →</button>
+          </div>
+        `).join('');
+      }
+
+      const countBadge = document.getElementById('projects-count-label');
+      if (countBadge) countBadge.innerText = `SHOWING (${filtered.length}) REPOSITORIES`;
+    }
+
+    function filterProjects(type) {
+      activeProjectFilter = type;
+      ['all', 'ai', 'fullstack'].forEach(t => {
+        const btn = document.getElementById('proj-filter-' + t);
+        if (btn) {
+          btn.className = (t === type)
+            ? 'px-2 py-0.5 bg-charcoal text-paper font-bold uppercase'
+            : 'px-2 py-0.5 bg-paper hover:bg-white border border-charcoal text-charcoal uppercase';
+        }
+      });
+      renderProjects();
+    }
+
+    let activeJourneyFilter = 'all';
+    function renderJourney() {
+      const container = document.getElementById('journey-container');
+      if (!container) return;
+
+      const milestones = [
+        {
+          period: "internship",
+          date: "OCT 2026 — PRESENT",
+          ref: "ARCH_REF: 0x401",
+          type: "INDUSTRY INTERNSHIP",
+          title: "Data Associate L1 (Intern) @ Infotact Solutions",
+          desc: "Translating data goals into ML solutions with Python, scikit-learn, and TensorFlow. Preprocessing structured and unstructured datasets, performing EDA with Matplotlib/Seaborn, and documenting experiments for reproducibility.",
+          tags: ["PYTHON", "SCIKIT-LEARN", "TENSORFLOW", "MATPLOTLIB", "PANDAS"]
+        },
+        {
+          period: "projects",
+          date: "2024 — PRESENT",
+          ref: "ARCH_REF: 0x388",
+          type: "FLAGSHIP SYSTEMS",
+          title: "Architect of Synapse, Kore Logic & Aura Tender",
+          desc: "Built custom HNSW & KD-Tree vector engines from scratch in Java/Spring Boot (Synapse), full-stack AI career mentoring platforms in Next.js 15/FastAPI (Kore Logic), and automated procurement compliance analysis with Gemini 1.5 Pro (Aura Tender).",
+          tags: ["JAVA", "SPRING BOOT", "FASTAPI", "GEMINI", "VECTOR SEARCH"]
+        },
+        {
+          period: "academic",
+          date: "2024",
+          ref: "ARCH_REF: 0x310",
+          type: "ALGORITHMIC MILESTONE",
+          title: "200+ LeetCode DSA Problems Conquered",
+          desc: "Mastered algorithmic problem solving across Graph traversals, Dynamic Programming, Trees, Binary Search, and Two Pointers with strict asymptotic analysis.",
+          tags: ["JAVA", "PYTHON", "DATA STRUCTURES", "ALGORITHMS"]
+        },
+        {
+          period: "academic",
+          date: "2023 — 2027",
+          ref: "ARCH_REF: 0x221",
+          type: "ACADEMIC DEGREE",
+          title: "B.Tech Computer Science & Engineering (AI/ML) @ VIT",
+          desc: "Maintaining top academic standing with a 9.3 / 10.0 CGPA. Core coursework in Operating Systems, Database Management Systems, System Design, and Artificial Intelligence.",
+          tags: ["VIT VELLORE", "9.3 CGPA", "AI/ML", "DISTRIBUTED SYSTEMS"]
+        }
+      ];
+
+      const filtered = milestones.filter(m => {
+        if (activeJourneyFilter === 'all') return true;
+        return m.period === activeJourneyFilter;
+      });
+
+      container.innerHTML = filtered.map(m => `
+        <div class="journey-card bg-paper-card border-2 border-charcoal p-4 shadow-[4px_4px_0px_#111111] space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-charcoal pb-1.5 text-[10px]">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-bauhaus-red text-white font-bold uppercase">${m.date}</span>
+              <span class="text-charcoal-muted uppercase font-bold">${m.ref}</span>
+            </div>
+            <span class="px-2 py-0.5 bg-paper border border-charcoal text-charcoal font-bold uppercase">${m.type}</span>
+          </div>
+          <h3 class="font-display font-bold text-base uppercase text-charcoal tracking-tight">${m.title}</h3>
+          <p class="text-[11px] text-charcoal-muted leading-relaxed">${m.desc}</p>
+          <div class="flex flex-wrap gap-1.5 pt-1 text-[9px]">
+            ${m.tags.map(t => `<span class="px-2 py-0.5 bg-paper border border-charcoal text-charcoal font-bold uppercase">${t}</span>`).join(' ')}
+          </div>
+        </div>
+      `).join('');
+
+      const countBadge = document.getElementById('journey-count-badge');
+      if (countBadge) countBadge.innerText = `${filtered.length} MILESTONES LOADED`;
+    }
+
+    function filterJourney(period) {
+      activeJourneyFilter = period;
+      ['all', 'internship', 'projects', 'academic'].forEach(p => {
+        const btn = document.getElementById('journey-btn-' + p);
+        if (btn) {
+          btn.className = (p === period)
+            ? 'px-2 py-0.5 bg-charcoal text-paper font-bold uppercase'
+            : 'px-2 py-0.5 bg-paper hover:bg-white border border-charcoal text-charcoal uppercase';
+        }
+      });
+      renderJourney();
+    }
+
+    // =========================================================================
+    // 9. RESUME SHEET, MARKDOWN COPY & PRINT SPEC (Task 3)
+    // =========================================================================
+    function renderResumeSheet() {
+      const sheet = document.getElementById('resume-sheet');
+      if (!sheet) return;
+
+      sheet.innerHTML = `
+        <div class="border-b-2 border-charcoal pb-4 text-center sm:text-left flex flex-col sm:flex-row justify-between items-start gap-3">
+          <div>
+            <h1 class="font-display font-bold text-2xl uppercase tracking-tight text-charcoal">${CONFIG.name}</h1>
+            <p class="font-mono text-xs font-bold text-bauhaus-red uppercase mt-1">${CONFIG.headline}</p>
+          </div>
+          <div class="font-mono text-[10px] text-charcoal-muted sm:text-right space-y-0.5">
+            <div>${CONFIG.email}</div>
+            <div>${CONFIG.phone}</div>
+            <div>${CONFIG.location}</div>
+            <div class="text-charcoal font-bold">LinkedIn: satyam-dot-com</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="border-b border-charcoal pb-1 mb-2 font-bold text-xs uppercase flex justify-between">
+            <span>01. EDUCATION</span>
+            <span class="text-bauhaus-red">CGPA: ${CONFIG.cgpa}</span>
+          </div>
+          <div class="text-[11px]">
+            <div class="flex justify-between font-bold">
+              <span>${CONFIG.institution}</span>
+              <span>${CONFIG.educationDates}</span>
+            </div>
+            <div class="text-charcoal-muted">${CONFIG.degree}</div>
+            <div class="text-[10px] text-charcoal-muted mt-0.5">Core Coursework: ${DATA.education.courses}</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="border-b border-charcoal pb-1 mb-2 font-bold text-xs uppercase flex justify-between">
+            <span>02. PROFESSIONAL EXPERIENCE</span>
+            <span class="text-charcoal-muted">INDUSTRY INTERNSHIP</span>
+          </div>
+          <div class="text-[11px] space-y-1">
+            <div class="flex justify-between font-bold">
+              <span>${DATA.experience[0].company} — ${DATA.experience[0].role}</span>
+              <span>${DATA.experience[0].period}</span>
+            </div>
+            <ul class="list-disc list-inside text-[10px] text-charcoal-muted space-y-1">
+              ${DATA.experience[0].bullets.map(b => `<li>${b}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="border-b border-charcoal pb-1 mb-2 font-bold text-xs uppercase flex justify-between">
+            <span>03. FLAGSHIP PROJECTS</span>
+            <span class="text-charcoal-muted">SYSTEMS ARCHITECTURE</span>
+          </div>
+          <div class="text-[11px] space-y-3">
+            ${DATA.projects.map(p => `
+              <div>
+                <div class="flex justify-between font-bold">
+                  <span>${p.title}</span>
+                  <span class="text-[10px] text-bauhaus-blue">${p.stack.slice(0, 3).join(', ')}</span>
+                </div>
+                <p class="text-[10px] text-charcoal-muted mt-0.5">${p.description}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div>
+          <div class="border-b border-charcoal pb-1 mb-2 font-bold text-xs uppercase">
+            04. TECHNICAL PROFICIENCIES
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">
+            <div><span class="font-bold">LANGUAGES:</span> Java, Python, JavaScript, SQL</div>
+            <div><span class="font-bold">AI / VECTOR:</span> RAG, Vector Search, HNSW, KD-Tree, LangChain, ChromaDB</div>
+            <div><span class="font-bold">FRAMEWORKS:</span> Spring Boot, FastAPI, Node.js/Express, Next.js 15, React</div>
+            <div><span class="font-bold">DATABASES & CLOUD:</span> PostgreSQL, MySQL, AWS Bedrock, Docker, Git, CI/CD</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function copyResumeMarkdown() {
+      const md = `# ${CONFIG.name}
+${CONFIG.headline}
+Email: ${CONFIG.email} | Phone: ${CONFIG.phone} | Location: ${CONFIG.location}
+
+## EDUCATION
+**${CONFIG.institution}** (${CONFIG.educationDates})
+${CONFIG.degree} — CGPA: ${CONFIG.cgpa}
+
+## EXPERIENCE
+**${DATA.experience[0].company}** — ${DATA.experience[0].role} (${DATA.experience[0].period})
+${DATA.experience[0].bullets.map(b => '- ' + b).join('\n')}
+
+## PROJECTS
+${DATA.projects.map(p => `### ${p.title}\nStack: ${p.stack.join(', ')}\n${p.description}\n`).join('\n')}
+
+## SKILLS
+Languages: Java, Python, JavaScript, SQL
+AI/Vector: RAG, Vector Search, HNSW, KD-Tree, LangChain, ChromaDB
+Backend: Spring Boot, FastAPI, Next.js, React, PostgreSQL
+`;
+      copyText(md, "Full Resume Markdown copied to clipboard!");
+    }
+
+    function printResumeSpec() {
+      window.print();
+    }
+
+    function downloadResumePdf() {
+      fetch(CONFIG.resumePath, { method: 'HEAD' })
+        .then(res => {
+          if (res.ok) {
+            const a = document.createElement('a');
+            a.href = CONFIG.resumePath;
+            a.download = 'Satyam_Resume_FS.pdf';
+            a.target = '_blank';
+            a.click();
+          } else {
+            triggerToast("Satyam_Resume_FS.pdf is currently generating. Please try again shortly.");
+          }
+        })
+        .catch(() => {
+          triggerToast("PDF download link unreachable. You can use 'Copy Markdown' in the meantime!");
+        });
+    }
+
+    function copyText(text, msg) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text)
+          .then(() => triggerToast(msg || "Copied to clipboard!"))
+          .catch(() => fallbackCopy(text, msg));
+      } else {
+        fallbackCopy(text, msg);
+      }
+    }
+
+    function fallbackCopy(text, msg) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        triggerToast(msg || "Copied to clipboard!");
+      } catch (_) {
+        triggerToast("Copy action triggered: " + text.slice(0, 30));
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function copyEmail() { copyText(CONFIG.email, "Email copied: " + CONFIG.email); }
+    function copyPhone() { copyText(CONFIG.phone, "Phone copied: " + CONFIG.phone); }
+
+    // =========================================================================
+    // 10. CONTACT DISPATCH CONTROLLER (Task 3)
+    // =========================================================================
+    function handleDispatchSubmit(e) {
+      e.preventDefault();
+      const name = (document.getElementById('dispatch-name') || {}).value || '';
+      const email = (document.getElementById('dispatch-email') || {}).value || '';
+      const topic = (document.getElementById('dispatch-topic') || {}).value || '';
+      const body = (document.getElementById('dispatch-body') || {}).value || '';
+
+      const alert = document.getElementById('dispatch-sent-alert');
+      if (alert) alert.classList.remove('hidden');
+
+      triggerToast("Opening your default mail client...");
+      const mailtoUrl = `mailto:${CONFIG.email}?subject=${encodeURIComponent('[Portfolio Dispatch] ' + topic + ' - ' + name)}&body=${encodeURIComponent('From: ' + name + ' (' + email + ')\nTopic: ' + topic + '\n\n' + body)}`;
+      setTimeout(() => {
+        window.location.href = mailtoUrl;
+      }, 1000);
+    }
+
+    function handleDispatchReset() {
+      const alert = document.getElementById('dispatch-sent-alert');
+      if (alert) alert.classList.add('hidden');
+    }
+
+    // =========================================================================
+    // 11. TERMINAL CONTROLLER (Task 1.4, Task 3: matrix, retro, history)
+    // =========================================================================
+    const terminalHistory = [];
+    let historyIdx = -1;
+    let matrixAnimationId = null;
+
+    function openTerminal() {
+      const term = document.getElementById('terminal-window');
+      if (term) {
+        term.classList.remove('hidden');
+        term.style.display = 'flex'; // Task 1.4
+        bringToFront('terminal');
+        const inp = document.getElementById('terminal-input');
+        if (inp) inp.focus();
+      }
+    }
+
+    function handleTerminalKey(e) {
+      if (e.key === 'Enter') {
+        const input = document.getElementById('terminal-input');
+        if (!input) return;
+        const cmd = input.value.trim();
+        input.value = '';
+        if (cmd) {
+          terminalHistory.push(cmd);
+          historyIdx = terminalHistory.length;
+          executeTerminalCommand(cmd);
+        }
+      } else if (e.key === 'ArrowUp') {
+        if (historyIdx > 0) {
+          historyIdx--;
+          document.getElementById('terminal-input').value = terminalHistory[historyIdx] || '';
+        }
+      } else if (e.key === 'ArrowDown') {
+        if (historyIdx < terminalHistory.length - 1) {
+          historyIdx++;
+          document.getElementById('terminal-input').value = terminalHistory[historyIdx] || '';
+        } else {
+          historyIdx = terminalHistory.length;
+          document.getElementById('terminal-input').value = '';
+        }
+      } else if (matrixAnimationId) {
+        // Stop Matrix rain animation on any key press
+        stopMatrix();
+      }
+    }
+
+    function stopMatrix() {
+      if (matrixAnimationId) {
+        cancelAnimationFrame(matrixAnimationId);
+        matrixAnimationId = null;
+        const canvas = document.getElementById('terminal-matrix-canvas');
+        if (canvas) canvas.remove();
+        const output = document.getElementById('terminal-output');
+        if (output) {
+          const note = document.createElement('div');
+          note.className = 'text-bauhaus-yellow';
+          note.innerText = '[Matrix stream stopped.]';
+          output.appendChild(note);
+        }
+      }
+    }
+
+    function executeTerminalCommand(rawCmd) {
+      const output = document.getElementById('terminal-output');
+      if (!output) return;
+
+      // Task 1.2: Sanitize command echo to prevent XSS
+      const cmd = rawCmd.toLowerCase();
+      const echo = document.createElement('div');
+      echo.className = 'flex items-center gap-2';
+      echo.innerHTML = `<span class="text-bauhaus-red font-bold">visitor@portfolio-os:~$</span> <span>${escapeHtml(rawCmd)}</span>`;
+      output.appendChild(echo);
+
+      const resp = document.createElement('div');
+      resp.className = 'text-paper/90 pl-2 leading-relaxed';
+
+      switch (cmd) {
+        case 'help':
+          resp.innerHTML = `Available commands:<br/>
+          • <b>projects</b> : Inspect Synapse, Kore Logic, Aura Tender<br/>
+          • <b>skills</b> : List core programming languages and frameworks<br/>
+          • <b>education</b> : View VIT degree and academic CGPA<br/>
+          • <b>experience</b> : Review Infotact Solutions internship<br/>
+          • <b>contact</b> : Output official email and telephone<br/>
+          • <b>resume</b> : Trigger resume preview & download<br/>
+          • <b>chat</b> : Focus the AI Copilot window<br/>
+          • <b>whoami</b> : Display current guest clearance level<br/>
+          • <b>matrix</b> : Run interactive green rain matrix animation<br/>
+          • <b>retro</b> : Toggle amber CRT scanline phosphor display<br/>
+          • <b>sudo</b> : Run root administrative commands<br/>
+          • <b>ls</b> : List virtual workspace directory files<br/>
+          • <b>date</b> : Print system wall clock timestamp<br/>
+          • <b>clear</b> : Clear terminal screen output`;
+          break;
+
+        case 'projects':
+          resp.innerHTML = DATA.projects.map(p => `• <b>${p.title}</b> (${p.stack.slice(0, 3).join(', ')})<br/>  ${p.description}`).join('<br/><br/>');
+          break;
+
+        case 'skills':
+          resp.innerHTML = `• <b>Languages:</b> Java, Python, JavaScript, SQL<br/>
+          • <b>AI/Vector:</b> RAG, Vector Search, HNSW, KD-Tree, LangChain, ChromaDB<br/>
+          • <b>Backend:</b> Spring Boot, FastAPI, Node.js/Express, Next.js 15, PostgreSQL`;
+          break;
+
+        case 'education':
+          resp.innerHTML = `<b>${CONFIG.institution}</b><br/>
+          Degree: ${CONFIG.degree}<br/>
+          CGPA: <b>${CONFIG.cgpa}</b> | Timeline: ${CONFIG.educationDates}`;
+          break;
+
+        case 'experience':
+          resp.innerHTML = `<b>${DATA.experience[0].company}</b> — ${DATA.experience[0].role} (${DATA.experience[0].period})<br/>
+          ${DATA.experience[0].bullets.map(b => '• ' + b).join('<br/>')}`;
+          break;
+
+        case 'contact':
+          resp.innerHTML = `Email: <a href="mailto:${CONFIG.email}" class="text-bauhaus-blue underline">${CONFIG.email}</a><br/>
+          Phone: ${CONFIG.phone}<br/>
+          Location: ${CONFIG.location}`;
+          break;
+
+        case 'resume':
+          focusApp('resume');
+          resp.innerHTML = `Opened Preview.app Resume Document Viewer.`;
+          break;
+
+        case 'chat':
+          focusApp('chat');
+          resp.innerHTML = `Focused AI Twin Copilot window.`;
+          break;
+
+        case 'whoami':
+          resp.innerHTML = `visitor042 (Guest Session) // Permissions: READ_ONLY`;
+          break;
+
+        case 'clear':
+          output.innerHTML = '';
+          stopMatrix();
+          return;
+
+        // Task 1.4: Matrix green rain canvas animation
+        case 'matrix':
+          startMatrixRain();
+          resp.innerHTML = `<span class="text-green-400 font-bold">Waking up neural matrix stream... (Press any key or type 'clear' to exit)</span>`;
+          break;
+
+        // Task 1.4: Retro CRT amber theme toggle
+        case 'retro':
+          const win = document.getElementById('terminal-window');
+          const isRetro = win.classList.toggle('terminal-retro');
+          const lbl = document.getElementById('terminal-mode-label');
+          if (lbl) lbl.innerText = isRetro ? 'TTY1 [CRT/AMBER]' : 'TTY1 [STD]';
+          resp.innerHTML = isRetro 
+            ? `<span class="text-amber-400 font-bold">Amber phosphor CRT scanlines ACTIVATED.</span>`
+            : `<span>Standard monochrome display restored.</span>`;
+          break;
+
+        case 'sudo':
+          resp.innerHTML = `<span class="text-bauhaus-red font-bold">Permission denied:</span> User 'visitor042' is not in the sudoers file. This incident has been logged.`;
+          break;
+
+        case 'ls':
+          resp.innerHTML = `drwxr-xr-x  projects/
+-rw-r--r--  About_Me.txt
+-rw-r--r--  Skills.matrix
+-rw-r--r--  Satyam_Resume_FS.pdf
+-rwxr-xr-x  Fortune.sh`;
+          break;
+
+        case 'date':
+          resp.innerHTML = new Date().toUTCString() + ' (IST: ' + new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + ')';
+          break;
+
+        default:
+          resp.innerHTML = `bash: command not found: <b class="text-bauhaus-red">${escapeHtml(cmd)}</b>. Type 'help' for available commands.`;
+      }
+
+      output.appendChild(resp);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function startMatrixRain() {
+      const output = document.getElementById('terminal-output');
+      if (!output) return;
+
+      let canvas = document.getElementById('terminal-matrix-canvas');
+      if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.id = 'terminal-matrix-canvas';
+        canvas.className = 'w-full h-36 my-2 border border-green-500/40 bg-black';
+        output.appendChild(canvas);
+      }
+
+      const ctx = canvas.getContext('2d');
+      canvas.width = output.clientWidth - 24;
+      canvas.height = 140;
+
+      const chars = '0123456789ABCDEF01010101SATYAMVITSYNAPSE';
+      const fontSize = 11;
+      const columns = Math.floor(canvas.width / fontSize);
+      const drops = Array(columns).fill(1);
+
+      let frames = 0;
+      function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#22c55e';
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+
+        frames++;
+        if (frames < 300) { // Runs for ~6 seconds
+          matrixAnimationId = requestAnimationFrame(draw);
+        } else {
+          stopMatrix();
+        }
+      }
+
+      draw();
+    }
+
+    function openFortuneCookie() {
+      const fortunes = [
+        "🥠 'Simplicity is the prerequisite for reliability.' — Edsger W. Dijkstra",
+        "🥠 'Sub-millisecond query latency is achieved when algorithms meet hardware empathy.'",
+        "🥠 'Form follows function — Bauhaus rule applied to distributed systems.'",
+        "🥠 'The best vector index is the one tailored to your metric space.' — Synapse Note",
+        "🥠 'Clean schemas and normalized tables prevent midnight outages.' — Satyam"
+      ];
+      const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+      triggerToast(randomFortune);
+    }
+
+    // =========================================================================
+    // 12. INITIALIZATION ON DOM LOAD
+    // =========================================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      // Render dynamic data
+      renderSkills();
+      renderProjects();
+      renderJourney();
+      renderResumeSheet();
+      updateDockIndicators();
+
+      // Bind draggables for all windows with pointer events (Task 1.9)
+      const dragPairs = [
+        ['chat-window', 'chat-header'],
+        ['about-window', 'about-header'],
+        ['skills-window', 'skills-header'],
+        ['projects-window', 'projects-header'],
+        ['journey-window', 'journey-header'],
+        ['resume-window', 'resume-header'],
+        ['contact-window', 'contact-header'],
+        ['finder-window', 'finder-header'],
+        ['terminal-window', 'terminal-header']
+      ];
+      dragPairs.forEach(([winId, hdrId]) => {
+        makeDraggable(document.getElementById(winId), document.getElementById(hdrId));
+      });
+    });
+  </script>
+
+  <!-- ========================================================================= -->
+  <!-- SCRIPT 2: ANIMATION LAYER HOOKS (Merged from portfolio-animations.html) -->
+  <!-- ========================================================================= -->
+  <script>
+    (() => {
+      // 1) Re-trigger springy "pop" every time a toast message updates
+      const baseToast = window.triggerToast;
+      window.triggerToast = function (msg) {
+        if (baseToast) baseToast(msg);
+        const t = document.getElementById('desktop-toast');
+        if (!t) return;
+        t.classList.remove('toast-pop');
+        void t.offsetWidth; // restart animation
+        t.classList.add('toast-pop');
+      };
+
+      // 2) Animate windows closing instead of vanishing
+      const baseMinimize = window.minimizeApp;
+      window.minimizeApp = function (id) {
+        const el = document.getElementById(id + '-window');
+        if (!el || el.classList.contains('hidden') || el.classList.contains('win-closing')) return;
+        let done = false;
+        const finish = () => {
+          if (done) return;
+          done = true;
+          if (baseMinimize) baseMinimize(id);
+          el.classList.remove('win-closing');
+        };
+        el.classList.add('win-closing');
+        el.addEventListener('animationend', finish, { once: true });
+        setTimeout(finish, 380);
+      };
+
+      // 3) Kill 200ms transitions during drag so windows follow cursor 1:1 without lag
+      document.querySelectorAll('[id$="-header"]').forEach(header => {
+        const win = document.getElementById(header.id.replace('-header', '-window'));
+        if (!win) return;
+        header.addEventListener('pointerdown', e => {
+          if (['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) return;
+          win.classList.add('is-dragging');
+          const stop = () => { win.classList.remove('is-dragging'); document.removeEventListener('pointerup', stop); };
+          document.addEventListener('pointerup', stop);
+        }, true);
+      });
+    })();
+  </script>
+</body>
+</html>
