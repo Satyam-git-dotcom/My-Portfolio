@@ -68,6 +68,29 @@
       box-shadow: 6px 6px 0px rgba(17, 17, 17, 0.4);
     }
 
+    .hidden {
+      display: none !important;
+    }
+
+    /* Titlebar window action buttons: smooth springy micro-interactions */
+    button[onclick^="closeApp"],
+    button[onclick^="minimizeApp"],
+    button[onclick^="toggleMaximize"] {
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s, filter 0.18s !important;
+      cursor: pointer;
+    }
+    button[onclick^="closeApp"]:hover,
+    button[onclick^="minimizeApp"]:hover,
+    button[onclick^="toggleMaximize"]:hover {
+      transform: scale(1.22) !important;
+      filter: brightness(1.15);
+    }
+    button[onclick^="closeApp"]:active,
+    button[onclick^="minimizeApp"]:active,
+    button[onclick^="toggleMaximize"]:active {
+      transform: scale(0.85) !important;
+    }
+
     /* Terminal Retro CRT mode */
     .terminal-retro {
       background-color: #121008 !important;
@@ -1313,19 +1336,35 @@
     setInterval(updateClock, 10000);
     updateClock();
 
+    let toastTimeout = null;
+
     function triggerToast(message) {
       const toast = document.getElementById('desktop-toast');
       const text = document.getElementById('toast-message');
       if (toast && text) {
+        if (toastTimeout) {
+          clearTimeout(toastTimeout);
+          toastTimeout = null;
+        }
         text.innerText = message;
         toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
         toast.classList.add('opacity-100', 'translate-y-0');
+
+        // Automatically fade away after 5 seconds
+        toastTimeout = setTimeout(() => {
+          dismissToast();
+        }, 5000);
       }
     }
 
     function dismissToast() {
+      if (toastTimeout) {
+        clearTimeout(toastTimeout);
+        toastTimeout = null;
+      }
       const toast = document.getElementById('desktop-toast');
       if (toast) {
+        toast.classList.remove('opacity-100', 'translate-y-0');
         toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
       }
     }
@@ -1370,7 +1409,23 @@
     function focusApp(appId) {
       const active = document.getElementById(appId + '-window');
       if (active) {
+        const wasHidden = active.classList.contains('hidden') || active.style.display === 'none';
         active.classList.remove('hidden');
+        active.style.display = (appId === 'terminal') ? 'flex' : '';
+        active.style.pointerEvents = '';
+
+        if (wasHidden) {
+          // Stretchy, snappy pop-in animation
+          active.animate([
+            { transform: 'translateY(22px) scale(0.92)', opacity: 0 },
+            { transform: 'translateY(-3px) scale(1.02, 1.015)', opacity: 1, offset: 0.72 },
+            { transform: 'translateY(0) scale(1)', opacity: 1 }
+          ], {
+            duration: 320,
+            easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+          });
+        }
+
         // Accessibility: move focus inside window (Task 4)
         active.setAttribute('tabindex', '-1');
         active.focus();
@@ -1387,72 +1442,143 @@
     }
 
     // Task 1.7: Toast shown ONLY on minimize (yellow button), not close (red button)
+    // Smooth & stretchy suck-down animation towards bottom dock
     function minimizeApp(appId) {
       const el = document.getElementById(appId + '-window');
-      if (el) {
+      if (!el || el.classList.contains('hidden') || el.style.display === 'none') return;
+
+      el.style.pointerEvents = 'none';
+      const anim = el.animate([
+        { transform: 'scale(1) translateY(0)', opacity: 1 },
+        { transform: 'scale(0.96, 1.05) translateY(-8px)', opacity: 0.95, offset: 0.2 },
+        { transform: 'scale(0.75, 0.45) translateY(55px)', opacity: 0.65, offset: 0.65 },
+        { transform: 'scale(0.28, 0.12) translateY(180px)', opacity: 0 }
+      ], {
+        duration: 260,
+        easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+        fill: 'forwards'
+      });
+
+      anim.onfinish = () => {
         el.classList.add('hidden');
+        el.style.display = 'none';
+        el.style.pointerEvents = '';
+        el.style.transform = '';
+        el.style.opacity = '';
+        anim.cancel();
+        updateDockIndicators();
         triggerToast(`Window ${appId.toUpperCase()} minimized to dock.`);
-      }
-      updateDockIndicators();
+      };
     }
 
+    // Smooth & stretchy squash-and-shrink close animation
     function closeApp(appId) {
       const el = document.getElementById(appId + '-window');
-      if (el) {
+      if (!el || el.classList.contains('hidden') || el.style.display === 'none') return;
+
+      el.style.pointerEvents = 'none';
+      const anim = el.animate([
+        { transform: 'scale(1)', opacity: 1 },
+        { transform: 'scale(1.035, 0.96) translateY(-4px)', opacity: 0.95, offset: 0.25 },
+        { transform: 'scale(0.82, 0.65) translateY(24px)', opacity: 0 }
+      ], {
+        duration: 220,
+        easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        fill: 'forwards'
+      });
+
+      anim.onfinish = () => {
         el.classList.add('hidden');
+        el.style.display = 'none';
+        el.style.pointerEvents = '';
+        el.style.transform = '';
+        el.style.opacity = '';
+        anim.cancel();
+        updateDockIndicators();
         // Close does NOT emit minimize toast (Task 1.7)
-      }
-      updateDockIndicators();
+      };
     }
 
-    // Task 1.8: Smooth maximize/restore with Web Animations API
+    // Task 1.8: Smooth & stretchy maximize/restore with FLIP GPU Transform (zero layout jank)
     const windowMaxStates = {};
     function toggleMaximize(appId) {
       const el = document.getElementById(appId + '-window');
-      if (!el) return;
+      if (!el || el.classList.contains('hidden') || el.style.display === 'none') return;
 
-      const isMax = windowMaxStates[appId];
-      const startRect = el.getBoundingClientRect();
+      const isMax = !!windowMaxStates[appId];
+      // 1. FIRST: Get initial bounding rect before any layout changes
+      const firstRect = el.getBoundingClientRect();
 
       if (!isMax) {
         // Save current coordinates
         windowMaxStates[appId] = {
-          top: el.style.top,
-          left: el.style.left,
-          width: el.style.width,
-          height: el.style.height,
-          position: el.style.position
+          position: el.style.position || '',
+          top: el.style.top || '',
+          left: el.style.left || '',
+          width: el.style.width || '',
+          height: el.style.height || '',
+          maxWidth: el.style.maxWidth || '',
+          maxHeight: el.style.maxHeight || ''
         };
 
-        const targetTop = 38;
-        const targetLeft = 8;
-        const targetWidth = window.innerWidth - 16;
-        const targetHeight = window.innerHeight - 84;
-
-        el.animate([
-          { top: startRect.top + 'px', left: startRect.left + 'px', width: startRect.width + 'px', height: startRect.height + 'px' },
-          { top: targetTop + 'px', left: targetLeft + 'px', width: targetWidth + 'px', height: targetHeight + 'px' }
-        ], { duration: 240, easing: 'cubic-bezier(.16, 1, .3, 1)' }).onfinish = () => {
-          el.style.position = 'fixed';
-          el.style.top = targetTop + 'px';
-          el.style.left = targetLeft + 'px';
-          el.style.width = targetWidth + 'px';
-          el.style.height = targetHeight + 'px';
-          el.style.maxWidth = 'none';
-          el.style.maxHeight = 'none';
-        };
+        el.style.position = 'fixed';
+        el.style.top = '38px';
+        el.style.left = '8px';
+        el.style.width = 'calc(100vw - 16px)';
+        el.style.height = 'calc(100vh - 84px)';
+        el.style.maxWidth = 'none';
+        el.style.maxHeight = 'none';
       } else {
         const saved = windowMaxStates[appId];
         delete windowMaxStates[appId];
 
-        el.style.maxWidth = '';
-        el.style.maxHeight = '';
-        el.style.position = saved.position || 'absolute';
+        el.style.position = saved.position;
         el.style.top = saved.top;
         el.style.left = saved.left;
         el.style.width = saved.width;
         el.style.height = saved.height;
+        el.style.maxWidth = saved.maxWidth;
+        el.style.maxHeight = saved.maxHeight;
       }
+
+      // 2. LAST: Get new bounding rect after layout change
+      const lastRect = el.getBoundingClientRect();
+
+      // 3. INVERT: Calculate translation and scale deltas
+      const dx = firstRect.left - lastRect.left;
+      const dy = firstRect.top - lastRect.top;
+      const sx = lastRect.width ? (firstRect.width / lastRect.width) : 1;
+      const sy = lastRect.height ? (firstRect.height / lastRect.height) : 1;
+
+      el.style.transformOrigin = '0 0';
+
+      // 4. PLAY: Animate purely on GPU via transform with stretchy spring cubic-bezier!
+      const anim = el.animate([
+        {
+          transform: `translate3d(${dx}px, ${dy}px, 0) scale(${sx}, ${sy})`,
+          opacity: 0.95
+        },
+        {
+          // Stretchy slight overshoot at 75%
+          transform: isMax 
+            ? 'translate3d(0, 0, 0) scale(1.008, 1.006)' 
+            : 'translate3d(0, 0, 0) scale(0.995, 0.992)',
+          opacity: 1,
+          offset: 0.75
+        },
+        {
+          transform: 'translate3d(0, 0, 0) scale(1, 1)',
+          opacity: 1
+        }
+      ], {
+        duration: 320,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+      });
+
+      anim.onfinish = () => {
+        el.style.transformOrigin = '';
+        el.style.transform = '';
+      };
     }
 
     // Task 1.9: Draggable headers with pointer events (touch/mouse), clamping & <768px check
@@ -1472,6 +1598,13 @@
         const rect = windowEl.getBoundingClientRect();
         origX = rect.left;
         origY = rect.top;
+
+        const appId = windowEl.id.replace('-window', '');
+        if (windowMaxStates[appId]) {
+          delete windowMaxStates[appId];
+          windowEl.style.maxWidth = '';
+          windowEl.style.maxHeight = '';
+        }
 
         windowEl.style.position = 'fixed';
         windowEl.style.left = origX + 'px';
@@ -2299,14 +2432,7 @@ Backend: Spring Boot, FastAPI, Next.js, React, PostgreSQL
     let matrixAnimationId = null;
 
     function openTerminal() {
-      const term = document.getElementById('terminal-window');
-      if (term) {
-        term.classList.remove('hidden');
-        term.style.display = 'flex'; // Task 1.4
-        bringToFront('terminal');
-        const inp = document.getElementById('terminal-input');
-        if (inp) inp.focus();
-      }
+      focusApp('terminal');
     }
 
     function handleTerminalKey(e) {
@@ -2432,6 +2558,11 @@ Backend: Spring Boot, FastAPI, Next.js, React, PostgreSQL
         case 'clear':
           output.innerHTML = '';
           stopMatrix();
+          return;
+
+        case 'exit':
+        case 'quit':
+          closeApp('terminal');
           return;
 
         // Task 1.4: Matrix green rain canvas animation
@@ -2582,24 +2713,7 @@ Backend: Spring Boot, FastAPI, Next.js, React, PostgreSQL
         t.classList.add('toast-pop');
       };
 
-      // 2) Animate windows closing instead of vanishing
-      const baseMinimize = window.minimizeApp;
-      window.minimizeApp = function (id) {
-        const el = document.getElementById(id + '-window');
-        if (!el || el.classList.contains('hidden') || el.classList.contains('win-closing')) return;
-        let done = false;
-        const finish = () => {
-          if (done) return;
-          done = true;
-          if (baseMinimize) baseMinimize(id);
-          el.classList.remove('win-closing');
-        };
-        el.classList.add('win-closing');
-        el.addEventListener('animationend', finish, { once: true });
-        setTimeout(finish, 380);
-      };
-
-      // 3) Kill 200ms transitions during drag so windows follow cursor 1:1 without lag
+      // 2) Kill 200ms transitions during drag so windows follow cursor 1:1 without lag
       document.querySelectorAll('[id$="-header"]').forEach(header => {
         const win = document.getElementById(header.id.replace('-header', '-window'));
         if (!win) return;
